@@ -1,5 +1,5 @@
 {
-  "name": "library-tpl",
+  "name": "@jujulego/event-tree",
   "version": "1.0.0",
   "license": "MIT",
   "author": "Julien Capellari <julien.capellari@gmail.com>",

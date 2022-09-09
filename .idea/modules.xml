@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/library-tpl.iml" filepath="$PROJECT_DIR$/.idea/library-tpl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/event-tree.iml" filepath="$PROJECT_DIR$/.idea/event-tree.iml" />
     </modules>
   </component>
 </project>
