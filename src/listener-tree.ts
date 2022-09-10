@@ -1,68 +1,59 @@
-import { FirstOfKey, Key, PartialKey, RestOfKey } from './key';
+import { EventKey, EventListener, EventMap } from './event';
+import { ExtractKey, Key, PartialKey } from './key';
+
+// Utils
+function *partialKeys<K extends Key>(key: K): Generator<PartialKey<K>> {
+  const parts = key.split('.');
+  let pk: string[] = [];
+
+  for (let i = 0; i < parts.length; ++i) {
+    pk.push(parts[i]);
+
+    yield pk.join('.') as PartialKey<K>;
+  }
+}
 
 // Class
-export class ListenerTree<K extends Key> {
+export class ListenerTree<M extends EventMap> {
   // Attributes
-  private readonly _elements = new Set();
-  private readonly _children = new Map<FirstOfKey<K>, ListenerTree<RestOfKey<K>>>();
+  private _listeners = new Map<PartialKey<EventKey<M>>, Set<EventListener<M, EventKey<M>>>>();
 
   // Methods
-  private _splitKey(key: PartialKey<K>): [FirstOfKey<K>, PartialKey<RestOfKey<K>>] {
-    const idx = key.indexOf('.');
+  private _getListeners<PK extends PartialKey<EventKey<M>>>(key: PK): Set<EventListener<M, ExtractKey<EventKey<M>, PK>>> {
+    let set = this._listeners.get(key);
 
-    if (idx === -1) {
-      return [
-        key as string as FirstOfKey<K>,
-        '' as PartialKey<RestOfKey<K>>
-      ];
+    if (!set) {
+      set = new Set<EventListener<M, EventKey<M>>>();
+      this._listeners.set(key, set);
     }
 
-    return [
-      key.substring(0, idx) as FirstOfKey<K>,
-      key.substring(idx + 1) as PartialKey<RestOfKey<K>>
-    ];
+    return set;
   }
 
-  private _getChild(part: FirstOfKey<K>): ListenerTree<RestOfKey<K>> {
-    let child = this._children.get(part);
-
-    if (!child) {
-      child = new ListenerTree();
-      this._children.set(part, child);
-    }
-
-    return child;
+  insert<PK extends PartialKey<EventKey<M>>>(key: PK, listener: EventListener<M, ExtractKey<EventKey<M>, PK>>): void {
+    const set = this._getListeners(key);
+    set.add(listener);
   }
 
-  *searchListeners(key: PartialKey<K>): Generator {
-    for (const elem of this._elements) {
-      yield elem;
-    }
+  *search<K extends EventKey<M>>(key: K): Generator<EventListener<M, K>> {
+    for (const pk of partialKeys<EventKey<M>>(key)) {
+      const set = this._listeners.get(pk);
 
-    const [part, rest] = this._splitKey(key);
-    const child = this._children.get(part);
+      if (!set) {
+        continue;
+      }
 
-    if (child) {
-      yield* child.searchListeners(rest);
+      for (const listener of set) {
+        yield listener;
+      }
     }
   }
 
-  insert(key: PartialKey<K>, elem: any): void {
-    if (key.length === 0) {
-      this._elements.add(elem);
-    } else {
-      const [part, rest] = this._splitKey(key);
+  remove(key: PartialKey<EventKey<M>>, listener: EventListener<M, EventKey<M>>): void {
+    const set = this._listeners.get(key);
 
-      const child = this._getChild(part);
-      child.insert(rest, elem);
-    }
-  }
-
-  remove(elem: any): void {
-    this._elements.delete(elem);
-
-    for (const child of this._children.values()) {
-      child.remove(elem);
+    if (set) {
+      set.delete(listener);
     }
   }
 }
