@@ -33,22 +33,9 @@ export type EventListener<M extends EventMap, K extends EventKey<M>> =
 export type EventUnsubscribe = () => void;
 
 /**
- * Object allowing subscription to events
- */
-export interface EventObservable<M extends EventMap> {
-  /**
-   * Register a listener on an event or a group of event
-   */
-  subscribe<PK extends PartialKey<EventKey<M>>>(
-    key: PK,
-    listener: EventListener<M, ExtractKey<EventKey<M>, PK>>
-  ): EventUnsubscribe;
-}
-
-/**
  * Object emitting events
  */
-export interface EventOrigin<M extends EventMap> extends EventObservable<M> {
+export interface EventOrigin<M extends EventMap> {
   /**
    * Emits a new event
    */
@@ -56,4 +43,12 @@ export interface EventOrigin<M extends EventMap> extends EventObservable<M> {
     key: K,
     data: EventData<M, K>
   ): void;
+
+  /**
+   * Register a listener on an event or a group of event
+   */
+  subscribe<PK extends PartialKey<EventKey<M>>>(
+    key: PK,
+    listener: EventListener<M, ExtractKey<EventKey<M>, PK>>
+  ): EventUnsubscribe;
 }

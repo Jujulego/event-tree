@@ -1,4 +1,4 @@
-import { EventSource } from '../src';
+import { EventListener, EventRouter, EventSource } from '../src';
 
 // Types
 type TestEventMap = {
