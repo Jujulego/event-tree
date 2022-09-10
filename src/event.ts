@@ -1,7 +1,7 @@
 import { ExtractKey, Key, PartialKey } from './key';
 
 // Types
-export type EventMap = Record<Key, unknown>;
+export type EventMap = Record<Key, any>;
 
 /**
  * Extract event key type from event map type
@@ -18,7 +18,7 @@ export type EventData<M extends EventMap, K extends EventKey<M>> = M[K];
  */
 export interface EventMetadata<M extends EventMap, K extends EventKey<M>> {
   key: K;
-  source: EventSource<M>;
+  origin: EventOrigin<M>;
 }
 
 /**
@@ -48,7 +48,7 @@ export interface EventObservable<M extends EventMap> {
 /**
  * Object emitting events
  */
-export interface EventSource<M extends EventMap> extends EventObservable<M> {
+export interface EventOrigin<M extends EventMap> extends EventObservable<M> {
   /**
    * Emits a new event
    */

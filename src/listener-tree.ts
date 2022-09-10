@@ -1,5 +1,5 @@
-import { EventKey, EventListener, EventMap } from './event';
 import { ExtractKey, Key, PartialKey } from './key';
+import { EventKey, EventListener, EventMap } from './event';
 
 // Utils
 function *partialKeys<K extends Key>(key: K): Generator<PartialKey<K>> {
@@ -49,11 +49,11 @@ export class ListenerTree<M extends EventMap> {
     }
   }
 
-  remove(key: PartialKey<EventKey<M>>, listener: EventListener<M, EventKey<M>>): void {
+  remove<PK extends PartialKey<EventKey<M>>>(key: PK, listener: EventListener<M, ExtractKey<EventKey<M>, PK>>): void {
     const set = this._listeners.get(key);
 
     if (set) {
-      set.delete(listener);
+      set.delete(listener as EventListener<M, EventKey<M>>);
     }
   }
 }
