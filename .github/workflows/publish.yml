@@ -4,6 +4,10 @@ on:
   push:
     branches: [ master ]
 
+concurrency:
+  group: publish
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -74,17 +78,7 @@ jobs:
     environment: npm
     needs: [ lint, build, tests ]
 
-    permissions:
-      actions: write
-      contents: write
-
     steps:
-      - name: Publish only the latest commit
-        uses: styfle/cancel-workflow-action@0.9.1
-        with:
-          all_but_latest: true
-          access_token: ${{ github.token }}
-
       - uses: actions/checkout@v3.0.2
 
       - name: Use Node.js 16.x

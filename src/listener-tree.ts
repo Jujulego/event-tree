@@ -4,7 +4,7 @@ import { EventKey, EventListener, EventMap } from './event';
 // Utils
 function *partialKeys<K extends Key>(key: K): Generator<PartialKey<K>> {
   const parts = key.split('.');
-  let pk: string[] = [];
+  const pk: string[] = [];
 
   for (let i = 0; i < parts.length; ++i) {
     pk.push(parts[i]);
