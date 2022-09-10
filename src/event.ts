@@ -1,7 +1,7 @@
 import { ExtractKey, Key, PartialKey } from './key';
 
 // Types
-export type EventMap = Record<Key, any>;
+export type EventMap = Record<Key, unknown>;
 
 /**
  * Extract event key type from event map type

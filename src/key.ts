@@ -1,21 +1,6 @@
 // Types
 export type Key = string;
-
-/**
- * Extract first element of key
- */
-export type FirstOfKey<K extends Key> =
-  K extends `${infer P}.${string}`
-    ? P
-    : K;
-
-/**
- * Extract all elements of key expect the first one
- */
-export type RestOfKey<K extends Key> =
-  K extends `${string}.${infer R}`
-    ? R
-    : '';
+export type KeyPart = string | number;
 
 /**
  * Extract keys by beginning
@@ -32,3 +17,21 @@ export type PartialKey<K extends Key> =
   K extends `${infer P}.${infer R}`
     ? P | `${P}.${PartialKey<R>}`
     : K;
+
+/**
+ * Split key
+ */
+export type SplitKey<K extends Key> =
+  K extends `${infer P}.${infer R}`
+    ? [P, ...SplitKey<R>]
+    : [K]
+
+/**
+ * Join key
+ */
+export type JoinKey<S extends readonly KeyPart[]> =
+  S extends readonly [infer P extends KeyPart]
+    ? P
+    : S extends readonly [infer P extends KeyPart, ...infer R extends KeyPart[]]
+      ? `${P}.${JoinKey<R>}`
+      : never;
