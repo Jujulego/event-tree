@@ -8,7 +8,9 @@ export type KeyPart = string | number;
 export type ExtractKey<K extends Key, S extends Key> =
   K extends `${S}.${string}`
     ? K
-    : Extract<K, S>;
+    : S extends K
+      ? S
+      : never;
 
 /**
  * Partial key

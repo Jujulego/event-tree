@@ -22,7 +22,7 @@ export type EventGroupData<M extends EventMap, GK extends EventGroupKey<M>> = Ev
  */
 export interface EventMetadata {
   key: Key;
-  origin: EventOrigin<any>;
+  origin: unknown;
 }
 
 /**
@@ -46,10 +46,6 @@ export interface EventObservable<M extends EventMap> {
   /**
    * Register a listener on an event or a group of event
    */
-  subscribe<K extends EventKey<M>>(
-    key: K,
-    listener: EventListener<M, K>
-  ): EventUnsubscribe;
   subscribe<GK extends EventGroupKey<M>>(
     key: GK,
     listener: EventGroupListener<M, GK>
