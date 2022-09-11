@@ -1,6 +1,12 @@
-import { EventData, EventKey, EventListener, EventMap, EventOrigin, EventUnsubscribe } from './event';
+import {
+  EventData, EventGroupKey,
+  EventGroupListener,
+  EventKey,
+  EventMap,
+  EventOrigin,
+  EventUnsubscribe
+} from './event';
 import { ListenerTree } from './listener-tree';
-import { ExtractKey, PartialKey } from './key';
 
 // Class
 export class EventSource<M extends EventMap> implements EventOrigin<M> {
@@ -14,10 +20,7 @@ export class EventSource<M extends EventMap> implements EventOrigin<M> {
     }
   }
 
-  subscribe<PK extends PartialKey<EventKey<M>>>(
-    key: PK,
-    listener: EventListener<M, ExtractKey<EventKey<M>, PK>>
-  ): EventUnsubscribe {
+  subscribe<GK extends EventGroupKey<M>>(key: GK, listener: EventGroupListener<M, GK>): EventUnsubscribe {
     this._listeners.insert(key, listener);
 
     return () => this._listeners.remove(key, listener);

@@ -1,5 +1,5 @@
-import { ExtractKey, Key, PartialKey } from './key';
-import { EventKey, EventListener, EventMap } from './event';
+import { Key, PartialKey } from './key';
+import { EventGroupKey, EventGroupListener, EventKey, EventListener, EventMap } from './event';
 
 // Utils
 function *partialKeys<K extends Key>(key: K): Generator<PartialKey<K>> {
@@ -16,21 +16,21 @@ function *partialKeys<K extends Key>(key: K): Generator<PartialKey<K>> {
 // Class
 export class ListenerTree<M extends EventMap> {
   // Attributes
-  private _listeners = new Map<PartialKey<EventKey<M>>, Set<EventListener<M, EventKey<M>>>>();
+  private _listeners = new Map<EventGroupKey<M>, Set<EventListener<M, EventKey<M>>>>();
 
   // Methods
-  private _getListeners<PK extends PartialKey<EventKey<M>>>(key: PK): Set<EventListener<M, ExtractKey<EventKey<M>, PK>>> {
+  private _getListeners<PK extends EventGroupKey<M>>(key: PK): Set<EventGroupListener<M, PK>> {
     let set = this._listeners.get(key);
 
     if (!set) {
-      set = new Set<EventListener<M, EventKey<M>>>();
+      set = new Set();
       this._listeners.set(key, set);
     }
 
     return set;
   }
 
-  insert<PK extends PartialKey<EventKey<M>>>(key: PK, listener: EventListener<M, ExtractKey<EventKey<M>, PK>>): void {
+  insert<PK extends EventGroupKey<M>>(key: PK, listener: EventGroupListener<M, PK>): void {
     const set = this._getListeners(key);
     set.add(listener);
   }
@@ -49,7 +49,7 @@ export class ListenerTree<M extends EventMap> {
     }
   }
 
-  remove<PK extends PartialKey<EventKey<M>>>(key: PK, listener: EventListener<M, ExtractKey<EventKey<M>, PK>>): void {
+  remove<PK extends EventGroupKey<M>>(key: PK, listener: EventGroupListener<M, PK>): void {
     const set = this._listeners.get(key);
 
     if (set) {

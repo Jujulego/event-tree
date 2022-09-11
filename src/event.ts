@@ -8,24 +8,31 @@ export type EventMap = Record<Key, unknown>;
  */
 export type EventKey<M extends EventMap> = keyof M & Key;
 
+export type EventGroupKey<M extends EventMap> = PartialKey<EventKey<M>>;
+
 /**
  * Extract event data type from event map type
  */
 export type EventData<M extends EventMap, K extends EventKey<M>> = M[K];
 
+export type EventGroupData<M extends EventMap, GK extends EventGroupKey<M>> = EventData<M, ExtractKey<EventKey<M>, GK>>;
+
 /**
  * Holds data about an event
  */
-export interface EventMetadata<M extends EventMap, K extends EventKey<M>> {
-  key: K;
-  origin: EventOrigin<M>;
+export interface EventMetadata {
+  key: Key;
+  origin: EventOrigin<any>;
 }
 
 /**
  * Function used to unsubscribe a listener
  */
 export type EventListener<M extends EventMap, K extends EventKey<M>> =
-  (data: EventData<M, K>, metadata: EventMetadata<M, K>) => void;
+  (data: EventData<M, K>, metadata: EventMetadata) => void;
+
+export type EventGroupListener<M extends EventMap, GK extends EventGroupKey<M>> =
+  (data: EventGroupData<M, GK>, metadata: EventMetadata) => void;
 
 /**
  * Function used to unsubscribe a listener
@@ -33,9 +40,26 @@ export type EventListener<M extends EventMap, K extends EventKey<M>> =
 export type EventUnsubscribe = () => void;
 
 /**
+ * Object managing subscription to events
+ */
+export interface EventObservable<M extends EventMap> {
+  /**
+   * Register a listener on an event or a group of event
+   */
+  subscribe<K extends EventKey<M>>(
+    key: K,
+    listener: EventListener<M, K>
+  ): EventUnsubscribe;
+  subscribe<GK extends EventGroupKey<M>>(
+    key: GK,
+    listener: EventGroupListener<M, GK>
+  ): EventUnsubscribe;
+}
+
+/**
  * Object emitting events
  */
-export interface EventOrigin<M extends EventMap> {
+export interface EventOrigin<M extends EventMap> extends EventObservable<M> {
   /**
    * Emits a new event
    */
@@ -43,12 +67,4 @@ export interface EventOrigin<M extends EventMap> {
     key: K,
     data: EventData<M, K>
   ): void;
-
-  /**
-   * Register a listener on an event or a group of event
-   */
-  subscribe<PK extends PartialKey<EventKey<M>>>(
-    key: PK,
-    listener: EventListener<M, ExtractKey<EventKey<M>, PK>>
-  ): EventUnsubscribe;
 }
