@@ -8,7 +8,7 @@ export function splitKey<K extends Key>(key: K): SplitKey<K> {
 
 export function joinKey<S extends KeyPart[]>(...parts: S): JoinKey<S>;
 export function joinKey<P1 extends KeyPart, P2 extends KeyPart>(p1: P1, p2?: P2): `${P1}` | `${P1}.${P2}`;
-export function joinKey<P1 extends KeyPart, P2 extends KeyPart, P3 extends KeyPart>(p1: P1, p2?: P2, p3?: P3): `${P1}` | `${P1}.${P2}` | `${P1}.${P3}`;
+export function joinKey<P1 extends KeyPart, P2 extends KeyPart, P3 extends KeyPart>(p1: P1, p2?: P2, p3?: P3): `${P1}` | `${P1}.${P2}` | `${P1}.${P2}.${P3}`;
 export function joinKey<P1 extends KeyPart, P2 extends KeyPart, P3 extends KeyPart, P4 extends KeyPart>(p1: P1, p2?: P2, p3?: P3, p4?: P4): `${P1}` | `${P1}.${P2}` | `${P1}.${P2}.${P3}` | `${P1}.${P2}.${P3}.${P4}`;
 export function joinKey(...parts: Array<KeyPart | undefined>): Key {
   return parts.filter(p => p).join('.');

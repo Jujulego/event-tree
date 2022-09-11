@@ -31,9 +31,9 @@ export type SplitKey<K extends Key> =
 /**
  * Join key
  */
-export type JoinKey<S extends readonly KeyPart[]> =
-  S extends readonly [infer P extends KeyPart]
+export type JoinKey<S extends KeyPart[]> =
+  S extends [infer P extends KeyPart]
     ? P
-    : S extends readonly [infer P extends KeyPart, ...infer R extends KeyPart[]]
+    : S extends [infer P extends KeyPart, ...infer R extends KeyPart[]]
       ? `${P}.${JoinKey<R>}`
       : never;
