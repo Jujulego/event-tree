@@ -39,9 +39,6 @@ describe('waitForEvent', () => {
     setTimeout(() => source.emit('success', true), 0);
 
     await expect(waitForEvent(source, 'success'))
-      .resolves.toEqual([
-        true,
-        { key: 'success', origin: source }
-      ]);
+      .resolves.toBe(true);
   });
 });
