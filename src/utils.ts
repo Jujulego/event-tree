@@ -1,4 +1,4 @@
-import { EventGroupData, EventGroupKey, EventMap, EventObservable } from './event';
+import { EventGroupData, EventGroupKey, EventListenerOptions, EventMap, EventObservable } from './event';
 import { JoinKey, Key, KeyPart as KP, PartialKey, SplitKey } from './key';
 
 // Utils
@@ -33,12 +33,19 @@ export function joinKey(...parts: Array<KP | undefined>): Key {
 
 export async function waitForEvent<M extends EventMap, PK extends EventGroupKey<M>>(
   source: EventObservable<M>,
-  key: PK
+  key: PK,
+  opts: EventListenerOptions = {}
 ): Promise<EventGroupData<M, PK>> {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
+    // Subscribe to event
     const unsub = source.subscribe<PK>(key, (data: EventGroupData<M, PK>) => {
       resolve(data);
       unsub();
-    });
+    }, opts);
+
+    // Use signal to reject if aborted
+    if (opts.signal) {
+      opts.signal.addEventListener('abort', () => reject(opts.signal!.reason), { once: true });
+    }
   });
 }
