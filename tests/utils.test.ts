@@ -41,4 +41,13 @@ describe('waitForEvent', () => {
     await expect(waitForEvent(source, 'success'))
       .resolves.toBe(true);
   });
+
+  it('should reject when abort signal is emitted', async () => {
+    const ctrl = new AbortController();
+
+    setTimeout(() => ctrl.abort('Aborted !'), 0);
+
+    await expect(waitForEvent(source, 'success', { signal: ctrl.signal }))
+      .rejects.toBe('Aborted !');
+  });
 });

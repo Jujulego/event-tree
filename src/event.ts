@@ -17,6 +17,13 @@ export type EventData<M extends EventMap, K extends EventKey<M>> = M[K];
 
 export type EventGroupData<M extends EventMap, GK extends EventGroupKey<M>> = EventData<M, ExtractKey<EventKey<M>, GK>>;
 
+export interface EventOptions {
+  /**
+   * Custom origin to use
+   */
+  origin?: unknown;
+}
+
 /**
  * Holds data about an event
  */
@@ -34,6 +41,13 @@ export type EventListener<M extends EventMap, K extends EventKey<M>> =
 export type EventGroupListener<M extends EventMap, GK extends EventGroupKey<M>> =
   (data: EventGroupData<M, GK>, metadata: EventMetadata) => void;
 
+export interface EventListenerOptions {
+  /**
+   * Custom origin to use
+   */
+  signal?: AbortSignal;
+}
+
 /**
  * Function used to unsubscribe a listener
  */
@@ -48,7 +62,8 @@ export interface EventObservable<M extends EventMap> {
    */
   subscribe<GK extends EventGroupKey<M>>(
     key: GK,
-    listener: EventGroupListener<M, GK>
+    listener: EventGroupListener<M, GK>,
+    options?: EventListenerOptions,
   ): EventUnsubscribe;
 }
 
@@ -61,6 +76,7 @@ export interface EventOrigin<M extends EventMap> extends EventObservable<M> {
    */
   emit<K extends EventKey<M>>(
     key: K,
-    data: EventData<M, K>
+    data: EventData<M, K>,
+    opts?: EventOptions,
   ): void;
 }
