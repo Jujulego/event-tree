@@ -1,7 +1,7 @@
 import {
   EventData, EventGroupKey,
   EventGroupListener,
-  EventKey,
+  EventKey, EventListenerOptions,
   EventMap, EventOptions,
   EventOrigin,
   EventUnsubscribe
@@ -20,9 +20,21 @@ export class EventSource<M extends EventMap> implements EventOrigin<M> {
     }
   }
 
-  subscribe<GK extends EventGroupKey<M>>(key: GK, listener: EventGroupListener<M, GK>): EventUnsubscribe {
+  subscribe<GK extends EventGroupKey<M>>(
+    key: GK,
+    listener: EventGroupListener<M, GK>,
+    opts: EventListenerOptions = {},
+  ): EventUnsubscribe {
+    // Register listener
     this._listeners.insert(key, listener);
 
-    return () => this._listeners.remove(key, listener);
+    const unsub = () => this._listeners.remove(key, listener);
+
+    // Setup signal
+    if (opts.signal) {
+      opts.signal.addEventListener('abort', unsub, { once: true });
+    }
+
+    return unsub;
   }
 }

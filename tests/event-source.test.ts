@@ -63,4 +63,16 @@ describe('EventSource', () => {
 
     expect(listener).toHaveBeenCalledWith(5, { key: 'result.n', origin });
   });
+
+  it('should not call unsubscribed listeners (using signal)', () => {
+    const ctrl = new AbortController();
+    const listener = jest.fn();
+
+    source.subscribe('result.n', listener, { signal: ctrl.signal });
+    ctrl.abort();
+
+    source.emit('result.n', 5);
+
+    expect(listener).not.toHaveBeenCalled();
+  });
 });

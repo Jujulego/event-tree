@@ -41,6 +41,13 @@ export type EventListener<M extends EventMap, K extends EventKey<M>> =
 export type EventGroupListener<M extends EventMap, GK extends EventGroupKey<M>> =
   (data: EventGroupData<M, GK>, metadata: EventMetadata) => void;
 
+export interface EventListenerOptions {
+  /**
+   * Custom origin to use
+   */
+  signal?: AbortSignal;
+}
+
 /**
  * Function used to unsubscribe a listener
  */
@@ -55,7 +62,8 @@ export interface EventObservable<M extends EventMap> {
    */
   subscribe<GK extends EventGroupKey<M>>(
     key: GK,
-    listener: EventGroupListener<M, GK>
+    listener: EventGroupListener<M, GK>,
+    options?: EventListenerOptions,
   ): EventUnsubscribe;
 }
 
