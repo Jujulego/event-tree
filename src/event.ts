@@ -17,6 +17,13 @@ export type EventData<M extends EventMap, K extends EventKey<M>> = M[K];
 
 export type EventGroupData<M extends EventMap, GK extends EventGroupKey<M>> = EventData<M, ExtractKey<EventKey<M>, GK>>;
 
+export interface EventOptions {
+  /**
+   * Custom origin to use
+   */
+  origin?: unknown;
+}
+
 /**
  * Holds data about an event
  */
@@ -61,6 +68,7 @@ export interface EventOrigin<M extends EventMap> extends EventObservable<M> {
    */
   emit<K extends EventKey<M>>(
     key: K,
-    data: EventData<M, K>
+    data: EventData<M, K>,
+    opts?: EventOptions,
   ): void;
 }

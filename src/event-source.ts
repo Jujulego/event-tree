@@ -2,7 +2,7 @@ import {
   EventData, EventGroupKey,
   EventGroupListener,
   EventKey,
-  EventMap,
+  EventMap, EventOptions,
   EventOrigin,
   EventUnsubscribe
 } from './event';
@@ -14,9 +14,9 @@ export class EventSource<M extends EventMap> implements EventOrigin<M> {
   private readonly _listeners = new ListenerTree<M>();
 
   // Methods
-  emit<K extends EventKey<M>>(key: K, data: EventData<M, K>) {
+  emit<K extends EventKey<M>>(key: K, data: EventData<M, K>, opts: EventOptions = {}) {
     for (const listener of this._listeners.search(key)) {
-      listener(data, { key, origin: this });
+      listener(data, { key, origin: opts.origin ?? this });
     }
   }
 

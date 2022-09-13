@@ -53,4 +53,14 @@ describe('EventSource', () => {
 
     expect(listener).not.toHaveBeenCalled();
   });
+
+  it('should pass given custom origin', () => {
+    const listener = jest.fn();
+    const origin = {};
+
+    source.subscribe('result.n', listener);
+    source.emit('result.n', 5, { origin });
+
+    expect(listener).toHaveBeenCalledWith(5, { key: 'result.n', origin });
+  });
 });
