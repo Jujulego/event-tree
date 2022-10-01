@@ -56,12 +56,26 @@ describe('streamEvents', () => {
   it('should generate every emitted event', async () => {
     const stream = streamEvents(source, 'result');
 
+    // First event
     setTimeout(() => source.emit('result.s', 'toto'), 0);
+
     await expect(stream.next())
       .resolves.toEqual({ done: false, value: 'toto' });
 
+    // Second event
     setTimeout(() => source.emit('result.n', 5), 0);
+
     await expect(stream.next())
       .resolves.toEqual({ done: false, value: 5 });
+  });
+
+  it('should reject when abort signal is emitted', async () => {
+    const ctrl = new AbortController();
+    const stream = streamEvents(source, 'result', { signal: ctrl.signal });
+
+    setTimeout(() => ctrl.abort('Aborted !'), 0);
+
+    await expect(stream.next())
+      .rejects.toBe('Aborted !');
   });
 });

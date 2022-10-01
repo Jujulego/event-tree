@@ -52,9 +52,10 @@ export async function waitForEvent<M extends EventMap, GK extends EventGroupKey<
 
 export async function* streamEvents<M extends EventMap, GK extends EventGroupKey<M>>(
   source: EventObservable<M>,
-  key: GK
+  key: GK,
+  opts: EventListenerOptions = {}
 ): AsyncGenerator<EventGroupData<M, GK>> {
   while (true) {
-    yield await waitForEvent<M, GK>(source, key);
+    yield await waitForEvent<M, GK>(source, key, opts);
   }
 }
