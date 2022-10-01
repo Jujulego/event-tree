@@ -1,4 +1,4 @@
-import { EventSource, joinKey, splitKey, waitForEvent } from '../src';
+import { EventSource, joinKey, splitKey, streamEvents, waitForEvent } from '../src';
 
 // Types
 type TestEventMap = {
@@ -49,5 +49,19 @@ describe('waitForEvent', () => {
 
     await expect(waitForEvent(source, 'success', { signal: ctrl.signal }))
       .rejects.toBe('Aborted !');
+  });
+});
+
+describe('streamEvents', () => {
+  it('should generate every emitted event', async () => {
+    const stream = streamEvents(source, 'result');
+
+    setTimeout(() => source.emit('result.s', 'toto'), 0);
+    await expect(stream.next())
+      .resolves.toEqual({ done: false, value: 'toto' });
+
+    setTimeout(() => source.emit('result.n', 5), 0);
+    await expect(stream.next())
+      .resolves.toEqual({ done: false, value: 5 });
   });
 });

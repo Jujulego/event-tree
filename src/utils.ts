@@ -31,14 +31,14 @@ export function joinKey(...parts: Array<KP | undefined>): Key {
   return key.join('.');
 }
 
-export async function waitForEvent<M extends EventMap, PK extends EventGroupKey<M>>(
+export async function waitForEvent<M extends EventMap, GK extends EventGroupKey<M>>(
   source: EventObservable<M>,
-  key: PK,
+  key: GK,
   opts: EventListenerOptions = {}
-): Promise<EventGroupData<M, PK>> {
+): Promise<EventGroupData<M, GK>> {
   return new Promise((resolve, reject) => {
     // Subscribe to event
-    const unsub = source.subscribe<PK>(key, (data: EventGroupData<M, PK>) => {
+    const unsub = source.subscribe<GK>(key, (data: EventGroupData<M, GK>) => {
       resolve(data);
       unsub();
     }, opts);
@@ -48,4 +48,13 @@ export async function waitForEvent<M extends EventMap, PK extends EventGroupKey<
       opts.signal.addEventListener('abort', () => reject(opts.signal!.reason), { once: true });
     }
   });
+}
+
+export async function* streamEvents<M extends EventMap, GK extends EventGroupKey<M>>(
+  source: EventObservable<M>,
+  key: GK
+): AsyncGenerator<EventGroupData<M, GK>> {
+  while (true) {
+    yield await waitForEvent<M, GK>(source, key);
+  }
 }
