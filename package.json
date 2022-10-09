@@ -35,7 +35,7 @@
     "watch": "gulp watch",
     "test": "jest"
   },
-  "packageManager": "yarn@3.2.3",
+  "packageManager": "yarn@3.2.4",
   "peerDependencies": {
     "regenerator-runtime": "0.13.9"
   },
