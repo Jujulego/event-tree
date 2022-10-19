@@ -7,6 +7,7 @@ import {
   EventUnsubscribe
 } from './event';
 import { ListenerTree } from './listener-tree';
+import { unsubscriber } from './unsubscriber';
 
 // Class
 export class EventSource<M extends EventMap> implements EventOrigin<M> {
@@ -28,11 +29,12 @@ export class EventSource<M extends EventMap> implements EventOrigin<M> {
     // Register listener
     this._listeners.insert(key, listener);
 
-    const unsub = () => this._listeners.remove(key, listener);
+    const unsub = unsubscriber(() => this._listeners.remove(key, listener));
 
     // Setup signal
     if (opts.signal) {
       opts.signal.addEventListener('abort', unsub, { once: true });
+      unsub.add(() => opts.signal?.removeEventListener('abort', unsub));
     }
 
     return unsub;
