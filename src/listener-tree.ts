@@ -4,12 +4,13 @@ import { EventGroupKey, EventGroupListener, EventKey, EventListener, EventMap } 
 // Utils
 function *partialKeys<K extends Key>(key: K): Generator<PartialKey<K>> {
   const parts = key.split('.');
-  const pk: string[] = [];
 
-  for (let i = 0; i < parts.length; ++i) {
-    pk.push(parts[i]);
+  let pk = parts[0];
+  yield pk as PartialKey<K>;
 
-    yield pk.join('.') as PartialKey<K>;
+  for (let i = 1; i < parts.length; ++i) {
+    pk += '.' + parts[i];
+    yield pk as PartialKey<K>;
   }
 }
 
