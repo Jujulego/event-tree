@@ -1,5 +1,6 @@
 import { EventGroupData, EventGroupKey, EventListenerOptions, EventMap, EventObservable } from './event';
 import { JoinKey, Key, KeyPart as KP, PartialKey, SplitKey } from './key';
+import { offGroup } from './off-group';
 
 // Utils
 export function splitKey<K extends Key>(key: K): SplitKey<K> {
@@ -38,14 +39,22 @@ export async function waitForEvent<M extends EventMap, GK extends EventGroupKey<
 ): Promise<EventGroupData<M, GK>> {
   return new Promise((resolve, reject) => {
     // Subscribe to event
-    const unsub = source.subscribe<GK>(key, (data: EventGroupData<M, GK>) => {
-      resolve(data);
-      unsub();
-    }, opts);
+    const unsub = offGroup(
+      source.subscribe<GK>(key, (data: EventGroupData<M, GK>) => {
+        resolve(data);
+        unsub();
+      })
+    );
 
     // Use signal to reject if aborted
     if (opts.signal) {
-      opts.signal.addEventListener('abort', () => reject(opts.signal!.reason), { once: true });
+      const listener = () => {
+        reject(opts.signal?.reason);
+        unsub();
+      };
+
+      opts.signal.addEventListener('abort', listener, { once: true });
+      unsub.add(() => opts.signal?.removeEventListener('abort', listener));
     }
   });
 }
@@ -55,7 +64,11 @@ export async function* streamEvents<M extends EventMap, GK extends EventGroupKey
   key: GK,
   opts: EventListenerOptions = {}
 ): AsyncGenerator<EventGroupData<M, GK>> {
+  const abort = new Promise<EventGroupData<M, GK>>((_, reject) => {
+    opts.signal?.addEventListener('abort', () => reject(opts.signal?.reason), { once: true });
+  });
+
   while (true) {
-    yield await waitForEvent<M, GK>(source, key, opts);
+    yield await Promise.race([abort, waitForEvent<M, GK>(source, key)]);
   }
 }
