@@ -1,13 +1,13 @@
 import { EventUnsubscribe } from './event';
 
 // Interface
-export type Unsubscriber = EventUnsubscribe & {
+export type OffGroup = EventUnsubscribe & {
   // Methods
   add(unsub: EventUnsubscribe): void;
 }
 
 // Builder
-export function unsubscriber(...unsubs: EventUnsubscribe[]): Unsubscriber {
+export function offGroup(...unsubs: EventUnsubscribe[]): OffGroup {
   const set = new Set(unsubs);
 
   return Object.assign(() => {

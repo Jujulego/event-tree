@@ -7,7 +7,7 @@ import {
   EventUnsubscribe
 } from './event';
 import { ListenerTree } from './listener-tree';
-import { unsubscriber } from './unsubscriber';
+import { offGroup } from './off-group';
 
 // Class
 export class EventSource<M extends EventMap> implements EventOrigin<M> {
@@ -29,7 +29,7 @@ export class EventSource<M extends EventMap> implements EventOrigin<M> {
     // Register listener
     this._listeners.insert(key, listener);
 
-    const unsub = unsubscriber(() => this._listeners.remove(key, listener));
+    const unsub = offGroup(() => this._listeners.remove(key, listener));
 
     // Setup signal
     if (opts.signal) {
