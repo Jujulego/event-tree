@@ -63,7 +63,7 @@ export async function* streamEvents<M extends EventMap, GK extends EventGroupKey
   source: EventObservable<M>,
   key: GK,
   opts: EventListenerOptions = {}
-): AsyncGenerator<EventGroupData<M, GK>> {
+): AsyncGenerator<EventGroupData<M, GK>, void, undefined> {
   const abort = new Promise<EventGroupData<M, GK>>((_, reject) => {
     opts.signal?.addEventListener('abort', () => reject(opts.signal?.reason), { once: true });
   });

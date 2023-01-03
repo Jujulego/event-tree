@@ -2,7 +2,7 @@ import { Key, PartialKey } from './key';
 import { EventGroupKey, EventGroupListener, EventKey, EventListener, EventMap } from './event';
 
 // Utils
-function *partialKeys<K extends Key>(key: K): Generator<PartialKey<K>> {
+function *partialKeys<K extends Key>(key: K): Generator<PartialKey<K>, void, undefined> {
   const parts = key.split('.');
 
   let pk = parts[0];
@@ -36,7 +36,7 @@ export class ListenerTree<M extends EventMap> {
     set.add(listener);
   }
 
-  *search<K extends EventKey<M>>(key: K): Generator<EventListener<M, K>> {
+  *search<K extends EventKey<M>>(key: K): Generator<EventListener<M, K>, void, undefined> {
     for (const pk of partialKeys<EventKey<M>>(key)) {
       const set = this._listeners.get(pk);
 
@@ -44,9 +44,7 @@ export class ListenerTree<M extends EventMap> {
         continue;
       }
 
-      for (const listener of set) {
-        yield listener;
-      }
+      yield* set.values();
     }
   }
 
