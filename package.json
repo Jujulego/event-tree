@@ -35,7 +35,7 @@
     "watch": "gulp watch",
     "test": "jest"
   },
-  "packageManager": "yarn@3.3.1",
+  "packageManager": "yarn@3.4.1",
   "devDependencies": {
     "@jujulego/flow": "1.1.0",
     "@swc/cli": "0.1.61",
