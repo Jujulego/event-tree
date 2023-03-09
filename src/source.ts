@@ -17,9 +17,12 @@ export function source<D>(): Source<D> {
         listener(data);
       }
     },
-    subscribe(listener: Listener<D>) {
+    on(listener: Listener<D>) {
       listeners.add(listener);
       return () => listeners.delete(listener);
+    },
+    off(listener: Listener<D>) {
+      listeners.delete(listener);
     }
   };
 }

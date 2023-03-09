@@ -1,4 +1,4 @@
-import { Listener, Unsubscribe } from './utils';
+import { Listener, OffFn } from './utils';
 
 /**
  * Simplest event source
@@ -14,5 +14,11 @@ export interface ISource<D> {
    * Subscribe to event
    * @param listener
    */
-  subscribe(listener: Listener<D>): Unsubscribe;
+  on(listener: Listener<D>): OffFn;
+
+  /**
+   * Unsubscribe to event
+   * @param listener
+   */
+  off(listener: Listener<D>): void;
 }
