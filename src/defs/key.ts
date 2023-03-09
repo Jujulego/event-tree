@@ -1,0 +1,38 @@
+export type Key = string;
+export type KeyPart = string | number;
+
+/**
+ * Extract keys by beginning
+ */
+export type ExtractKey<K extends Key, S extends Key> =
+  K extends `${S}.${string}`
+    ? K
+    : S extends K
+      ? S
+      : never;
+
+/**
+ * Partial key
+ */
+export type PartialKey<K extends Key> =
+  K extends `${infer P}.${infer R}`
+    ? P | `${P}.${PartialKey<R>}`
+    : K;
+
+/**
+ * Split string key type into tuple
+ */
+export type SplitKey<K extends Key> =
+  K extends `${infer P}.${infer R}`
+    ? [P, ...SplitKey<R>]
+    : [K]
+
+/**
+ * Join tuple into string key type
+ */
+export type JoinKey<S extends KeyPart[]> =
+  S extends [infer P extends KeyPart]
+    ? P
+    : S extends [infer P extends KeyPart, ...infer R extends KeyPart[]]
+      ? `${P}.${JoinKey<R>}`
+      : never;
