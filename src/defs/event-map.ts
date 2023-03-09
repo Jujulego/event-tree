@@ -1,9 +1,18 @@
-import { Key } from './key';
+import { Key, KeyPart } from './key';
 import { ExtractKey, PartialKey } from '../key';
 import { Listener } from './utils';
 
 // Utils
-export type EventMap = Record<Key, unknown>;
+export type EventMap = Record<Key, any>;
+
+/**
+ * Add the given key part at the beginning of all map's keys
+ */
+export type PrependEventMapKeys<P extends KeyPart, M extends EventMap> = {
+  [MK in EventKey<M> as `${P}.${MK}`]: M[MK]
+}
+
+export type AssertEventMap<M> = M extends EventMap ? M : never;
 
 // Keys
 /**

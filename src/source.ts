@@ -3,6 +3,7 @@ import { Listener } from './defs/utils';
 
 // Types
 export interface Source<D> extends ISource<D> {
+  // Attributes
   listeners: Set<Listener<D>>;
 }
 

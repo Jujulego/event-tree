@@ -4,7 +4,7 @@ import { Listener, OffFn } from './utils';
 /**
  * Group event source
  */
-export interface ISourceGroup<M extends EventMap> {
+export interface IGroup<M extends EventMap> {
   /**
    * Emit one event
    */
