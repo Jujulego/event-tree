@@ -1,10 +1,10 @@
 import { EventData, EventKey, EventListener, EventMap } from './event-map';
 import { OffFn } from './utils';
 
-export interface IMultiplexer<M extends EventMap> {
-  emit<K extends EventKey<M>>(key: K, data: EventData<M, K>): void;
+export interface IMultiplexer<EmitMap extends EventMap, ListenMap extends EventMap> {
+  emit<K extends EventKey<EmitMap>>(key: K, data: EventData<EmitMap, K>): void;
 
-  on<K extends EventKey<M>>(key: K, listener: EventListener<M, K>): OffFn;
+  on<K extends EventKey<ListenMap>>(key: K, listener: EventListener<ListenMap, K>): OffFn;
 
-  off<K extends EventKey<M>>(key: K, listener: EventListener<M, K>): void;
+  off<K extends EventKey<ListenMap>>(key: K, listener: EventListener<ListenMap, K>): void;
 }

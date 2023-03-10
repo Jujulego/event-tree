@@ -1,14 +1,14 @@
-import { IMultiplexer, ISource, multiplexer, source } from '../src';
+import { Multiplexer, multiplexer, Source, source } from '../src';
 
 // Setup
-let int: ISource<number>;
-let str: ISource<number>;
-let mlt: IMultiplexer<{ int: number, str: string}>;
+let int: Source<number>;
+let str: Source<string>;
+let mlt: Multiplexer<{ int: Source<number>, str: Source<string> }>;
 
 beforeEach(() => {
   int = source();
   str = source();
-  mlt = multiplexer({ int, str, });
+  mlt = multiplexer({ int, str });
 });
 
 // Tests

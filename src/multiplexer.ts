@@ -1,34 +1,22 @@
 import {
-  AssertEventMap,
-  EventKey, EventMap,
+  EmitEventMap,
+  EventMap,
   IMultiplexer,
   ISource,
-  KeyPart, Listener,
-  MapValueIntersection, OffFn,
-  PrependEventMapKeys
+  KeyPart, Listener, ListenEventMap,
+  OffFn,
+  SourceTree
 } from './defs';
 
 // Types
-export type SourceMap = Record<KeyPart, ISource<any> | IMultiplexer<any>>;
-
-export type EventMapOfSources<SM extends SourceMap> = {
-  [K in EventKey<SM>]: SM[K] extends ISource<infer D>
-    ? Record<K, D>
-    : SM[K] extends IMultiplexer<infer M>
-      ? PrependEventMapKeys<K, M>
-      : never
-}
-
-export type MultiplexerEventMap<SM extends SourceMap> = AssertEventMap<MapValueIntersection<EventMapOfSources<SM>>>;
-
-export interface Multiplexer<M extends EventMap> extends IMultiplexer<M> {
+export interface Multiplexer<T extends SourceTree> extends IMultiplexer<EmitEventMap<T>, ListenEventMap<T>> {
   // Attributes
-  sources: Map<KeyPart, ISource<unknown> | IMultiplexer<EventMap>>;
+  sources: Map<KeyPart, ISource<unknown> | IMultiplexer<EventMap, EventMap>>;
 }
 
 // Utils
-export function multiplexer<SM extends SourceMap>(map: SM): Multiplexer<MultiplexerEventMap<SM>> {
-  const sources = new Map<KeyPart, ISource<unknown> | IMultiplexer<EventMap>>(Object.entries(map));
+export function multiplexer<T extends SourceTree>(map: T): Multiplexer<T> {
+  const sources = new Map<KeyPart, ISource<unknown> | IMultiplexer<EventMap, EventMap>>(Object.entries(map));
 
   function getSource(key: KeyPart) {
     const src = sources.get(key);
@@ -58,7 +46,7 @@ export function multiplexer<SM extends SourceMap>(map: SM): Multiplexer<Multiple
       const src = getSource(part);
 
       if (subkey) {
-        (src as IMultiplexer<EventMap>).emit(subkey, data);
+        (src as IMultiplexer<EventMap, EventMap>).emit(subkey, data);
       } else {
         (src as ISource<unknown>).emit(data);
       }
@@ -69,7 +57,7 @@ export function multiplexer<SM extends SourceMap>(map: SM): Multiplexer<Multiple
       const src = getSource(part);
 
       if (subkey) {
-        return (src as IMultiplexer<EventMap>).on(subkey, listener);
+        return (src as IMultiplexer<EventMap, EventMap>).on(subkey, listener);
       } else {
         return (src as ISource<unknown>).subscribe(listener);
       }
@@ -80,7 +68,7 @@ export function multiplexer<SM extends SourceMap>(map: SM): Multiplexer<Multiple
       const src = getSource(part);
 
       if (subkey) {
-        (src as IMultiplexer<EventMap>).off(subkey, listener);
+        (src as IMultiplexer<EventMap, EventMap>).off(subkey, listener);
       } else {
         (src as ISource<unknown>).unsubscribe(listener);
       }
