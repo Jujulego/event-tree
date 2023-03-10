@@ -2,7 +2,7 @@ import { Key, KeyPart } from './key';
 import { Listener } from './utils';
 
 // Utils
-export type EventMap = Record<Key, any>;
+export type EventMap = Record<Key, unknown>;
 
 /**
  * Add the given key part at the beginning of all map's keys
