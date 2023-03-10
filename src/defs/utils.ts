@@ -2,6 +2,7 @@
 export type Listener<D> = (data: D) => void;
 export type OffFn = () => void;
 
+// Utils
 /**
  * Transforms a union into an intersection:
  * UnionToIntersection<'a' | 'b'> => 'a' & 'b'
