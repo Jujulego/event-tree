@@ -1,10 +1,11 @@
 import { EventData, EventGroupKey, EventGroupListener, EventKey, EventMap } from './event-map';
 import { Listener, OffFn } from './utils';
+import { IListenable } from './listenable';
 
 /**
  * Group event source
  */
-export interface IGroup<M extends EventMap> {
+export interface IGroup<M extends EventMap> extends IListenable<M[keyof M]> {
   /**
    * Emit one event
    */
