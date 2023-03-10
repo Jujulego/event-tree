@@ -22,7 +22,7 @@ export function multiplexer<T extends SourceTree>(map: T): Multiplexer<T> {
     const src = sources.get(key);
 
     if (!src) {
-      throw new Error(`source ${key} not found`);
+      throw new Error(`Child source ${key} not found`);
     }
 
     return src;

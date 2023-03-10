@@ -3,39 +3,100 @@ import { Multiplexer, multiplexer, Source, source } from '../src';
 // Setup
 let int: Source<number>;
 let str: Source<string>;
-let mlt: Multiplexer<{ int: Source<number>, str: Source<string> }>;
+let boo: Source<boolean>;
+let mlt: Multiplexer<{
+  int: Source<number>,
+  str: Source<string>,
+  deep: Multiplexer<{
+    boo: Source<boolean>,
+  }>
+}>;
 
 beforeEach(() => {
   int = source();
   str = source();
-  mlt = multiplexer({ int, str });
+  boo = source();
+  mlt = multiplexer({
+    int,
+    str,
+    deep: multiplexer({
+      boo
+    })
+  });
 });
 
 // Tests
 describe('multiplexer', () => {
-  it('should emit child event', () => {
-    jest.spyOn(int, 'emit');
+  describe('emit', () => {
+    it('should emit child event', () => {
+      jest.spyOn(int, 'emit');
 
-    mlt.emit('int', 1);
+      mlt.emit('int', 1);
 
-    expect(int.emit).toHaveBeenCalledWith(1);
+      expect(int.emit).toHaveBeenCalledWith(1);
+    });
+
+    it('should emit deep child event', () => {
+      jest.spyOn(boo, 'emit');
+
+      mlt.emit('deep.boo', true);
+
+      expect(boo.emit).toHaveBeenCalledWith(true);
+    });
+
+    it('should not emit child event as child doesn\'t exists', () => {
+      expect(() => mlt.emit('toto' as 'int', 1))
+        .toThrow(new Error('Child source toto not found'));
+    });
   });
 
-  it('should subscribe to child source', () => {
-    jest.spyOn(int, 'subscribe');
-    const listener = jest.fn();
+  describe('on', () => {
+    it('should subscribe to child source', () => {
+      jest.spyOn(int, 'subscribe');
+      const listener = jest.fn();
 
-    mlt.on('int', listener);
+      mlt.on('int', listener);
 
-    expect(int.subscribe).toHaveBeenCalledWith(listener);
+      expect(int.subscribe).toHaveBeenCalledWith(listener);
+    });
+
+    it('should subscribe to deep child event', () => {
+      jest.spyOn(boo, 'subscribe');
+      const listener = jest.fn();
+
+      mlt.on('deep.boo', listener);
+
+      expect(boo.subscribe).toHaveBeenCalledWith(listener);
+    });
+
+    it('should not subscribe to child event as child doesn\'t exists', () => {
+      expect(() => mlt.on('toto' as 'int', jest.fn()))
+        .toThrow(new Error('Child source toto not found'));
+    });
   });
 
-  it('should unsubscribe from child source', () => {
-    jest.spyOn(int, 'unsubscribe');
-    const listener = jest.fn();
+  describe('off', () => {
+    it('should unsubscribe from child source', () => {
+      jest.spyOn(int, 'unsubscribe');
+      const listener = jest.fn();
 
-    mlt.off('int', listener);
+      mlt.off('int', listener);
 
-    expect(int.unsubscribe).toHaveBeenCalledWith(listener);
+      expect(int.unsubscribe).toHaveBeenCalledWith(listener);
+    });
+
+    it('should unsubscribe from deep child event', () => {
+      jest.spyOn(boo, 'unsubscribe');
+      const listener = jest.fn();
+
+      mlt.off('deep.boo', listener);
+
+      expect(boo.unsubscribe).toHaveBeenCalledWith(listener);
+    });
+
+    it('should not unsubscribe from child event as child doesn\'t exists', () => {
+      expect(() => mlt.off('toto' as 'int', jest.fn()))
+        .toThrow(new Error('Child source toto not found'));
+    });
   });
 });
