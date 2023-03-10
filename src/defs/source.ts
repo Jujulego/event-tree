@@ -1,7 +1,7 @@
 import { IEmitter } from './emitter';
-import { IListenable } from './listenable';
+import { IObservable } from './observable';
 
 /**
  * Simplest event source
  */
-export interface ISource<D> extends IEmitter<D>, IListenable<D> {}
+export interface ISource<D> extends IEmitter<D>, IObservable<D> {}

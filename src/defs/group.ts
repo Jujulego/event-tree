@@ -1,11 +1,11 @@
 import { EventData, EventGroupKey, EventGroupListener, EventKey, EventMap } from './event-map';
 import { Listener, OffFn } from './utils';
-import { IListenable } from './listenable';
+import { IObservable } from './observable';
 
 /**
  * Group event source
  */
-export interface IGroup<M extends EventMap> extends IListenable<M[keyof M]> {
+export interface IGroup<M extends EventMap> extends IObservable<M[keyof M]> {
   /**
    * Emit one event
    */
@@ -15,25 +15,25 @@ export interface IGroup<M extends EventMap> extends IListenable<M[keyof M]> {
    * Subscribe to all events
    * @param listener
    */
-  on(listener: Listener<M[keyof M]>): OffFn;
+  subscribe(listener: Listener<M[keyof M]>): OffFn;
 
   /**
    * Subscribe to one or many events
    * @param key
    * @param listener
    */
-  on<K extends EventGroupKey<M>>(key: K, listener: EventGroupListener<M, K>): OffFn;
+  subscribe<K extends EventGroupKey<M>>(key: K, listener: EventGroupListener<M, K>): OffFn;
 
   /**
    * Unsubscribe to all events
    * @param listener
    */
-  off(listener: Listener<M[keyof M]>): void;
+  unsubscribe(listener: Listener<M[keyof M]>): void;
 
   /**
    * Unsubscribe to one or many events
    * @param key
    * @param listener
    */
-  off<K extends EventGroupKey<M>>(key: K, listener: EventGroupListener<M, K>): void;
+  unsubscribe<K extends EventGroupKey<M>>(key: K, listener: EventGroupListener<M, K>): void;
 }

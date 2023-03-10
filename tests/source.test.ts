@@ -12,7 +12,7 @@ describe('source', () => {
   it('should call listeners when an event is emitted', () => {
     const listener: Listener<number> = jest.fn();
 
-    src.on(listener);
+    src.subscribe(listener);
     src.emit(1);
 
     expect(listener).toHaveBeenCalledWith(1);
@@ -21,8 +21,8 @@ describe('source', () => {
   it('should not call removed listeners (off method)', () => {
     const listener: Listener<number> = jest.fn();
 
-    src.on(listener);
-    src.off(listener);
+    src.subscribe(listener);
+    src.unsubscribe(listener);
     src.emit(1);
 
     expect(listener).not.toHaveBeenCalled();
@@ -31,7 +31,7 @@ describe('source', () => {
   it('should not call removed listeners (returned off)', () => {
     const listener: Listener<number> = jest.fn();
 
-    const off = src.on(listener);
+    const off = src.subscribe(listener);
     off();
 
     src.emit(1);

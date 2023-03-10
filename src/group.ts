@@ -68,7 +68,7 @@ export function group<SM extends SourceMap>(map: SM): Group<GroupEventMap<SM>> {
 
     on(...args: [Listener<any>] | [string, Listener<any>]): OffFn {
       if (args.length === 1) {
-        return inner.on(args[0]);
+        return inner.subscribe(args[0]);
       } else {
         const [key, listener] = args;
         const [part, subkey] = splitKey(key);
@@ -84,7 +84,7 @@ export function group<SM extends SourceMap>(map: SM): Group<GroupEventMap<SM>> {
 
     off(...args: [Listener<any>] | [string, Listener<any>]): void {
       if (args.length === 1) {
-        inner.off(args[0]);
+        inner.unsubscribe(args[0]);
       } else {
         const [key, listener] = args;
         const [part, subkey] = splitKey(key);
