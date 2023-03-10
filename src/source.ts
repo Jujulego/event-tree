@@ -1,5 +1,4 @@
-import { ISource } from './defs/source';
-import { Listener } from './defs/utils';
+import { ISource, Listener } from './defs';
 
 // Types
 export interface Source<D> extends ISource<D> {
