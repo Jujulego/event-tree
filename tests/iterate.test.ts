@@ -20,6 +20,15 @@ describe('iterate', () => {
     await expect(it.next()).resolves.toEqual({ value: 2 });
   });
 
+  it('should abort using controller (source)', async () => {
+    const ctrl = new AbortController();
+
+    const it = iterate(src, { signal: ctrl.signal });
+
+    setTimeout(() => ctrl.abort(new Error('Aborted !')), 0);
+    await expect(it.next()).rejects.toEqual(new Error('Aborted !'));
+  });
+
   it('should iterate over multiplexer emits', async () => {
     const it = iterate(mlt, 'src');
 
@@ -28,5 +37,14 @@ describe('iterate', () => {
 
     setTimeout(() => mlt.emit('src', 2), 0);
     await expect(it.next()).resolves.toEqual({ value: 2 });
+  });
+
+  it('should abort using controller (multiplexer)', async () => {
+    const ctrl = new AbortController();
+
+    const it = iterate(mlt, 'src', { signal: ctrl.signal });
+
+    setTimeout(() => ctrl.abort(new Error('Aborted !')), 0);
+    await expect(it.next()).rejects.toEqual(new Error('Aborted !'));
   });
 });
