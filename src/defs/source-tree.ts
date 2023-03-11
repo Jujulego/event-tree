@@ -1,11 +1,10 @@
 import { IGroup } from './group';
-import { KeyPart } from './key';
 import { IMultiplexer } from './multiplexer';
 import { IListenable } from './listenable';
 import { IObservable } from './observable';
 import { ISource } from './source';
 import { AssertEventMap, EventKey, EventMap, PrependEventMapKeys } from './event-map';
-import { MapValueIntersection } from './utils';
+import { KeyPart, MapValueIntersection } from './utils';
 
 // Utils
 export type SourceTree = Record<KeyPart, ISource<unknown> | IMultiplexer<EventMap, EventMap> | IGroup<EventMap, EventMap>>;

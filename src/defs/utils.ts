@@ -1,3 +1,7 @@
+// Aliases
+export type Key = string;
+export type KeyPart = string | number;
+
 // Functions
 export type Listener<D> = (data: D) => void;
 export type OffFn = () => void;
