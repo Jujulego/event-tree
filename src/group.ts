@@ -1,10 +1,8 @@
 import {
+  AnySource,
   EmitEventMap,
   EventData,
-  EventMap,
   IGroup,
-  IMultiplexer,
-  ISource,
   KeyPart,
   ListenEventMap,
   SourceTree
@@ -15,7 +13,7 @@ import { Source, source } from './source';
 // Types
 export interface Group<T extends SourceTree> extends IGroup<EmitEventMap<T>, ListenEventMap<T>> {
   // Attributes
-  sources: Map<KeyPart, ISource<unknown> | IMultiplexer<EventMap, EventMap>>;
+  sources: Map<KeyPart, AnySource>;
   listeners: Source<EventData<ListenEventMap<T>>>['listeners'];
 }
 

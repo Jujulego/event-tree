@@ -1,4 +1,5 @@
 import {
+  AnySource,
   EmitEventMap,
   EventMap,
   IMultiplexer,
@@ -11,14 +12,14 @@ import {
 // Types
 export interface Multiplexer<T extends SourceTree> extends IMultiplexer<EmitEventMap<T>, ListenEventMap<T>> {
   // Attributes
-  sources: Map<KeyPart, ISource<unknown> | IMultiplexer<EventMap, EventMap>>;
+  sources: Map<KeyPart, AnySource>;
 }
 
 // Utils
 export function multiplexer<T extends SourceTree>(map: T): Multiplexer<T> {
-  const sources = new Map<KeyPart, ISource<unknown> | IMultiplexer<EventMap, EventMap>>(Object.entries(map));
+  const sources = new Map<KeyPart, AnySource>(Object.entries(map));
 
-  function getSource(key: KeyPart) {
+  function getSource(key: KeyPart): AnySource {
     const src = sources.get(key);
 
     if (!src) {

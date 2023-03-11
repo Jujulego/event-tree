@@ -1,11 +1,9 @@
-import { EventData, EventKey, EventMap } from './event-map';
+import { EventMap } from './event-map';
 import { IListenable } from './listenable';
+import { IKeyEmitter } from './key-emitter';
 
-export interface IMultiplexer<EmitMap extends EventMap, ListenMap extends EventMap> extends IListenable<ListenMap> {
-  /**
-   * Emits "key" event, with given data
-   * @param key
-   * @param data
-   */
-  emit<K extends EventKey<EmitMap>>(key: K, data: EventData<EmitMap, K>): void;
-}
+/**
+ * Allows to emit and subscribe to many events
+ */
+export interface IMultiplexer<EmitMap extends EventMap, ListenMap extends EventMap>
+  extends IKeyEmitter<EmitMap>, IListenable<ListenMap> {}
