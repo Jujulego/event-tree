@@ -12,6 +12,8 @@ export type PrependEventMapKeys<P extends KeyPart, M extends EventMap> = {
 
 export type AssertEventMap<M> = M extends EventMap ? M : never;
 
+export type InheritEventMap<PM extends EventMap, M extends EventMap> = M & Pick<PM, Exclude<EventKey<PM>, EventKey<M>>>;
+
 // Keys
 /**
  * Extract event key type from event map type
