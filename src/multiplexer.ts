@@ -8,6 +8,7 @@ import {
   OffFn,
   SourceTree
 } from './defs';
+import { splitKey } from './utils';
 
 // Types
 export interface Multiplexer<T extends SourceTree> extends IMultiplexer<EmitEventMap<T>, ListenEventMap<T>> {
@@ -27,16 +28,6 @@ export function multiplexer<T extends SourceTree>(map: T): Multiplexer<T> {
     }
 
     return src;
-  }
-
-  function splitKey(key: string): [string, string] {
-    const idx = key.indexOf('.');
-
-    if (idx === -1) {
-      return [key, ''];
-    } else {
-      return [key.slice(0, idx), key.slice(idx + 1)];
-    }
   }
 
   return {
