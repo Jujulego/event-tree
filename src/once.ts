@@ -22,18 +22,18 @@ export function once(...args: [obs: IObservable<unknown>, listener: Listener<unk
   let off: OffFn;
 
   if (args.length === 2) {
-    const [obs, lst] = args;
+    const [obs, listener] = args;
 
     off = obs.subscribe((data) => {
       off();
-      lst(data);
+      listener(data);
     });
   } else {
-    const [source, key, lst] = args;
+    const [source, key, listener] = args;
 
     off = source.on(key, (data) => {
       off();
-      lst(data);
+      listener(data);
     });
   }
 

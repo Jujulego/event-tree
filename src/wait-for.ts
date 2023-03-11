@@ -14,6 +14,9 @@ export function waitFor<D>(obs: IObservable<D>): Promise<D>;
  */
 export function waitFor<M extends EventMap, K extends EventKey<M>>(source: IListenable<M>, key: K): Promise<EventData<M, K>>;
 
+/** @internal */
+export function waitFor(...args: [obs: IObservable<unknown>] | [source: IListenable<EventMap>, key: Key]): Promise<unknown>;
+
 export function waitFor(...args: [obs: IObservable<unknown>] | [source: IListenable<EventMap>, key: Key]): Promise<unknown> {
   return new Promise((resolve) => once(...args, resolve));
 }
