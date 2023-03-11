@@ -1,8 +1,10 @@
 import { IGroup } from './group';
 import { KeyPart } from './key';
 import { IMultiplexer } from './multiplexer';
+import { IListenable } from './listenable';
+import { IObservable } from './observable';
 import { ISource } from './source';
-import { AssertEventMap, EventData, EventKey, EventMap, PrependEventMapKeys } from './event-map';
+import { AssertEventMap, EventKey, EventMap, PrependEventMapKeys } from './event-map';
 import { MapValueIntersection } from './utils';
 
 // Utils
@@ -18,11 +20,7 @@ export type EmitEventMap<T extends SourceTree> = AssertEventMap<MapValueIntersec
 }>>
 
 export type ListenEventMap<T extends SourceTree> = AssertEventMap<MapValueIntersection<{
-  [K in EventKey<T>]: T[K] extends IGroup<EventMap, infer GLM>
-    ? PrependEventMapKeys<K, GLM> & Record<K, EventData<GLM>>
-    : T[K] extends IMultiplexer<EventMap, infer MLM>
-      ? PrependEventMapKeys<K, MLM>
-      : T[K] extends ISource<infer D>
-        ? Record<K, D>
-        : never
+  [K in EventKey<T>]:
+    & (T[K] extends IListenable<infer LM> ? PrependEventMapKeys<K, LM> : unknown)
+    & (T[K] extends IObservable<infer D> ? Record<K, D> : unknown)
 }>>

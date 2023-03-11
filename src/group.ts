@@ -1,10 +1,21 @@
-import { EmitEventMap, EventData, IGroup, ListenEventMap, SourceTree } from './defs';
-import { multiplexer, Multiplexer } from './multiplexer';
+import {
+  EmitEventMap,
+  EventData,
+  EventMap,
+  IGroup,
+  IMultiplexer,
+  ISource,
+  KeyPart,
+  ListenEventMap,
+  SourceTree
+} from './defs';
+import { multiplexer } from './multiplexer';
 import { Source, source } from './source';
 
 // Types
-export interface Group<T extends SourceTree> extends IGroup<EmitEventMap<T>, ListenEventMap<T>>, Multiplexer<T> {
+export interface Group<T extends SourceTree> extends IGroup<EmitEventMap<T>, ListenEventMap<T>> {
   // Attributes
+  sources: Map<KeyPart, ISource<unknown> | IMultiplexer<EventMap, EventMap>>;
   listeners: Source<EventData<ListenEventMap<T>>>['listeners'];
 }
 
