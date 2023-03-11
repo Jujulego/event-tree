@@ -1,4 +1,4 @@
-
+// Utils
 export function splitKey(key: string): [string, string] {
   const idx = key.indexOf('.');
 
