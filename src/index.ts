@@ -2,6 +2,7 @@ export * from './defs';
 export * from './group';
 export * from './inherit';
 export * from './iterate';
+export * from './lazy';
 export * from './multiplexer';
 export * from './off-group';
 export * from './once';
