@@ -1,4 +1,4 @@
-import { multiplexer, Multiplexer, once, source, Source } from '../src';
+import { multiplexer, Multiplexer, offGroup, once, source, Source } from '../src';
 
 // Setup
 let src: Source<number>;
@@ -10,23 +10,57 @@ beforeEach(() => {
 });
 
 describe('once', () => {
-  it('should call listener and remove it (source)', () => {
-    const listener = jest.fn();
-    once(src, listener);
+  describe('on an observable', () => {
+    it('should call listener and remove it', () => {
+      const listener = jest.fn();
+      once(src, listener);
 
-    src.emit(1);
-    src.emit(1);
+      src.emit(1);
+      src.emit(1);
 
-    expect(listener).toHaveBeenCalledTimes(1);
+      expect(listener).toHaveBeenCalledTimes(1);
+    });
+
+    it('should join given off group', () => {
+      const off = offGroup();
+      jest.spyOn(off, 'add');
+
+      const listener = jest.fn();
+
+      expect(once(src, listener, { off })).toBe(off);
+      expect(off.add).toHaveBeenCalledTimes(1);
+
+      off();
+      src.emit(1);
+
+      expect(listener).not.toHaveBeenCalled();
+    });
   });
 
-  it('should call listener and remove it (multiplexer)', () => {
-    const listener = jest.fn();
-    once(mlt, 'src', listener);
+  describe('on a listenable', () => {
+    it('should call listener and remove it', () => {
+      const listener = jest.fn();
+      once(mlt, 'src', listener);
 
-    mlt.emit('src', 1);
-    mlt.emit('src', 1);
+      mlt.emit('src', 1);
+      mlt.emit('src', 1);
 
-    expect(listener).toHaveBeenCalledTimes(1);
+      expect(listener).toHaveBeenCalledTimes(1);
+    });
+
+    it('should join given off group', () => {
+      const off = offGroup();
+      jest.spyOn(off, 'add');
+
+      const listener = jest.fn();
+
+      expect(once(mlt, 'src', listener, { off })).toBe(off);
+      expect(off.add).toHaveBeenCalledTimes(1);
+
+      off();
+      mlt.emit('src', 1);
+
+      expect(listener).not.toHaveBeenCalled();
+    });
   });
 });
