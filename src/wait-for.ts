@@ -1,11 +1,16 @@
 import { EventData, EventKey, EventMap, IListenable, IObservable, Key } from './defs';
-import { once } from './once';
+import { once, OnceOpts } from './once';
+import { offGroup } from './off-group';
 
 // Types
 /** @internal */
-export type WaitForArgs =
-  | [obs: IObservable<unknown>]
-  | [source: IListenable<EventMap>, key: Key]
+export type WaitForObservableArgs = [obs: IObservable<unknown>, opts?: OnceOpts];
+
+/** @internal */
+export type WaitForListenableArgs = [source: IListenable<EventMap>, key: Key, opts?: OnceOpts];
+
+/** @internal */
+export type WaitForArgs = WaitForObservableArgs | WaitForListenableArgs;
 
 /**
  * Returns a promise that resolves when the given observable emits
@@ -24,5 +29,19 @@ export function waitFor<M extends EventMap, K extends EventKey<M>>(source: IList
 export function waitFor(...args: WaitForArgs): Promise<unknown>;
 
 export function waitFor(...args: WaitForArgs): Promise<unknown> {
-  return new Promise((resolve) => once(...args, resolve));
+  return new Promise((resolve, reject) => {
+    if ('subscribe' in args[0] && 'unsubscribe' in args[0]) {
+      const [obs, opts = {}] = args as WaitForObservableArgs;
+      const off = opts.off ?? offGroup();
+
+      off.add(once(obs, resolve));
+      off.add(() => reject(new Error('Unsubscribed')));
+    } else {
+      const [lst, key, opts = {}] = args as WaitForListenableArgs;
+      const off = opts.off ?? offGroup();
+
+      off.add(once(lst, key, resolve));
+      off.add(() => reject(new Error('Unsubscribed')));
+    }
+  });
 }
