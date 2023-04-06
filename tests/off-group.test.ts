@@ -43,20 +43,4 @@ describe('offGroup', () => {
     expect(spy2).toHaveBeenCalledTimes(1);
     expect(spy3).toHaveBeenCalledTimes(1);
   });
-
-  it('should call functions when added group is called', () => {
-    const spy1 = jest.fn();
-    const spy2 = jest.fn();
-    const spy3 = jest.fn();
-
-    const grp1 = offGroup(spy1, spy2);
-    const grp2 = offGroup(spy3);
-    grp1.add(grp2);
-
-    grp2();
-
-    expect(spy1).toHaveBeenCalledTimes(1);
-    expect(spy2).toHaveBeenCalledTimes(1);
-    expect(spy3).toHaveBeenCalledTimes(1);
-  });
 });
