@@ -1,4 +1,4 @@
-import { multiplexer, Multiplexer, source, Source, iterate } from '../src';
+import { multiplexer, Multiplexer, source, Source, iterate, offGroup } from '../src';
 
 // Setup
 let src: Source<number>;
@@ -10,41 +10,43 @@ beforeEach(() => {
 });
 
 describe('iterate', () => {
-  it('should iterate over source emits', async () => {
-    const it = iterate(src);
+  describe('on an observable', () => {
+    it('should iterate over observable emits', async () => {
+      const it = iterate(src);
 
-    setTimeout(() => src.emit(1), 0);
-    await expect(it.next()).resolves.toEqual({ value: 1 });
+      setTimeout(() => src.emit(1), 0);
+      await expect(it.next()).resolves.toEqual({ value: 1 });
 
-    setTimeout(() => src.emit(2), 0);
-    await expect(it.next()).resolves.toEqual({ value: 2 });
+      setTimeout(() => src.emit(2), 0);
+      await expect(it.next()).resolves.toEqual({ value: 2 });
+    });
+
+    it('should abort using controller (source)', async () => {
+      const off = offGroup();
+      const it = iterate(src, { off });
+
+      setTimeout(() => off(), 0);
+      await expect(it.next()).rejects.toEqual(new Error('Unsubscribed !'));
+    });
   });
 
-  it('should abort using controller (source)', async () => {
-    const ctrl = new AbortController();
+  describe('on a listenable', () => {
+    it('should iterate over multiplexer emits', async () => {
+      const it = iterate(mlt, 'src');
 
-    const it = iterate(src, { signal: ctrl.signal });
+      setTimeout(() => mlt.emit('src', 1), 0);
+      await expect(it.next()).resolves.toEqual({ value: 1 });
 
-    setTimeout(() => ctrl.abort(new Error('Aborted !')), 0);
-    await expect(it.next()).rejects.toEqual(new Error('Aborted !'));
-  });
+      setTimeout(() => mlt.emit('src', 2), 0);
+      await expect(it.next()).resolves.toEqual({ value: 2 });
+    });
 
-  it('should iterate over multiplexer emits', async () => {
-    const it = iterate(mlt, 'src');
+    it('should abort using controller (multiplexer)', async () => {
+      const off = offGroup();
+      const it = iterate(mlt, 'src', { off });
 
-    setTimeout(() => mlt.emit('src', 1), 0);
-    await expect(it.next()).resolves.toEqual({ value: 1 });
-
-    setTimeout(() => mlt.emit('src', 2), 0);
-    await expect(it.next()).resolves.toEqual({ value: 2 });
-  });
-
-  it('should abort using controller (multiplexer)', async () => {
-    const ctrl = new AbortController();
-
-    const it = iterate(mlt, 'src', { signal: ctrl.signal });
-
-    setTimeout(() => ctrl.abort(new Error('Aborted !')), 0);
-    await expect(it.next()).rejects.toEqual(new Error('Aborted !'));
+      setTimeout(() => off(), 0);
+      await expect(it.next()).rejects.toEqual(new Error('Unsubscribed !'));
+    });
   });
 });

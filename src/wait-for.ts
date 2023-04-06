@@ -1,6 +1,6 @@
-import { EventData, EventKey, EventMap, IListenable, IObservable, Key } from './defs';
-import { once, OnceOpts } from './once';
-import { offGroup } from './off-group';
+import { EventData, EventKey, EventMap, IListenable, IObservable, Key, Listener } from './defs';
+import { once, OnceArgs, OnceOpts } from './once';
+import { OffGroup, offGroup } from './off-group';
 
 // Types
 /** @internal */
@@ -30,18 +30,21 @@ export function waitFor(...args: WaitForArgs): Promise<unknown>;
 
 export function waitFor(...args: WaitForArgs): Promise<unknown> {
   return new Promise((resolve, reject) => {
-    if ('subscribe' in args[0] && 'unsubscribe' in args[0]) {
-      const [obs, opts = {}] = args as WaitForObservableArgs;
-      const off = opts.off ?? offGroup();
+    const parsed = parseArgs(args, resolve);
+    const off = parsed.off ?? offGroup();
 
-      off.add(once(obs, resolve));
-      off.add(() => reject(new Error('Unsubscribed')));
-    } else {
-      const [lst, key, opts = {}] = args as WaitForListenableArgs;
-      const off = opts.off ?? offGroup();
-
-      off.add(once(lst, key, resolve));
-      off.add(() => reject(new Error('Unsubscribed')));
-    }
+    off.add(once(...parsed.args));
+    off.add(() => reject(new Error('Unsubscribed !')));
   });
+}
+
+// Utils
+function parseArgs(args: WaitForArgs, resolve: Listener<unknown>): { args: OnceArgs; off?: OffGroup } {
+  if ('subscribe' in args[0] && 'unsubscribe' in args[0]) {
+    const [obs, opts] = args as WaitForObservableArgs;
+    return { args: [obs, resolve], off: opts?.off };
+  } else {
+    const [lst, key, opts] = args as WaitForListenableArgs;
+    return { args: [lst, key, resolve], off: opts?.off };
+  }
 }

@@ -27,7 +27,7 @@ describe('waitFor', () => {
 
       setTimeout(() => off(), 0);
 
-      await expect(prom).rejects.toEqual(new Error('Unsubscribed'));
+      await expect(prom).rejects.toEqual(new Error('Unsubscribed !'));
     });
   });
 
@@ -48,7 +48,7 @@ describe('waitFor', () => {
 
       setTimeout(() => off(), 0);
 
-      await expect(prom).rejects.toEqual(new Error('Unsubscribed'));
+      await expect(prom).rejects.toEqual(new Error('Unsubscribed !'));
     });
   });
 });
