@@ -55,6 +55,11 @@ describe('lazy', () => {
       const lzy = lazy(() => mlt);
       expect((lzy as unknown as IObservable<unknown>).unsubscribe).toBeUndefined();
     });
+
+    it('should return original clear', () => {
+      const lzy = lazy(() => mlt);
+      expect(lzy.clear).toBe(mlt.clear);
+    });
   });
 
   describe('on observable', () => {
@@ -77,6 +82,11 @@ describe('lazy', () => {
       const lzy = lazy(() => src);
       expect(lzy.unsubscribe).toBe(src.unsubscribe);
     });
+
+    it('should return original clear', () => {
+      const lzy = lazy(() => src);
+      expect(lzy.clear).toBe(src.clear);
+    });
   });
 
   describe('on listenable & observable', () => {
@@ -98,6 +108,11 @@ describe('lazy', () => {
     it('should return original unsubscribe', () => {
       const lzy = lazy(() => grp);
       expect(lzy.unsubscribe).toBe(grp.unsubscribe);
+    });
+
+    it('should return original clear', () => {
+      const lzy = lazy(() => grp);
+      expect(lzy.clear).toBe(grp.clear);
     });
   });
 });
