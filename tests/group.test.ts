@@ -138,4 +138,36 @@ describe('group', () => {
         .toThrow(new Error('Child source toto not found'));
     });
   });
+
+  describe('clear', () => {
+    it('should clear child source', () => {
+      jest.spyOn(int, 'clear');
+      grp.clear('int');
+
+      expect(int.clear).toHaveBeenCalled();
+    });
+
+    it('should clear deep child source', () => {
+      jest.spyOn(boo, 'clear');
+      grp.clear('deep.boo');
+
+      expect(boo.clear).toHaveBeenCalled();
+    });
+
+    it('should clear all child sources', () => {
+      jest.spyOn(int, 'clear');
+      jest.spyOn(str, 'clear');
+      jest.spyOn(boo, 'clear');
+      grp.clear();
+
+      expect(int.clear).toHaveBeenCalled();
+      expect(str.clear).toHaveBeenCalled();
+      expect(boo.clear).toHaveBeenCalled();
+    });
+
+    it('should not clear child as child doesn\'t exists', () => {
+      expect(() => grp.clear('toto' as 'int'))
+        .toThrow(new Error('Child source toto not found'));
+    });
+  });
 });

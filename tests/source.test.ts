@@ -38,4 +38,15 @@ describe('source', () => {
 
     expect(listener).not.toHaveBeenCalled();
   });
+
+  it('should not call removed listeners (clear)', () => {
+    const listener: Listener<number> = jest.fn();
+
+    src.subscribe(listener);
+    src.clear();
+
+    src.emit(1);
+
+    expect(listener).not.toHaveBeenCalled();
+  });
 });
