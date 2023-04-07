@@ -34,5 +34,19 @@ export function inherit<PEM extends EventMap, PLM extends EventMap, T extends So
         return parent.off(key, listener);
       }
     },
+    clear(key?: string) {
+      if (!key) {
+        child.clear();
+        parent.clear();
+      } else {
+        const [part] = splitKey(key);
+
+        if (part in map) {
+          return child.clear(key);
+        } else {
+          return parent.clear(key);
+        }
+      }
+    }
   };
 }
