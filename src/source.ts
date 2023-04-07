@@ -23,6 +23,9 @@ export function source<D>(): Source<D> {
     },
     unsubscribe(listener: Listener<D>) {
       listeners.delete(listener);
+    },
+    clear() {
+      listeners.clear();
     }
   };
 }
