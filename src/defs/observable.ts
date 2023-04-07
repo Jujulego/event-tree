@@ -12,4 +12,9 @@ export interface IObservable<D> {
    * @param listener
    */
   unsubscribe(listener: Listener<D>): void;
+
+  /**
+   * Unregister all listeners
+   */
+  clear(): void;
 }

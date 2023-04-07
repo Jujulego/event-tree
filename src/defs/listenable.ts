@@ -15,4 +15,9 @@ export interface IListenable<M extends EventMap> {
    * @param listener
    */
   off<K extends EventKey<M>>(key: K, listener: EventListener<M, K>): void;
+
+  /**
+   * Unregister all listeners, or only "key" listeners if given
+   */
+  clear(key?: EventKey<M>): void;
 }

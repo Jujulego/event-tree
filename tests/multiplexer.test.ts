@@ -99,4 +99,36 @@ describe('multiplexer', () => {
         .toThrow(new Error('Child source toto not found'));
     });
   });
+
+  describe('clear', () => {
+    it('should clear child source', () => {
+      jest.spyOn(int, 'clear');
+      mlt.clear('int');
+
+      expect(int.clear).toHaveBeenCalled();
+    });
+
+    it('should clear deep child source', () => {
+      jest.spyOn(boo, 'clear');
+      mlt.clear('deep.boo');
+
+      expect(boo.clear).toHaveBeenCalled();
+    });
+
+    it('should clear all child sources', () => {
+      jest.spyOn(int, 'clear');
+      jest.spyOn(str, 'clear');
+      jest.spyOn(boo, 'clear');
+      mlt.clear();
+
+      expect(int.clear).toHaveBeenCalled();
+      expect(str.clear).toHaveBeenCalled();
+      expect(boo.clear).toHaveBeenCalled();
+    });
+
+    it('should not clear child as child doesn\'t exists', () => {
+      expect(() => mlt.clear('toto' as 'int'))
+        .toThrow(new Error('Child source toto not found'));
+    });
+  });
 });

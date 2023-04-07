@@ -36,5 +36,13 @@ export function group<T extends SourceTree>(map: T): Group<T> {
 
     subscribe: src.subscribe,
     unsubscribe: src.unsubscribe,
+
+    clear(key?: string) {
+      mlt.clear(key);
+
+      if (!key) {
+        src.clear();
+      }
+    }
   };
 }

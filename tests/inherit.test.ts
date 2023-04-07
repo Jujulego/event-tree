@@ -127,4 +127,50 @@ describe('inherit', () => {
       expect(src.unsubscribe).not.toHaveBeenCalled();
     });
   });
+
+  describe('clear', () => {
+    it('should clear src', () => {
+      jest.spyOn(mlt, 'clear');
+      jest.spyOn(src, 'clear');
+
+      const child = inherit(mlt, { c: src });
+      child.clear('c');
+
+      expect(mlt.clear).not.toHaveBeenCalled();
+      expect(src.clear).toHaveBeenCalled();
+    });
+
+    it('should clear from src (overriding mlt)', () => {
+      jest.spyOn(mlt, 'clear');
+      jest.spyOn(src, 'clear');
+
+      const child = inherit(mlt, { a: src });
+      child.clear('a');
+
+      expect(mlt.clear).not.toHaveBeenCalled();
+      expect(src.clear).toHaveBeenCalled();
+    });
+
+    it('should unsubscribe from mlt', () => {
+      jest.spyOn(mlt, 'clear');
+      jest.spyOn(src, 'clear');
+
+      const child = inherit(mlt, { c: src });
+      child.clear('a');
+
+      expect(mlt.clear).toHaveBeenCalledWith('a');
+      expect(src.clear).not.toHaveBeenCalled();
+    });
+
+    it('should unsubscribe from src and mlt', () => {
+      jest.spyOn(mlt, 'clear');
+      jest.spyOn(src, 'clear');
+
+      const child = inherit(mlt, { c: src });
+      child.clear();
+
+      expect(mlt.clear).toHaveBeenCalled();
+      expect(src.clear).toHaveBeenCalled();
+    });
+  });
 });

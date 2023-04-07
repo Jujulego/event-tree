@@ -64,6 +64,19 @@ export function multiplexer<T extends SourceTree>(map: T): Multiplexer<T> {
       } else {
         (src as ISource<unknown>).unsubscribe(listener);
       }
+    },
+
+    clear(key?: string): void {
+      if (!key) {
+        for (const src of sources.values()) {
+          if ('clear' in src) src.clear();
+        }
+      } else {
+        const [part, subkey] = splitKey(key);
+        const src = getSource(part);
+
+        if ('clear' in src) src.clear(subkey);
+      }
     }
   };
 }

@@ -32,6 +32,10 @@ export function lazy(getter: () => AnyEmitter): LazyEmitter {
       replaceProp(this, 'unsubscribe', load());
       return this.unsubscribe;
     },
+    get clear() {
+      replaceProp(this, 'clear', load());
+      return this.clear;
+    },
   };
 }
 
