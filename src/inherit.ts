@@ -6,46 +6,31 @@ export function inherit<PEM extends EventMap, PLM extends EventMap, T extends So
   IMultiplexer<InheritEventMap<PEM, EmitEventMap<T>>, InheritEventMap<PLM, ListenEventMap<T>>> {
   const child = multiplexer(map);
 
-  return {
-    emit(key: string, data: any) {
-      const [part] = splitKey(key);
+  function targetOf(key: string): IMultiplexer<EventMap, EventMap> {
+    const [part] = splitKey(key);
+    return part in map ? child : parent;
+  }
 
-      if (part in map) {
-        return child.emit(key, data);
-      } else {
-        return parent.emit(key, data);
-      }
+  return {
+    emit(key: string, data: unknown) {
+      const target = targetOf(key);
+      return target.emit(key, data);
     },
     on(key: string, listener: Listener<any>) {
-      const [part] = splitKey(key);
-
-      if (part in map) {
-        return child.on(key, listener);
-      } else {
-        return parent.on(key, listener);
-      }
+      const target = targetOf(key);
+      return target.on(key, listener);
     },
     off(key: string, listener: Listener<any>) {
-      const [part] = splitKey(key);
-
-      if (part in map) {
-        return child.off(key, listener);
-      } else {
-        return parent.off(key, listener);
-      }
+      const target = targetOf(key);
+      return target.off(key, listener);
     },
     clear(key?: string) {
       if (!key) {
         child.clear();
         parent.clear();
       } else {
-        const [part] = splitKey(key);
-
-        if (part in map) {
-          return child.clear(key);
-        } else {
-          return parent.clear(key);
-        }
+        const target = targetOf(key);
+        return target.clear(key);
       }
     }
   };
