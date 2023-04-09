@@ -1,14 +1,5 @@
-import {
-  AnySource,
-  EmitEventMap,
-  EventMap,
-  IMultiplexer,
-  ISource,
-  KeyPart, Listener, ListenEventMap,
-  OffFn,
-  SourceTree
-} from './defs';
-import { splitKey } from './utils';
+import { AnySource, EmitEventMap, IMultiplexer, KeyPart, ListenEventMap, SourceTree } from './defs';
+import { _multiplexer } from './bases/_multiplexer';
 
 // Types
 export interface Multiplexer<T extends SourceTree> extends IMultiplexer<EmitEventMap<T>, ListenEventMap<T>> {
@@ -30,53 +21,8 @@ export function multiplexer<T extends SourceTree>(map: T): Multiplexer<T> {
     return src;
   }
 
-  return {
+  return Object.assign(_multiplexer(sources, getSource), {
     sources,
-
-    emit(key: string, data: unknown) {
-      const [part, subkey] = splitKey(key);
-      const src = getSource(part);
-
-      if (subkey) {
-        (src as IMultiplexer<EventMap, EventMap>).emit(subkey, data);
-      } else {
-        (src as ISource<unknown>).emit(data);
-      }
-    },
-
-    on(key: string, listener: Listener<any>): OffFn {
-      const [part, subkey] = splitKey(key);
-      const src = getSource(part);
-
-      if (subkey) {
-        return (src as IMultiplexer<EventMap, EventMap>).on(subkey, listener);
-      } else {
-        return (src as ISource<unknown>).subscribe(listener);
-      }
-    },
-
-    off(key: string, listener: Listener<any>): void {
-      const [part, subkey] = splitKey(key);
-      const src = getSource(part);
-
-      if (subkey) {
-        (src as IMultiplexer<EventMap, EventMap>).off(subkey, listener);
-      } else {
-        (src as ISource<unknown>).unsubscribe(listener);
-      }
-    },
-
-    clear(key?: string): void {
-      if (!key) {
-        for (const src of sources.values()) {
-          if ('clear' in src) src.clear();
-        }
-      } else {
-        const [part, subkey] = splitKey(key);
-        const src = getSource(part);
-
-        if ('clear' in src) src.clear(subkey);
-      }
-    }
-  };
+  });
 }
+
