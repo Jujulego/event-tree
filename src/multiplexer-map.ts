@@ -1,9 +1,8 @@
-import { AnySource, EmitEventValue, IMultiplexer, KeyPart, ListenEventValue } from './defs';
+import { AnySource, EmitEventRecord, IMultiplexer, KeyPart, ListenEventRecord } from './defs';
 import { _multiplexer } from './bases/_multiplexer';
 
 // Types
-export interface MultiplexerMap<K extends KeyPart, S extends AnySource>
-  extends IMultiplexer<Record<K, EmitEventValue<K, S>>, Record<K, ListenEventValue<K, S>>> {
+export interface MultiplexerMap<K extends KeyPart, S extends AnySource> extends IMultiplexer<EmitEventRecord<K, S>, ListenEventRecord<K, S>> {
   // Attributes
   sources: Map<K, S>;
 }
