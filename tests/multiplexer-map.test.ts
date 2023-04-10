@@ -1,122 +1,158 @@
-import { multiplexerMap, MultiplexerMap, Source, source } from '../src';
-
-// Setup
-let builder: () => Source<number>;
-let mlt: MultiplexerMap<string, Source<number>>;
-
-beforeEach(() => {
-  builder = jest.fn(() => source());
-  mlt = multiplexerMap(builder);
-});
+import { IEmitter, IKeyEmitter, IListenable, IObservable, multiplexerMap } from '../src';
 
 // Tests
 describe('multiplexerMap', () => {
   describe('emit', () => {
     it('should emit child event', () => {
-      const src = source<number>();
+      const src: IEmitter<number> = {
+        emit: jest.fn(),
+      };
 
-      jest.spyOn(src, 'emit');
-      jest.mocked(builder).mockReturnValue(src);
+      const builder = jest.fn(() => src);
 
-      mlt.emit('int', 1);
+      const mlt = multiplexerMap(builder);
+      mlt.emit('life', 42);
 
-      expect(builder).toHaveBeenCalledWith('int');
-      expect(src.emit).toHaveBeenCalledWith(1);
+      expect(builder).toHaveBeenCalledWith('life');
+      expect(src.emit).toHaveBeenCalledWith(42);
     });
 
-    // it('should emit deep child event', () => {
-    //   jest.spyOn(boo, 'emit');
-    //
-    //   mlt.emit('deep.boo', true);
-    //
-    //   expect(boo.emit).toHaveBeenCalledWith(true);
-    // });
+    it('should emit deep child event', () => {
+      const deep: IKeyEmitter<{ 'life': number }> = {
+        emit: jest.fn(),
+      };
 
-    // it('should not emit child event as child doesn\'t exists', () => {
-    //   expect(() => mlt.emit('toto' as 'int', 1))
-    //     .toThrow(new Error('Child source toto not found'));
-    // });
+      const builder = jest.fn(() => deep);
+
+      const mlt = multiplexerMap(builder);
+      mlt.emit('deep.life', 42);
+
+      expect(builder).toHaveBeenCalledWith('deep');
+      expect(deep.emit).toHaveBeenCalledWith('life', 42);
+    });
   });
 
-  // describe('on', () => {
-  //   it('should subscribe to child source', () => {
-  //     jest.spyOn(int, 'subscribe');
-  //     const listener = jest.fn();
-  //
-  //     mlt.on('int', listener);
-  //
-  //     expect(int.subscribe).toHaveBeenCalledWith(listener);
-  //   });
-  //
-  //   it('should subscribe to deep child event', () => {
-  //     jest.spyOn(boo, 'subscribe');
-  //     const listener = jest.fn();
-  //
-  //     mlt.on('deep.boo', listener);
-  //
-  //     expect(boo.subscribe).toHaveBeenCalledWith(listener);
-  //   });
-  //
-  //   it('should not subscribe to child event as child doesn\'t exists', () => {
-  //     expect(() => mlt.on('toto' as 'int', jest.fn()))
-  //       .toThrow(new Error('Child source toto not found'));
-  //   });
-  // });
-  //
-  // describe('off', () => {
-  //   it('should unsubscribe from child source', () => {
-  //     jest.spyOn(int, 'unsubscribe');
-  //     const listener = jest.fn();
-  //
-  //     mlt.off('int', listener);
-  //
-  //     expect(int.unsubscribe).toHaveBeenCalledWith(listener);
-  //   });
-  //
-  //   it('should unsubscribe from deep child event', () => {
-  //     jest.spyOn(boo, 'unsubscribe');
-  //     const listener = jest.fn();
-  //
-  //     mlt.off('deep.boo', listener);
-  //
-  //     expect(boo.unsubscribe).toHaveBeenCalledWith(listener);
-  //   });
-  //
-  //   it('should not unsubscribe from child event as child doesn\'t exists', () => {
-  //     expect(() => mlt.off('toto' as 'int', jest.fn()))
-  //       .toThrow(new Error('Child source toto not found'));
-  //   });
-  // });
-  //
-  // describe('clear', () => {
-  //   it('should clear child source', () => {
-  //     jest.spyOn(int, 'clear');
-  //     mlt.clear('int');
-  //
-  //     expect(int.clear).toHaveBeenCalled();
-  //   });
-  //
-  //   it('should clear deep child source', () => {
-  //     jest.spyOn(boo, 'clear');
-  //     mlt.clear('deep.boo');
-  //
-  //     expect(boo.clear).toHaveBeenCalled();
-  //   });
-  //
-  //   it('should clear all child sources', () => {
-  //     jest.spyOn(int, 'clear');
-  //     jest.spyOn(str, 'clear');
-  //     jest.spyOn(boo, 'clear');
-  //     mlt.clear();
-  //
-  //     expect(int.clear).toHaveBeenCalled();
-  //     expect(str.clear).toHaveBeenCalled();
-  //     expect(boo.clear).toHaveBeenCalled();
-  //   });
-  //
-  //   it('should not clear child as child doesn\'t exists', () => {
-  //     expect(() => mlt.clear('toto' as 'int'))
-  //       .toThrow(new Error('Child source toto not found'));
-  //   });
-  // });
+  describe('on', () => {
+    it('should subscribe to child source', () => {
+      const off = jest.fn();
+      const src: IObservable<number> = {
+        subscribe: jest.fn(() => off),
+        unsubscribe: jest.fn(),
+        clear: jest.fn(),
+      };
+
+      const builder = jest.fn(() => src);
+      const mlt = multiplexerMap(builder);
+
+      const listener = jest.fn();
+      expect(mlt.on('life', listener)).toBe(off);
+
+      expect(builder).toHaveBeenCalledWith('life');
+      expect(src.subscribe).toHaveBeenCalledWith(listener);
+    });
+
+    it('should subscribe to deep child event', () => {
+      const off = jest.fn();
+      const deep: IListenable<{ 'life': number }> = {
+        on: jest.fn(() => off),
+        off: jest.fn(),
+        clear: jest.fn(),
+      };
+
+      const builder = jest.fn(() => deep);
+      const mlt = multiplexerMap(builder);
+
+      const listener = jest.fn();
+      expect(mlt.on('deep.life', listener)).toBe(off);
+
+      expect(builder).toHaveBeenCalledWith('deep');
+      expect(deep.on).toHaveBeenCalledWith('life', listener);
+    });
+  });
+
+  describe('off', () => {
+    it('should unsubscribe from child source', () => {
+      const off = jest.fn();
+      const src: IObservable<number> = {
+        subscribe: jest.fn(() => off),
+        unsubscribe: jest.fn(),
+        clear: jest.fn(),
+      };
+
+      const builder = jest.fn(() => src);
+      const mlt = multiplexerMap(builder);
+
+      const listener = jest.fn();
+      mlt.off('life', listener);
+
+      expect(builder).toHaveBeenCalledWith('life');
+      expect(src.unsubscribe).toHaveBeenCalledWith(listener);
+    });
+
+    it('should unsubscribe from deep child event', () => {
+      const off = jest.fn();
+      const deep: IListenable<{ 'life': number }> = {
+        on: jest.fn(() => off),
+        off: jest.fn(),
+        clear: jest.fn(),
+      };
+
+      const builder = jest.fn(() => deep);
+      const mlt = multiplexerMap(builder);
+
+      const listener = jest.fn();
+      mlt.off('deep.life', listener);
+
+      expect(builder).toHaveBeenCalledWith('deep');
+      expect(deep.off).toHaveBeenCalledWith('life', listener);
+    });
+  });
+
+  describe('clear', () => {
+    it('should clear child source', () => {
+      const off = jest.fn();
+      const src: IObservable<number> = {
+        subscribe: jest.fn(() => off),
+        unsubscribe: jest.fn(),
+        clear: jest.fn(),
+      };
+
+      const mlt = multiplexerMap(() => src);
+      mlt.on('life', () => null); // <= creates source
+      mlt.clear('life');
+
+      expect(src.clear).toHaveBeenCalled();
+    });
+
+    it('should clear deep child source', () => {
+      const off = jest.fn();
+      const deep: IListenable<{ 'life': number }> = {
+        on: jest.fn(() => off),
+        off: jest.fn(),
+        clear: jest.fn(),
+      };
+
+      const mlt = multiplexerMap(() => deep);
+      mlt.on('deep.life', () => null); // <= creates source
+      mlt.clear('deep.life');
+
+      expect(deep.clear).toHaveBeenCalledWith('life');
+    });
+
+    it('should clear all child sources', () => {
+      const off = jest.fn();
+      const deep: IListenable<{ 'life': number }> = {
+        on: jest.fn(() => off),
+        off: jest.fn(),
+        clear: jest.fn(),
+      };
+
+      const mlt = multiplexerMap(() => deep);
+      mlt.on('deep1.life', () => null); // <= creates source
+      mlt.on('deep2.life', () => null); // <= creates source
+      mlt.clear();
+
+      expect(deep.clear).toHaveBeenCalledTimes(2); // (one for each "created" sources)
+    });
+  });
 });

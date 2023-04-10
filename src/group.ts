@@ -1,12 +1,4 @@
-import {
-  AnySource,
-  EmitEventMap,
-  EventData,
-  IGroup,
-  KeyPart,
-  ListenEventMap,
-  SourceTree
-} from './defs';
+import { AnySource, EmitEventMap, EventData, IGroup, Key, KeyPart, ListenEventMap, SourceTree } from './defs';
 import { multiplexer } from './multiplexer';
 import { Source, source } from './source';
 
@@ -26,7 +18,7 @@ export function group<T extends SourceTree>(map: T): Group<T> {
     sources: mlt.sources,
     listeners: src.listeners,
 
-    emit(key: string, data: any) {
+    emit(key: Key, data: any) {
       mlt.emit(key, data);
       src.emit(data);
     },
@@ -37,7 +29,7 @@ export function group<T extends SourceTree>(map: T): Group<T> {
     subscribe: src.subscribe,
     unsubscribe: src.unsubscribe,
 
-    clear(key?: string) {
+    clear(key?: Key) {
       mlt.clear(key);
 
       if (!key) {
