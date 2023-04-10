@@ -1,5 +1,6 @@
 export * from './defs';
 export * from './group';
+export * from './group-map';
 export * from './inherit';
 export * from './iterate';
 export * from './lazy';
