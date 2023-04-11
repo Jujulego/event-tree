@@ -1,14 +1,7 @@
-import {
-  AnySource,
-  EmitEventRecord,
-  EventData,
-  IGroup,
-  Key,
-  KeyPart,
-  ListenEventRecord,
-} from './defs';
+import { AnySource, EmitEventRecord, EventData, IGroup, KeyPart, ListenEventRecord } from './defs';
 import { multiplexerMap } from './multiplexer-map';
-import { Source, source } from './source';
+import { source, Source } from './source';
+import { _group } from './bases/_group';
 
 // Types
 export interface GroupMap<K extends KeyPart, S extends AnySource> extends IGroup<EmitEventRecord<K, S>, ListenEventRecord<K, S>> {
@@ -25,24 +18,6 @@ export function groupMap<K extends KeyPart, S extends AnySource>(builder: (key: 
   return {
     sources: mlt.sources,
     listeners: src.listeners,
-
-    emit(key: Key, data: any) {
-      mlt.emit(key, data);
-      src.emit(data);
-    },
-
-    on: mlt.on,
-    off: mlt.off,
-
-    subscribe: src.subscribe,
-    unsubscribe: src.unsubscribe,
-
-    clear(key?: Key) {
-      mlt.clear(key);
-
-      if (!key) {
-        src.clear();
-      }
-    }
+    ..._group(mlt, src),
   };
 }

@@ -1,4 +1,4 @@
-import { AnySource, EventMap, IMultiplexer, ISource, Key, KeyPart, Listener, OffFn } from '../defs';
+import { AnyEventMap, AnySource, EventMap, IMultiplexer, ISource, Key, KeyPart, Listener, OffFn } from '../defs';
 import { splitKey } from '../utils';
 
 // Types
@@ -7,7 +7,7 @@ type NextCb<R> = (src: IMultiplexer<EventMap, EventMap>, key: Key) => R;
 type EndCb<R> = (src: ISource<unknown>) => R;
 
 /** @internal */
-export function _multiplexer(listSources: () => Iterable<AnySource>, getSource: (key: KeyPart) => AnySource) {
+export function _multiplexer(listSources: () => Iterable<AnySource>, getSource: (key: KeyPart) => AnySource): IMultiplexer<AnyEventMap, AnyEventMap> {
   function routeEvent<R>(key: Key, next: NextCb<R>, end: EndCb<R>): R {
     const [part, subkey] = splitKey(key);
     const src = getSource(part);
