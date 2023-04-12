@@ -13,16 +13,16 @@ const mlt = multiplexer({
 });
 
 mlt.emit('int', 5);
-mlt.emit('mlt', 'c');
+mlt.emit('mlt', 'c'); // <= error on mlt
 mlt.emit('mlt.a', 'a');
 mlt.emit('mlt.b', 'b');
-mlt.emit('grp', 'c');
-mlt.emit('grp', 'd');
+mlt.emit('grp', 'c'); // <= error on grp
+mlt.emit('grp', 'd'); // <= error on grp
 mlt.emit('grp.c', 'c');
 mlt.emit('grp.d', 'd');
 
 mlt.on('int', (d) => null);
-mlt.on('mlt', (d) => null);
+mlt.on('mlt', (d) => null); // <= error on mlt
 mlt.on('mlt.a', (d) => null);
 mlt.on('mlt.b', (d) => null);
 mlt.on('grp', (d) => null);

@@ -1,5 +1,7 @@
+import { Key, KeyPart } from './defs';
+
 // Utils
-export function splitKey(key: string): [string, string] {
+export function splitKey(key: Key): [KeyPart, Key] {
   const idx = key.indexOf('.');
 
   if (idx === -1) {
