@@ -1,21 +1,26 @@
-import { EventMap, IListenable, IObservable } from './defs';
+import { AnySource, Lazify, LazySource } from './defs';
 
-// Types
-type AnyEmitter = IObservable<unknown> | IListenable<EventMap>;
-type LazyEmitter = Partial<IObservable<unknown>> & Partial<IListenable<EventMap>>;
+/**
+ * Defines a lazy source.
+ * A lazy source will only be initialized on first access to one of it's source/emitter attribute.
+ *
+ * @param cb
+ */
+export function lazy<S extends AnySource>(cb: () => S): Lazify<S>;
 
-export function lazy<D, M extends EventMap>(getter: () => IObservable<D> & IListenable<M>): IObservable<D> & IListenable<M>;
-export function lazy<M extends EventMap>(getter: () => IListenable<M>): IListenable<M>;
-export function lazy<D>(getter: () => IObservable<D>): IObservable<D>;
+export function lazy(cb: () => AnySource): LazySource {
+  let _src: AnySource | null = null;
 
-export function lazy(getter: () => AnyEmitter): LazyEmitter {
-  let _emt: AnyEmitter | null = null;
-
-  function load(): AnyEmitter {
-    return _emt ??= getter();
+  function load(): AnySource {
+    _src ??= cb();
+    return _src;
   }
 
   return {
+    get emit() {
+      replaceProp(this, 'emit', load());
+      return this.emit;
+    },
     get on() {
       replaceProp(this, 'on', load());
       return this.on;
@@ -40,10 +45,10 @@ export function lazy(getter: () => AnyEmitter): LazyEmitter {
 }
 
 // Utils
-function replaceProp(obj: LazyEmitter, prop: keyof LazyEmitter, emt: AnyEmitter): void {
+function replaceProp<P extends keyof LazySource>(obj: LazySource, prop: P, emt: AnySource): void {
   delete obj[prop];
 
   if (prop in emt) {
-    obj[prop] = (emt as LazyEmitter)[prop] as any;
+    obj[prop] = (emt as LazySource)[prop];
   }
 }

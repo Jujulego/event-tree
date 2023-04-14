@@ -2,6 +2,7 @@ export * from './emitter';
 export * from './event-map';
 export * from './group';
 export * from './key-emitter';
+export * from './lazy';
 export * from './listenable';
 export * from './multiplexer';
 export * from './observable';
