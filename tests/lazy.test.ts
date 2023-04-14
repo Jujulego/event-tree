@@ -28,14 +28,19 @@ describe('lazy', () => {
     const getter = jest.fn(() => src);
     const lzy = lazy(getter);
 
-    lzy.subscribe;
-    lzy.subscribe;
-    lzy.subscribe;
+    lzy.subscribe(() => null);
+    lzy.subscribe(() => null);
+    lzy.subscribe(() => null);
 
     expect(getter).toHaveBeenCalledTimes(1);
   });
 
-  describe('on listenable', () => {
+  describe('on multiplexer (listenable & key emitter)', () => {
+    it('should return original emit', () => {
+      const lzy = lazy(() => mlt);
+      expect(lzy.emit).toBe(mlt.emit);
+    });
+
     it('should return original on', () => {
       const lzy = lazy(() => mlt);
       expect(lzy.on).toBe(mlt.on);
@@ -62,7 +67,12 @@ describe('lazy', () => {
     });
   });
 
-  describe('on observable', () => {
+  describe('on source (observable & emitter)', () => {
+    it('should return original emit', () => {
+      const lzy = lazy(() => src);
+      expect(lzy.emit).toBe(src.emit);
+    });
+
     it('should return undefined for on', () => {
       const lzy = lazy(() => src);
       expect((lzy as unknown as IListenable<EventMap>).on).toBeUndefined();
@@ -89,7 +99,12 @@ describe('lazy', () => {
     });
   });
 
-  describe('on listenable & observable', () => {
+  describe('on group (listenable & key emitter & observable & emitter)', () => {
+    it('should return original emit', () => {
+      const lzy = lazy(() => grp);
+      expect(lzy.emit).toBe(grp.emit);
+    });
+
     it('should return original on', () => {
       const lzy = lazy(() => grp);
       expect(lzy.on).toBe(grp.on);
