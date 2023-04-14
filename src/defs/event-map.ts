@@ -13,6 +13,9 @@ export type PrependEventMapKeys<P extends KeyPart, M extends EventMap> = {
 
 export type AssertEventMap<M> = M extends EventMap ? M : never;
 
+/**
+ * Add not overridden props of parent map to child map
+ */
 export type InheritEventMap<PM extends EventMap, M extends EventMap> = M & Pick<PM, Exclude<EventKey<PM>, EventKey<M>>>;
 
 // Keys

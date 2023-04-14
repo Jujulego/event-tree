@@ -1,6 +1,7 @@
 export * from './emitter';
 export * from './event-map';
 export * from './group';
+export * from './inherit';
 export * from './key-emitter';
 export * from './listenable';
 export * from './multiplexer';
