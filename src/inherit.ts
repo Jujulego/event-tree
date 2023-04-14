@@ -1,20 +1,33 @@
-import { EmitEventMap, EventMap, IMultiplexer, InheritEventMap, Listener, ListenEventMap, SourceTree } from './defs';
+import { AnySource, EventMap, IEmitter, IMultiplexer, Inherit, IObservable, Listener, SourceTree } from './defs';
 import { multiplexer } from './multiplexer';
 import { splitKey } from './utils';
 
-export function inherit<PEM extends EventMap, PLM extends EventMap, T extends SourceTree>(parent: IMultiplexer<PEM, PLM>, map: T):
-  IMultiplexer<InheritEventMap<PEM, EmitEventMap<T>>, InheritEventMap<PLM, ListenEventMap<T>>> {
+export function inherit<S extends AnySource, T extends SourceTree>(parent: S, map: T): Inherit<S, T>;
+
+export function inherit(parent: AnySource, map: SourceTree): AnySource {
   const child = multiplexer(map);
 
   function targetOf(key: string): IMultiplexer<EventMap, EventMap> {
     const [part] = splitKey(key);
-    return part in map ? child : parent;
+    return part in map ? child : parent as IMultiplexer<EventMap, EventMap>;
   }
 
   return {
-    emit(key: string, data: unknown) {
-      const target = targetOf(key);
-      return target.emit(key, data);
+    emit(...args: [unknown] | [string, unknown]) {
+      if (args.length === 1) {
+        const [data] = args;
+        return (parent as IEmitter<unknown>).emit(data);
+      } else {
+        const [key, data] = args;
+        const target = targetOf(key);
+        return target.emit(key, data);
+      }
+    },
+    subscribe(listener: Listener<any>) {
+      return (parent as IObservable<unknown>).subscribe(listener);
+    },
+    unsubscribe(listener: Listener<any>) {
+      return (parent as IObservable<unknown>).unsubscribe(listener);
     },
     on(key: string, listener: Listener<any>) {
       const target = targetOf(key);
@@ -27,7 +40,10 @@ export function inherit<PEM extends EventMap, PLM extends EventMap, T extends So
     clear(key?: string) {
       if (!key) {
         child.clear();
-        parent.clear();
+
+        if ('clear' in parent) {
+          parent.clear();
+        }
       } else {
         const target = targetOf(key);
         return target.clear(key);
