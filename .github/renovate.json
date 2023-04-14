@@ -9,10 +9,10 @@
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
       "automerge": true,
       "automergeType": "pr",
-      "platformAutomerge": true,
+      "platformAutomerge": true
     }
   ],
   "js": {
-    "label": "javascript",
-  },
+    "labels": "javascript"
+  }
 }
