@@ -1,4 +1,4 @@
-import { Listener, Source, source } from '../src';
+import { Listener, Source, source } from '@/src';
 
 // Setup
 let src: Source<number>;

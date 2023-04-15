@@ -1,4 +1,4 @@
-import { offGroup } from '../src';
+import { offGroup } from '@/src';
 
 // Tests
 describe('offGroup', () => {

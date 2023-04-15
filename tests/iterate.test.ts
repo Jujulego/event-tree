@@ -1,4 +1,4 @@
-import { multiplexer, Multiplexer, source, Source, iterate, offGroup } from '../src';
+import { multiplexer, Multiplexer, source, Source, iterate, offGroup } from '@/src';
 
 // Setup
 let src: Source<number>;
