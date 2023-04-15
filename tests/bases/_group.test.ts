@@ -1,5 +1,5 @@
-import { _group } from '../../src/bases/_group';
-import { AnyEventMap, IMultiplexer, ISource, Listener, OffFn } from '../../src';
+import { AnyEventMap, IMultiplexer, ISource, Listener, OffFn } from '@/src';
+import { _group } from '@/src/bases/_group';
 
 // Setup
 let off: OffFn;

@@ -1,4 +1,4 @@
-import { groupMap, IMultiplexer, ISource, Listener, multiplexer, source } from '../src';
+import { groupMap, Listener, multiplexer, source } from '@/src';
 
 // Tests
 describe('groupMap', () => {

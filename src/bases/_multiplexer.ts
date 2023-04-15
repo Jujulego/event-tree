@@ -1,5 +1,5 @@
-import { AnyEventMap, AnySource, EventMap, IMultiplexer, ISource, Key, KeyPart, Listener, OffFn } from '../defs';
-import { splitKey } from '../utils';
+import { AnyEventMap, AnySource, EventMap, IMultiplexer, ISource, Key, KeyPart, Listener, OffFn } from '@/src/defs';
+import { splitKey } from '@/src/utils';
 
 // Types
 /** @internal */

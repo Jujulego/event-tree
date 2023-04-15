@@ -1,4 +1,4 @@
-import { IEmitter, IKeyEmitter, IListenable, IObservable, multiplexerMap } from '../src';
+import { IEmitter, IKeyEmitter, IListenable, IObservable, multiplexerMap } from '@/src';
 
 // Tests
 describe('multiplexerMap', () => {

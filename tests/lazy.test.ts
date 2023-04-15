@@ -9,7 +9,7 @@ import {
   Multiplexer,
   source,
   Source
-} from '../src';
+} from '@/src';
 
 // Setup
 let src: Source<number>;

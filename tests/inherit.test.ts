@@ -1,4 +1,4 @@
-import { inherit, Listener, multiplexer, Multiplexer, source, Source } from '../src';
+import { inherit, Listener, multiplexer, Multiplexer, source, Source } from '@/src';
 
 // Setup
 let mlt: Multiplexer<{
