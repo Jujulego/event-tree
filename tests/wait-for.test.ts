@@ -1,12 +1,14 @@
-import { multiplexer, Multiplexer, offGroup, source, Source, waitFor } from '@/src';
+import { group, Group, multiplexer, Multiplexer, offGroup, source, Source, waitFor } from '@/src';
 
 // Setup
 let src: Source<number>;
 let mlt: Multiplexer<{ src: Source<number> }>;
+let grp: Group<{ src: Source<number> }>;
 
 beforeEach(() => {
   src = source();
   mlt = multiplexer({ src });
+  grp = group({ src });
 });
 
 describe('waitFor', () => {
@@ -49,6 +51,30 @@ describe('waitFor', () => {
       setTimeout(() => off(), 0);
 
       await expect(prom).rejects.toEqual(new Error('Unsubscribed !'));
+    });
+  });
+
+  describe('on a listenable observable', () => {
+    it('should resolve when listenable part emits', async () => {
+      setTimeout(() => grp.emit('src', 1), 0);
+      jest.spyOn(grp, 'on');
+      jest.spyOn(grp, 'subscribe');
+
+      await expect(waitFor(grp, 'src')).resolves.toBe(1);
+
+      expect(grp.on).toHaveBeenCalledWith('src', expect.any(Function));
+      expect(grp.subscribe).not.toHaveBeenCalled();
+    });
+
+    it('should resolve when observable part emits', async () => {
+      setTimeout(() => grp.emit('src', 1), 0);
+      jest.spyOn(grp, 'on');
+      jest.spyOn(grp, 'subscribe');
+
+      await expect(waitFor(grp)).resolves.toBe(1);
+
+      expect(grp.on).not.toHaveBeenCalled();
+      expect(grp.subscribe).toHaveBeenCalled();
     });
   });
 });

@@ -40,11 +40,11 @@ export function waitFor(...args: WaitForArgs): Promise<unknown> {
 
 // Utils
 function parseArgs(args: WaitForArgs, resolve: Listener<unknown>): { args: OnceArgs; off?: OffGroup } {
-  if ('subscribe' in args[0] && 'unsubscribe' in args[0]) {
-    const [obs, opts] = args as WaitForObservableArgs;
-    return { args: [obs, resolve], off: opts?.off };
-  } else {
+  if (typeof args[1] === 'string') {
     const [lst, key, opts] = args as WaitForListenableArgs;
     return { args: [lst, key, resolve], off: opts?.off };
+  } else {
+    const [obs, opts] = args as WaitForObservableArgs;
+    return { args: [obs, resolve], off: opts?.off };
   }
 }
