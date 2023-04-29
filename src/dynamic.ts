@@ -3,7 +3,7 @@ import { offGroup } from './off-group';
 import { Source } from './source';
 
 function dynamicWarn(key?: string) {
-  const type = key ? `"${key} event listeners` : 'subscribers';
+  const type = key ? `"${key}" event listeners` : 'subscribers';
   console.warn(`dynamic source has registered some ${type} but current source does not support it`);
 }
 
