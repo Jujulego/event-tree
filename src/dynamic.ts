@@ -30,22 +30,16 @@ export function dynamic(origin: Source<IListenable<EventMap> | IObservable<unkno
       }
     };
 
-    if (key) {
-      if ('on' in current) {
-        off.add(
-          current.on(key, listener)
-        );
-      } else {
-        dynamicWarn(key);
-      }
+    if (key && 'on' in current) {
+      off.add(
+        current.on(key, listener)
+      );
+    } else if (!key && 'subscribe' in current) {
+      off.add(
+        current.subscribe(listener)
+      );
     } else {
-      if ('subscribe' in current) {
-        off.add(
-          current.subscribe(listener)
-        );
-      } else {
-        dynamicWarn();
-      }
+      dynamicWarn(key);
     }
   }
 
