@@ -1,4 +1,5 @@
 export * from './defs';
+export * from './dynamic';
 export * from './group';
 export * from './group-map';
 export * from './inherit';

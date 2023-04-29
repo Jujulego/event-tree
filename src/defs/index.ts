@@ -1,3 +1,4 @@
+export * from './dynamic';
 export * from './emitter';
 export * from './event-map';
 export * from './group';
