@@ -1,4 +1,4 @@
-import { AnyEventMap, IGroup, IMultiplexer, ISource, Key } from '@/src/defs';
+import { AnyEventMap, IGroup, IMultiplexer, ISource, Key } from '../defs';
 
 /** @internal */
 export function _group(mlt: IMultiplexer<AnyEventMap, AnyEventMap>, src: ISource<any>): IGroup<AnyEventMap, AnyEventMap> {
