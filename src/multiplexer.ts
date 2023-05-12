@@ -1,5 +1,5 @@
 import { AnySource, EmitEventMap, IMultiplexer, KeyPart, ListenEventMap, SourceTree } from './defs';
-import { _multiplexer } from './bases/_multiplexer';
+import { _multiplexer } from './bases';
 
 // Types
 export interface Multiplexer<T extends SourceTree> extends IMultiplexer<EmitEventMap<T>, ListenEventMap<T>> {
