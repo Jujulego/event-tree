@@ -1,3 +1,4 @@
+export * from './bases';
 export * from './defs';
 export * from './dynamic';
 export * from './group';

@@ -1,5 +1,4 @@
-import { IEmitter, IKeyEmitter, IListenable, IObservable } from '@/src';
-import { _multiplexer } from '@/src/bases/_multiplexer';
+import { _multiplexer, IEmitter, IKeyEmitter, IListenable, IObservable } from '@/src';
 
 // Tests
 describe('_multiplexer', () => {

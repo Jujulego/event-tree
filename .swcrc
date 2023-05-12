@@ -5,8 +5,7 @@
       "syntax": "typescript"
     },
     "paths": {
-      "@/src": ["./src"],
-      "@/src/*": ["./src/*"]
+      "@/src": ["./src"]
     }
   },
   "module": {
