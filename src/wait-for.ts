@@ -4,10 +4,10 @@ import { OffGroup, offGroup } from './off-group';
 
 // Types
 /** @internal */
-export type WaitForObservableArgs = [obs: IObservable<unknown>, opts?: OnceOpts];
+export type WaitForObservableArgs = [obs: IObservable<unknown>, opts?: OnceOpts | undefined];
 
 /** @internal */
-export type WaitForListenableArgs = [source: IListenable<EventMap>, key: Key, opts?: OnceOpts];
+export type WaitForListenableArgs = [source: IListenable<EventMap>, key: Key, opts?: OnceOpts | undefined];
 
 /** @internal */
 export type WaitForArgs = WaitForObservableArgs | WaitForListenableArgs;
@@ -15,15 +15,17 @@ export type WaitForArgs = WaitForObservableArgs | WaitForListenableArgs;
 /**
  * Returns a promise that resolves when the given observable emits
  * @param obs
+ * @param opts
  */
-export function waitFor<D>(obs: IObservable<D>): Promise<D>;
+export function waitFor<D>(obs: IObservable<D>, opts?: OnceOpts): Promise<D>;
 
 /**
  * Returns a promise that resolves when the given source emits the "key" event
  * @param source
  * @param key
+ * @param opts
  */
-export function waitFor<M extends EventMap, K extends EventKey<M>>(source: IListenable<M>, key: K): Promise<EventData<M, K>>;
+export function waitFor<M extends EventMap, K extends EventKey<M>>(source: IListenable<M>, key: K, opts?: OnceOpts): Promise<EventData<M, K>>;
 
 /** @internal */
 export function waitFor(...args: WaitForArgs): Promise<unknown>;
@@ -39,7 +41,7 @@ export function waitFor(...args: WaitForArgs): Promise<unknown> {
 }
 
 // Utils
-function parseArgs(args: WaitForArgs, resolve: Listener<unknown>): { args: OnceArgs; off?: OffGroup } {
+function parseArgs(args: WaitForArgs, resolve: Listener<unknown>): { args: OnceArgs; off: OffGroup | undefined } {
   if (typeof args[1] === 'string') {
     const [lst, key, opts] = args as WaitForListenableArgs;
     return { args: [lst, key, resolve], off: opts?.off };

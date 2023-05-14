@@ -41,7 +41,7 @@ export function lazy(cb: () => AnySource): LazySource {
       replaceProp(this, 'clear', load());
       return this.clear;
     },
-  };
+  } as LazySource;
 }
 
 // Utils
