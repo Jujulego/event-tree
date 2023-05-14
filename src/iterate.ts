@@ -36,7 +36,7 @@ export function iterate(...args: WaitForArgs): AsyncIterableIterator<unknown> {
 }
 
 // Utils
-function parseArgs(args: WaitForArgs): { args: WaitForArgs; off?: OffGroup } {
+function parseArgs(args: WaitForArgs): { args: WaitForArgs; off: OffGroup | undefined } {
   if ('subscribe' in args[0] && 'unsubscribe' in args[0]) {
     const [obs, opts] = args as WaitForObservableArgs;
     return { args: [obs], off: opts?.off };

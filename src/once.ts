@@ -7,10 +7,10 @@ export interface OnceOpts {
 }
 
 /** @internal */
-export type OnceObservableArgs = [obs: IObservable<unknown>, listener: Listener<unknown>, opts?: OnceOpts];
+export type OnceObservableArgs = [obs: IObservable<unknown>, listener: Listener<unknown>, opts?: OnceOpts | undefined];
 
 /** @internal */
-export type OnceListenableArgs = [source: IListenable<EventMap>, key: Key, listener: Listener<unknown>, opts?: OnceOpts];
+export type OnceListenableArgs = [source: IListenable<EventMap>, key: Key, listener: Listener<unknown>, opts?: OnceOpts | undefined];
 
 /** @internal */
 export type OnceArgs = OnceObservableArgs | OnceListenableArgs;
