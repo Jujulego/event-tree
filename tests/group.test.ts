@@ -68,19 +68,19 @@ describe('group', () => {
 
   describe('emit', () => {
     it('should emit child event', () => {
-      jest.spyOn(int, 'emit');
+      jest.spyOn(int, 'next');
 
       grp.emit('int', 1);
 
-      expect(int.emit).toHaveBeenCalledWith(1);
+      expect(int.next).toHaveBeenCalledWith(1);
     });
 
     it('should emit deep child event', () => {
-      jest.spyOn(boo, 'emit');
+      jest.spyOn(boo, 'next');
 
       grp.emit('deep.boo', true);
 
-      expect(boo.emit).toHaveBeenCalledWith(true);
+      expect(boo.next).toHaveBeenCalledWith(true);
     });
 
     it('should not emit child event as child doesn\'t exists', () => {

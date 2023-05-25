@@ -70,7 +70,7 @@ describe('lazy', () => {
   describe('on source (observable & emitter)', () => {
     it('should return original emit', () => {
       const lzy = lazy(() => src);
-      expect(lzy.emit).toBe(src.emit);
+      expect(lzy.next).toBe(src.next);
     });
 
     it('should return undefined for on', () => {

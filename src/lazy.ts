@@ -21,6 +21,10 @@ export function lazy(cb: () => AnySource): LazySource {
       replaceProp(this, 'emit', load());
       return this.emit;
     },
+    get next() {
+      replaceProp(this, 'next', load());
+      return this.next;
+    },
     get on() {
       replaceProp(this, 'on', load());
       return this.on;

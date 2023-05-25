@@ -13,15 +13,12 @@ export function inherit(parent: AnySource, map: SourceTree): AnySource {
   }
 
   return {
-    emit(...args: [unknown] | [string, unknown]) {
-      if (args.length === 1) {
-        const [data] = args;
-        return (parent as IEmitter<unknown>).emit(data);
-      } else {
-        const [key, data] = args;
-        const target = targetOf(key);
-        return target.emit(key, data);
-      }
+    emit(key: string, data: unknown) {
+      const target = targetOf(key);
+      return target.emit(key, data);
+    },
+    next(data: unknown) {
+      return (parent as IEmitter<unknown>).next(data);
     },
     subscribe(listener: Listener<any>) {
       return (parent as IObservable<unknown>).subscribe(listener);

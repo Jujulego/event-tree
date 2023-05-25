@@ -15,8 +15,8 @@ describe('once', () => {
       const listener = jest.fn();
       once(src, listener);
 
-      src.emit(1);
-      src.emit(1);
+      src.next(1);
+      src.next(1);
 
       expect(listener).toHaveBeenCalledTimes(1);
     });
@@ -31,7 +31,7 @@ describe('once', () => {
       expect(off.add).toHaveBeenCalledTimes(1);
 
       off();
-      src.emit(1);
+      src.next(1);
 
       expect(listener).not.toHaveBeenCalled();
     });

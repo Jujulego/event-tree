@@ -19,49 +19,49 @@ beforeEach(() => {
 
 // Tests
 describe('inherit', () => {
-  describe('emit', () => {
+  describe('next', () => {
     it('should emit from int', () => {
-      jest.spyOn(int, 'emit');
-      jest.spyOn(src, 'emit');
+      jest.spyOn(int, 'next');
+      jest.spyOn(src, 'next');
 
       const child = inherit(int, { c: src });
-      child.emit(42);
+      child.next(42);
 
-      expect(int.emit).toHaveBeenCalledWith(42);
-      expect(src.emit).not.toHaveBeenCalled();
+      expect(int.next).toHaveBeenCalledWith(42);
+      expect(src.next).not.toHaveBeenCalled();
     });
 
     it('should emit from src', () => {
       jest.spyOn(mlt, 'emit');
-      jest.spyOn(src, 'emit');
+      jest.spyOn(src, 'next');
 
       const child = inherit(mlt, { c: src });
       child.emit('c', 'c');
 
       expect(mlt.emit).not.toHaveBeenCalled();
-      expect(src.emit).toHaveBeenCalledWith('c');
+      expect(src.next).toHaveBeenCalledWith('c');
     });
 
     it('should emit from src (overriding mlt)', () => {
       jest.spyOn(mlt, 'emit');
-      jest.spyOn(src, 'emit');
+      jest.spyOn(src, 'next');
 
       const child = inherit(mlt, { a: src });
       child.emit('a', 'c');
 
       expect(mlt.emit).not.toHaveBeenCalled();
-      expect(src.emit).toHaveBeenCalledWith('c');
+      expect(src.next).toHaveBeenCalledWith('c');
     });
 
     it('should emit from mlt', () => {
       jest.spyOn(mlt, 'emit');
-      jest.spyOn(src, 'emit');
+      jest.spyOn(src, 'next');
 
       const child = inherit(mlt, { c: src });
       child.emit('a', 'a');
 
       expect(mlt.emit).toHaveBeenCalledWith('a', 'a');
-      expect(src.emit).not.toHaveBeenCalled();
+      expect(src.next).not.toHaveBeenCalled();
     });
   });
 

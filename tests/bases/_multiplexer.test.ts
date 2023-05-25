@@ -5,7 +5,7 @@ describe('_multiplexer', () => {
   describe('emit', () => {
     it('should emit child event', () => {
       const src: IEmitter<number> = {
-        emit: jest.fn(),
+        next: jest.fn(),
       };
 
       const getSource = jest.fn(() => src);
@@ -14,7 +14,7 @@ describe('_multiplexer', () => {
       mlt.emit('life', 42);
 
       expect(getSource).toHaveBeenCalledWith('life');
-      expect(src.emit).toHaveBeenCalledWith(42);
+      expect(src.next).toHaveBeenCalledWith(42);
     });
 
     it('should emit deep child event', () => {

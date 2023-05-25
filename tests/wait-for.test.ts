@@ -14,7 +14,7 @@ beforeEach(() => {
 describe('waitFor', () => {
   describe('on an observable', () => {
     it('should resolve when observable emits', async () => {
-      setTimeout(() => src.emit(1), 0);
+      setTimeout(() => src.next(1), 0);
 
       await expect(waitFor(src)).resolves.toBe(1);
     });

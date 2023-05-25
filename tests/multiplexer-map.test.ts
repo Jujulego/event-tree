@@ -5,7 +5,7 @@ describe('multiplexerMap', () => {
   describe('emit', () => {
     it('should emit child event', () => {
       const src: IEmitter<number> = {
-        emit: jest.fn(),
+        next: jest.fn(),
       };
 
       const builder = jest.fn(() => src);
@@ -14,7 +14,7 @@ describe('multiplexerMap', () => {
       mlt.emit('life', 42);
 
       expect(builder).toHaveBeenCalledWith('life');
-      expect(src.emit).toHaveBeenCalledWith(42);
+      expect(src.next).toHaveBeenCalledWith(42);
     });
 
     it('should emit deep child event', () => {
