@@ -1,5 +1,5 @@
 // Aliases
-export type Key = string;
+export type Key = string | number;
 export type KeyPart = string | number;
 
 // Functions
