@@ -4,6 +4,8 @@ import { splitKey } from '../utils';
 // Types
 /** @internal */
 type NextCb<R> = (src: IMultiplexer<EventMap, EventMap>, key: Key) => R;
+
+/** @internal */
 type EndCb<R> = (src: ISource<unknown>) => R;
 
 /** @internal */
@@ -23,7 +25,7 @@ export function _multiplexer(listSources: () => Iterable<AnySource>, getSource: 
     emit(key: Key, data: unknown) {
       routeEvent(key,
         (mlt, subkey) => mlt.emit(subkey, data),
-        (src) => src.emit(data),
+        (src) => src.next(data),
       );
     },
 

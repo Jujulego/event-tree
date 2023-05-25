@@ -13,7 +13,7 @@ describe('source', () => {
     const listener: Listener<number> = jest.fn();
 
     src.subscribe(listener);
-    src.emit(1);
+    src.next(1);
 
     expect(listener).toHaveBeenCalledWith(1);
   });
@@ -23,7 +23,7 @@ describe('source', () => {
 
     src.subscribe(listener);
     src.unsubscribe(listener);
-    src.emit(1);
+    src.next(1);
 
     expect(listener).not.toHaveBeenCalled();
   });
@@ -34,7 +34,7 @@ describe('source', () => {
     const off = src.subscribe(listener);
     off();
 
-    src.emit(1);
+    src.next(1);
 
     expect(listener).not.toHaveBeenCalled();
   });
@@ -45,7 +45,7 @@ describe('source', () => {
     src.subscribe(listener);
     src.clear();
 
-    src.emit(1);
+    src.next(1);
 
     expect(listener).not.toHaveBeenCalled();
   });

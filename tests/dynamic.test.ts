@@ -18,7 +18,7 @@ describe('dynamic', () => {
       const spy = jest.fn();
 
       dyn.on('life', spy);
-      origin.emit(mlt);
+      origin.next(mlt);
 
       mlt.emit('life', 42);
 
@@ -30,7 +30,7 @@ describe('dynamic', () => {
       const spy = jest.fn();
 
       dyn.on('life', () => null);
-      origin.emit(mlt);
+      origin.next(mlt);
 
       dyn.on('life', spy);
       mlt.emit('life', 42);
@@ -43,7 +43,7 @@ describe('dynamic', () => {
       const spy = jest.fn();
 
       const off = dyn.on('life', spy);
-      origin.emit(mlt);
+      origin.next(mlt);
       off();
 
       mlt.emit('life', 42);
@@ -57,7 +57,7 @@ describe('dynamic', () => {
 
       dyn.on('life', spy);
       dyn.off('life', spy);
-      origin.emit(mlt);
+      origin.next(mlt);
 
       mlt.emit('life', 42);
 
@@ -70,7 +70,7 @@ describe('dynamic', () => {
 
       dyn.on('life', spy);
       dyn.clear();
-      origin.emit(mlt);
+      origin.next(mlt);
 
       mlt.emit('life', 42);
 
@@ -82,8 +82,8 @@ describe('dynamic', () => {
       const spy = jest.fn();
 
       dyn.on('life', spy);
-      origin.emit(mlt);
-      origin.emit(multiplexer({ life: source() }));
+      origin.next(mlt);
+      origin.next(multiplexer({ life: source() }));
 
       mlt.emit('life', 42);
 
@@ -95,8 +95,8 @@ describe('dynamic', () => {
       const spy = jest.fn();
 
       dyn.on('life', spy);
-      origin.emit(multiplexer({ life: source() }));
-      origin.emit(mlt);
+      origin.next(multiplexer({ life: source() }));
+      origin.next(mlt);
 
       mlt.emit('life', 42);
 
@@ -109,7 +109,7 @@ describe('dynamic', () => {
       jest.spyOn(console, 'warn');
 
       dyn.on('life', spy);
-      origin.emit(source() as any);
+      origin.next(source() as any);
 
       expect(console.warn).toHaveBeenCalled();
     });
@@ -129,9 +129,9 @@ describe('dynamic', () => {
       const spy = jest.fn();
 
       dyn.subscribe(spy);
-      origin.emit(src);
+      origin.next(src);
 
-      src.emit(42);
+      src.next(42);
 
       expect(spy).toHaveBeenCalledWith(42);
     });
@@ -141,10 +141,10 @@ describe('dynamic', () => {
       const spy = jest.fn();
 
       dyn.subscribe(() => null);
-      origin.emit(src);
+      origin.next(src);
 
       dyn.subscribe(spy);
-      src.emit(42);
+      src.next(42);
 
       expect(spy).toHaveBeenCalledWith(42);
     });
@@ -154,10 +154,10 @@ describe('dynamic', () => {
       const spy = jest.fn();
 
       const off = dyn.subscribe(spy);
-      origin.emit(src);
+      origin.next(src);
       off();
 
-      src.emit(42);
+      src.next(42);
 
       expect(spy).not.toHaveBeenCalledWith();
     });
@@ -168,9 +168,9 @@ describe('dynamic', () => {
 
       dyn.subscribe(spy);
       dyn.unsubscribe(spy);
-      origin.emit(src);
+      origin.next(src);
 
-      src.emit(42);
+      src.next(42);
 
       expect(spy).not.toHaveBeenCalledWith();
     });
@@ -181,9 +181,9 @@ describe('dynamic', () => {
 
       dyn.subscribe(spy);
       dyn.clear();
-      origin.emit(src);
+      origin.next(src);
 
-      src.emit(42);
+      src.next(42);
 
       expect(spy).not.toHaveBeenCalledWith();
     });
@@ -193,10 +193,10 @@ describe('dynamic', () => {
       const spy = jest.fn();
 
       dyn.subscribe(spy);
-      origin.emit(src);
-      origin.emit(source());
+      origin.next(src);
+      origin.next(source());
 
-      src.emit(42);
+      src.next(42);
 
       expect(spy).not.toHaveBeenCalledWith();
     });
@@ -206,10 +206,10 @@ describe('dynamic', () => {
       const spy = jest.fn();
 
       dyn.subscribe(spy);
-      origin.emit(source());
-      origin.emit(src);
+      origin.next(source());
+      origin.next(src);
 
-      src.emit(42);
+      src.next(42);
 
       expect(spy).toHaveBeenCalledWith(42);
     });
@@ -220,7 +220,7 @@ describe('dynamic', () => {
       jest.spyOn(console, 'warn');
 
       dyn.subscribe(spy);
-      origin.emit(multiplexer({}) as any);
+      origin.next(multiplexer({}) as any);
 
       expect(console.warn).toHaveBeenCalled();
     });

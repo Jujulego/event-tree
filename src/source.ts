@@ -12,7 +12,7 @@ export function source<D>(): Source<D> {
 
   return {
     listeners,
-    emit(data: D) {
+    next(data: D) {
       for (const listener of listeners) {
         listener(data);
       }

@@ -5,7 +5,7 @@ export function _group(mlt: IMultiplexer<AnyEventMap, AnyEventMap>, src: ISource
   return {
     emit(key: Key, data: any) {
       mlt.emit(key, data);
-      src.emit(data);
+      src.next(data);
     },
 
     on: mlt.on,

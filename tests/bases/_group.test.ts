@@ -14,7 +14,7 @@ beforeEach(() => {
     clear: jest.fn(),
   };
   src = {
-    emit: jest.fn(),
+    next: jest.fn(),
     subscribe: jest.fn(() => off),
     unsubscribe: jest.fn(),
     clear: jest.fn(),
@@ -29,7 +29,7 @@ describe('_group', () => {
       grp.emit('life', 42);
 
       expect(mlt.emit).toHaveBeenCalledWith('life', 42);
-      expect(src.emit).toHaveBeenCalledWith(42);
+      expect(src.next).toHaveBeenCalledWith(42);
     });
   });
 

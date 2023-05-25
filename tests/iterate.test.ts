@@ -14,10 +14,10 @@ describe('iterate', () => {
     it('should iterate over observable emits', async () => {
       const it = iterate(src);
 
-      setTimeout(() => src.emit(1), 0);
+      setTimeout(() => src.next(1), 0);
       await expect(it.next()).resolves.toEqual({ value: 1 });
 
-      setTimeout(() => src.emit(2), 0);
+      setTimeout(() => src.next(2), 0);
       await expect(it.next()).resolves.toEqual({ value: 2 });
     });
 
