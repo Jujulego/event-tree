@@ -1,7 +1,7 @@
 import { EventData, EventKey, EventMap } from './event-map';
 
-export interface IKeyEmitter<in M extends EventMap> {
-  __emit_event_map?: ((map: M) => void) | undefined;
+export interface IKeyEmitter<M extends EventMap> {
+  __emit_event_map?: M | undefined;
 
   /**
    * Emits "key" event, with given data

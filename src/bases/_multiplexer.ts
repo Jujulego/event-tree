@@ -1,13 +1,14 @@
 import {
-  AnySource, EventData,
-  EventKey,
+  EmitEventMap, EventData, EventKey,
   EventMap,
   IMultiplexer,
   ISource,
   Key,
   KeyPart,
   Listener,
-  OffFn
+  ListenEventMap,
+  OffFn,
+  SourceTree
 } from '../defs';
 import { splitKey } from '../utils';
 
@@ -18,8 +19,12 @@ type NextCb<R> = (src: IMultiplexer<EventMap, EventMap>, key: Key) => R;
 /** @internal */
 type EndCb<R> = (src: ISource<unknown>) => R;
 
+export type ListSourcesFn<T extends SourceTree> = () => Iterable<T[keyof T]>;
+
+export type GetSourceFn<T extends SourceTree> = <K extends keyof T & KeyPart>(key: K) => T[K];
+
 /** @internal */
-export function _multiplexer<EmitMap extends EventMap, ListenMap extends EventMap>(listSources: () => Iterable<AnySource>, getSource: (key: KeyPart) => AnySource): IMultiplexer<EmitMap, ListenMap> {
+export function _multiplexer<const T extends SourceTree>(listSources: ListSourcesFn<T>, getSource: GetSourceFn<T>): IMultiplexer<EmitEventMap<T>, ListenEventMap<T>> {
   function routeEvent<R>(key: Key, next: NextCb<R>, end: EndCb<R>): R {
     const [part, subkey] = splitKey(key);
     const src = getSource(part);
@@ -39,14 +44,14 @@ export function _multiplexer<EmitMap extends EventMap, ListenMap extends EventMa
       );
     },
 
-    on<const K extends EventKey<ListenMap>>(key: K, listener: Listener<EventData<ListenMap, K>>): OffFn {
+    on<K extends EventKey<ListenEventMap<T>>>(key: K, listener: Listener<EventData<ListenEventMap<T>, K>>): OffFn {
       return routeEvent(key,
         (mlt, subkey) => mlt.on(subkey, listener as Listener<unknown>),
         (src) => src.subscribe(listener as Listener<unknown>),
       );
     },
 
-    off<const K extends EventKey<ListenMap>>(key: K, listener: Listener<EventData<ListenMap, K>>): void {
+    off<K extends EventKey<ListenEventMap<T>>>(key: K, listener: Listener<EventData<ListenEventMap<T>, K>>): void {
       routeEvent(key,
         (mlt, subkey) => mlt.off(subkey, listener as Listener<unknown>),
         (src) => src.unsubscribe(listener as Listener<unknown>),

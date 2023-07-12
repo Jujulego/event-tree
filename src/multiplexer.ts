@@ -8,21 +8,22 @@ export interface Multiplexer<T extends SourceTree> extends IMultiplexer<EmitEven
 }
 
 // Utils
-export function multiplexer<T extends SourceTree>(map: T): Multiplexer<T> {
-  const sources = new Map<KeyPart, AnySource>(Object.entries(map));
+export function multiplexer<const T extends SourceTree>(map: T): Multiplexer<T> {
+  const sources = new Map(Object.entries(map) as [keyof T & KeyPart, T[keyof T & KeyPart]][]);
 
-  function getSource(key: KeyPart): AnySource {
+  function getSource<K extends keyof T & KeyPart>(key: K): T[K] {
     const src = sources.get(key);
 
     if (!src) {
       throw new Error(`Child source ${key} not found`);
     }
 
-    return src;
+    return src as T[K];
   }
 
-  return Object.assign(_multiplexer<EmitEventMap<T>, ListenEventMap<T>>(() => sources.values(), getSource), {
-    sources,
-  });
+  return Object.assign(
+    _multiplexer<T>(() => sources.values(), getSource),
+    { sources }
+  );
 }
 

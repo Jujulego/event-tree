@@ -1,7 +1,7 @@
 import { EventKey, EventListener, EventMap } from './event-map';
 import { OffFn } from './utils';
 
-export interface IListenable<out M extends EventMap> {
+export interface IListenable<M extends EventMap> {
   __listen_event_map?: M | undefined;
 
   /**

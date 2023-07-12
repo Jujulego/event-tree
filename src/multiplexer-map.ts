@@ -11,7 +11,7 @@ export interface MultiplexerMap<K extends KeyPart, S extends AnySource> extends 
 export function multiplexerMap<K extends KeyPart, S extends AnySource>(builder: (key: K) => S): MultiplexerMap<K, S> {
   const sources = new Map<K, S>();
 
-  function getSource(key: KeyPart): AnySource {
+  function getSource(key: K): S {
     let src = sources.get(key as K);
 
     if (!src) {
@@ -22,7 +22,8 @@ export function multiplexerMap<K extends KeyPart, S extends AnySource>(builder: 
     return src;
   }
 
-  return Object.assign(_multiplexer<EmitEventRecord<K, S>, ListenEventRecord<K, S>>(() => sources.values(), getSource), {
-    sources,
-  });
+  return Object.assign(
+    _multiplexer<Record<K, S>>(() => sources.values(), getSource),
+    { sources }
+  );
 }
