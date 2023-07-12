@@ -21,7 +21,7 @@ export function multiplexer<T extends SourceTree>(map: T): Multiplexer<T> {
     return src;
   }
 
-  return Object.assign(_multiplexer(() => sources.values(), getSource), {
+  return Object.assign(_multiplexer<EmitEventMap<T>, ListenEventMap<T>>(() => sources.values(), getSource), {
     sources,
   });
 }

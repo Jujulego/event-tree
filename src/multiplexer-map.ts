@@ -22,7 +22,7 @@ export function multiplexerMap<K extends KeyPart, S extends AnySource>(builder: 
     return src;
   }
 
-  return Object.assign(_multiplexer(() => sources.values(), getSource), {
+  return Object.assign(_multiplexer<EmitEventRecord<K, S>, ListenEventRecord<K, S>>(() => sources.values(), getSource), {
     sources,
   });
 }

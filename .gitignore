@@ -10,5 +10,6 @@
 # Generated files
 coverage
 dist
+eslint-results.sarif
 *.log
 *.pid

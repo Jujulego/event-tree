@@ -21,6 +21,7 @@ mlt.emit('grp', 'd'); // <= error on grp
 mlt.emit('grp.c', 'c');
 mlt.emit('grp.d', 'd');
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 mlt.on('int', (d) => null);
 mlt.on('mlt', (d) => null); // <= error on mlt
 mlt.on('mlt.a', (d) => null);

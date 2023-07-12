@@ -2,6 +2,9 @@ import { Key, KeyPart, Listener } from './utils';
 
 // Utils
 export type EventMap = Record<Key, unknown>;
+
+/** @deprecated Use EventMap instead */
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 export type AnyEventMap = Record<Key, any>;
 
 /**

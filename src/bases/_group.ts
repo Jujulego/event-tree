@@ -1,9 +1,9 @@
-import { AnyEventMap, IGroup, IMultiplexer, ISource, Key } from '../defs';
+import { EventData, EventMap, IGroup, IMultiplexer, ISource, Key } from '../defs';
 
 /** @internal */
-export function _group(mlt: IMultiplexer<AnyEventMap, AnyEventMap>, src: ISource<any>): IGroup<AnyEventMap, AnyEventMap> {
+export function _group<EmitMap extends EventMap, ListenMap extends EventMap>(mlt: IMultiplexer<EmitMap, ListenMap>, src: ISource<EventData<EmitMap>>): IGroup<EmitMap, ListenMap> {
   return {
-    emit(key: Key, data: any) {
+    emit(key: Key, data: EventData<EmitMap>) {
       mlt.emit(key, data);
       src.next(data);
     },
