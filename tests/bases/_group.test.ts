@@ -1,9 +1,9 @@
-import { _group, AnyEventMap, IMultiplexer, ISource, Listener, OffFn } from '@/src';
+import { _group, IMultiplexer, ISource, Listener, OffFn } from '@/src';
 
 // Setup
 let off: OffFn;
-let mlt: IMultiplexer<AnyEventMap, AnyEventMap>;
-let src: ISource<any>;
+let mlt: IMultiplexer<{ life: number }, { life: number }>;
+let src: ISource<number>;
 
 beforeEach(() => {
   off = jest.fn();

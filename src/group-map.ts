@@ -7,13 +7,13 @@ import { _group } from './bases';
 export interface GroupMap<K extends KeyPart, S extends AnySource> extends IGroup<EmitEventRecord<K, S>, ListenEventRecord<K, S>> {
   // Attributes
   sources: Map<K, S>;
-  listeners: Source<EventData<ListenEventRecord<K, S>>>['listeners'];
+  listeners: Source<EventData<EmitEventRecord<K, S>>>['listeners'];
 }
 
 // Utils
 export function groupMap<K extends KeyPart, S extends AnySource>(builder: (key: K) => S): GroupMap<K, S> {
   const mlt = multiplexerMap(builder);
-  const src = source<any>();
+  const src = source<EventData<EmitEventRecord<K, S>>>();
 
   return {
     sources: mlt.sources,

@@ -1,4 +1,15 @@
-import { AnyEventMap, AnySource, EventMap, IMultiplexer, ISource, Key, KeyPart, Listener, OffFn } from '../defs';
+import {
+  EmitEventMap, EventData, EventKey,
+  EventMap,
+  IMultiplexer,
+  ISource,
+  Key,
+  KeyPart,
+  Listener,
+  ListenEventMap,
+  OffFn,
+  SourceTree
+} from '../defs';
 import { splitKey } from '../utils';
 
 // Types
@@ -8,8 +19,12 @@ type NextCb<R> = (src: IMultiplexer<EventMap, EventMap>, key: Key) => R;
 /** @internal */
 type EndCb<R> = (src: ISource<unknown>) => R;
 
+export type ListSourcesFn<T extends SourceTree> = () => Iterable<T[keyof T]>;
+
+export type GetSourceFn<T extends SourceTree> = <K extends keyof T & KeyPart>(key: K) => T[K];
+
 /** @internal */
-export function _multiplexer(listSources: () => Iterable<AnySource>, getSource: (key: KeyPart) => AnySource): IMultiplexer<AnyEventMap, AnyEventMap> {
+export function _multiplexer<const T extends SourceTree>(listSources: ListSourcesFn<T>, getSource: GetSourceFn<T>): IMultiplexer<EmitEventMap<T>, ListenEventMap<T>> {
   function routeEvent<R>(key: Key, next: NextCb<R>, end: EndCb<R>): R {
     const [part, subkey] = splitKey(key);
     const src = getSource(part);
@@ -29,17 +44,17 @@ export function _multiplexer(listSources: () => Iterable<AnySource>, getSource: 
       );
     },
 
-    on(key: Key, listener: Listener<any>): OffFn {
+    on<K extends EventKey<ListenEventMap<T>>>(key: K, listener: Listener<EventData<ListenEventMap<T>, K>>): OffFn {
       return routeEvent(key,
-        (mlt, subkey) => mlt.on(subkey, listener),
-        (src) => src.subscribe(listener),
+        (mlt, subkey) => mlt.on(subkey, listener as Listener<unknown>),
+        (src) => src.subscribe(listener as Listener<unknown>),
       );
     },
 
-    off(key: Key, listener: Listener<any>): void {
+    off<K extends EventKey<ListenEventMap<T>>>(key: K, listener: Listener<EventData<ListenEventMap<T>, K>>): void {
       routeEvent(key,
-        (mlt, subkey) => mlt.off(subkey, listener),
-        (src) => src.unsubscribe(listener),
+        (mlt, subkey) => mlt.off(subkey, listener as Listener<unknown>),
+        (src) => src.unsubscribe(listener as Listener<unknown>),
       );
     },
 

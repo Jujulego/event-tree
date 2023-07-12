@@ -9,7 +9,7 @@ export function inherit(parent: AnySource, map: SourceTree): AnySource {
 
   function targetOf(key: string): IMultiplexer<EventMap, EventMap> {
     const [part] = splitKey(key);
-    return part in map ? child : parent as IMultiplexer<EventMap, EventMap>;
+    return (part in map ? child : parent) as IMultiplexer<EventMap, EventMap>;
   }
 
   return {
@@ -20,17 +20,17 @@ export function inherit(parent: AnySource, map: SourceTree): AnySource {
     next(data: unknown) {
       return (parent as IEmitter<unknown>).next(data);
     },
-    subscribe(listener: Listener<any>) {
+    subscribe(listener: Listener<unknown>) {
       return (parent as IObservable<unknown>).subscribe(listener);
     },
-    unsubscribe(listener: Listener<any>) {
+    unsubscribe(listener: Listener<unknown>) {
       return (parent as IObservable<unknown>).unsubscribe(listener);
     },
-    on(key: string, listener: Listener<any>) {
+    on(key: string, listener: Listener<unknown>) {
       const target = targetOf(key);
       return target.on(key, listener);
     },
-    off(key: string, listener: Listener<any>) {
+    off(key: string, listener: Listener<unknown>) {
       const target = targetOf(key);
       return target.off(key, listener);
     },

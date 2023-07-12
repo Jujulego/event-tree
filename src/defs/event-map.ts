@@ -2,7 +2,6 @@ import { Key, KeyPart, Listener } from './utils';
 
 // Utils
 export type EventMap = Record<Key, unknown>;
-export type AnyEventMap = Record<Key, any>;
 
 /**
  * Add the given key part at the beginning of all map's keys

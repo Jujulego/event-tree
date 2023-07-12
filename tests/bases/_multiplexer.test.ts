@@ -10,7 +10,7 @@ describe('_multiplexer', () => {
 
       const getSource = jest.fn(() => src);
 
-      const mlt = _multiplexer(() => [src], getSource);
+      const mlt = _multiplexer<Record<string, typeof src>>(() => [src], getSource);
       mlt.emit('life', 42);
 
       expect(getSource).toHaveBeenCalledWith('life');
@@ -24,7 +24,7 @@ describe('_multiplexer', () => {
 
       const getSource = jest.fn(() => deep);
 
-      const mlt = _multiplexer(() => [deep], getSource);
+      const mlt = _multiplexer<Record<string, typeof deep>>(() => [deep], getSource);
       mlt.emit('deep.life', 42);
 
       expect(getSource).toHaveBeenCalledWith('deep');
