@@ -109,7 +109,7 @@ describe('dynamic', () => {
       jest.spyOn(console, 'warn');
 
       dyn.on('life', spy);
-      origin.next(source() as any);
+      origin.next(source() as unknown as Multiplexer<{ life: Source<number> }>);
 
       expect(console.warn).toHaveBeenCalled();
     });
@@ -220,7 +220,7 @@ describe('dynamic', () => {
       jest.spyOn(console, 'warn');
 
       dyn.subscribe(spy);
-      origin.next(multiplexer({}) as any);
+      origin.next(multiplexer({}) as unknown as Source<number>);
 
       expect(console.warn).toHaveBeenCalled();
     });
