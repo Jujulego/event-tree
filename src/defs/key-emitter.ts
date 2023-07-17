@@ -8,5 +8,5 @@ export interface IKeyEmitter<M extends EventMap> {
    * @param key
    * @param data
    */
-  emit<const K extends EventKey<M>>(key: K, data: EventData<M, K>): void;
+  emit<K extends EventKey<M>>(key: K, data: EventData<M, K>): void;
 }

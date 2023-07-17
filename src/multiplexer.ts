@@ -8,7 +8,7 @@ export interface Multiplexer<T extends SourceTree> extends IMultiplexer<EmitEven
 }
 
 // Utils
-export function multiplexer<const T extends SourceTree>(map: T): Multiplexer<T> {
+export function multiplexer<T extends SourceTree>(map: T): Multiplexer<T> {
   const sources = new Map(Object.entries(map) as [keyof T & KeyPart, T[keyof T & KeyPart]][]);
 
   function getSource<K extends keyof T & KeyPart>(key: K): T[K] {
