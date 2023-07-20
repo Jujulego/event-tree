@@ -10,7 +10,7 @@ import {
   OffFn,
   SourceTree
 } from '../defs';
-import { splitKey } from '../utils';
+import { splitKey } from '../utils/key';
 
 // Types
 /** @internal */
