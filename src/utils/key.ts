@@ -1,4 +1,4 @@
-import { Key, KeyPart } from './defs';
+import { Key, KeyPart } from '../defs';
 
 // Utils
 export function splitKey(key: Key): [KeyPart, Key] {

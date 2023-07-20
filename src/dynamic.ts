@@ -1,6 +1,7 @@
 import { AnySource, DynamicSource, Dynamify, EventMap, IListenable, IObservable, Listener, OffFn } from './defs';
 import { offGroup } from './off-group';
 import { Source } from './source';
+import { listenersMap } from './utils';
 
 function dynamicWarn(key?: string) {
   const type = key ? `"${key}" event listeners` : 'subscribers';
@@ -14,18 +15,18 @@ function dynamicWarn(key?: string) {
 export function dynamic<S extends IListenable<EventMap> | IObservable<unknown>>(origin: Source<S>): Dynamify<S>;
 
 export function dynamic(origin: Source<IListenable<EventMap> | IObservable<unknown>>): DynamicSource {
-  const listeners = new Map<string, Set<Listener<unknown>>>();
+  const listeners = listenersMap();
   let current: AnySource | null = null;
   let off = offGroup();
 
   // Utils
-  function register(key: string, listeners: Set<Listener<unknown>>) {
+  function register(key: string, set: Set<Listener<unknown>>) {
     if (!current) {
       return;
     }
 
     const listener = (event: unknown) => {
-      for (const lst of listeners) {
+      for (const lst of set) {
         lst(event);
       }
     };
@@ -44,22 +45,17 @@ export function dynamic(origin: Source<IListenable<EventMap> | IObservable<unkno
   }
 
   function addListener(key: string, listener: Listener<unknown>): OffFn {
-    let lsts = listeners.get(key);
+    const [set, isNew] = listeners.add(key, listener);
 
-    if (lsts) {
-      lsts.add(listener);
-    } else {
-      lsts = new Set([listener]);
-
-      listeners.set(key, lsts);
-      register(key, lsts);
+    if (isNew) {
+      register(key, set);
     }
 
-    return () => lsts?.delete(listener);
+    return () => set.delete(listener);
   }
 
   function removeListener(key: string, listener: Listener<unknown>) {
-    listeners.get(key)?.delete(listener);
+    listeners.delete(key, listener);
   }
 
   // Listen origin
