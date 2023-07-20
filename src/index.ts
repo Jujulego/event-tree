@@ -1,5 +1,6 @@
 export * from './bases';
 export * from './defs';
+export * from './dom';
 export * from './dynamic';
 export * from './group';
 export * from './group-map';
