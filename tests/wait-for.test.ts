@@ -1,3 +1,5 @@
+import { beforeEach, describe, it, vi } from 'vitest';
+
 import { group, Group, multiplexer, Multiplexer, offGroup, source, Source, waitFor } from '@/src';
 
 // Setup
@@ -13,15 +15,15 @@ beforeEach(() => {
 
 describe('waitFor', () => {
   describe('on an observable', () => {
-    it('should resolve when observable emits', async () => {
+    it('should resolve when observable emits', async ({ expect }) => {
       setTimeout(() => src.next(1), 0);
 
       await expect(waitFor(src)).resolves.toBe(1);
     });
 
-    it('should join given off group', async () => {
+    it('should join given off group', async ({ expect }) => {
       const off = offGroup();
-      jest.spyOn(off, 'add');
+      vi.spyOn(off, 'add');
 
       const prom = waitFor(src, { off });
 
@@ -34,15 +36,15 @@ describe('waitFor', () => {
   });
 
   describe('on a listenable', () => {
-    it('should resolve when listenable emits', async () => {
+    it('should resolve when listenable emits', async ({ expect }) => {
       setTimeout(() => mlt.emit('src', 1), 0);
 
       await expect(waitFor(mlt, 'src')).resolves.toBe(1);
     });
 
-    it('should join given off group', async () => {
+    it('should join given off group', async ({ expect }) => {
       const off = offGroup();
-      jest.spyOn(off, 'add');
+      vi.spyOn(off, 'add');
 
       const prom = waitFor(mlt, 'src', { off });
 
@@ -55,10 +57,10 @@ describe('waitFor', () => {
   });
 
   describe('on a listenable observable', () => {
-    it('should resolve when listenable part emits', async () => {
+    it('should resolve when listenable part emits', async ({ expect }) => {
       setTimeout(() => grp.emit('src', 1), 0);
-      jest.spyOn(grp, 'on');
-      jest.spyOn(grp, 'subscribe');
+      vi.spyOn(grp, 'on');
+      vi.spyOn(grp, 'subscribe');
 
       await expect(waitFor(grp, 'src')).resolves.toBe(1);
 
@@ -66,10 +68,10 @@ describe('waitFor', () => {
       expect(grp.subscribe).not.toHaveBeenCalled();
     });
 
-    it('should resolve when observable part emits', async () => {
+    it('should resolve when observable part emits', async ({ expect }) => {
       setTimeout(() => grp.emit('src', 1), 0);
-      jest.spyOn(grp, 'on');
-      jest.spyOn(grp, 'subscribe');
+      vi.spyOn(grp, 'on');
+      vi.spyOn(grp, 'subscribe');
 
       await expect(waitFor(grp)).resolves.toBe(1);
 

@@ -1,3 +1,5 @@
+import { beforeEach, describe, it } from 'vitest';
+
 import { multiplexer, Multiplexer, source, Source, iterate, offGroup } from '@/src';
 
 // Setup
@@ -11,7 +13,7 @@ beforeEach(() => {
 
 describe('iterate', () => {
   describe('on an observable', () => {
-    it('should iterate over observable emits', async () => {
+    it('should iterate over observable emits', async ({ expect }) => {
       const it = iterate(src);
 
       setTimeout(() => src.next(1), 0);
@@ -21,7 +23,7 @@ describe('iterate', () => {
       await expect(it.next()).resolves.toEqual({ value: 2 });
     });
 
-    it('should abort using controller (source)', async () => {
+    it('should abort using controller (source)', async ({ expect }) => {
       const off = offGroup();
       const it = iterate(src, { off });
 
@@ -31,7 +33,7 @@ describe('iterate', () => {
   });
 
   describe('on a listenable', () => {
-    it('should iterate over multiplexer emits', async () => {
+    it('should iterate over multiplexer emits', async ({ expect }) => {
       const it = iterate(mlt, 'src');
 
       setTimeout(() => mlt.emit('src', 1), 0);
@@ -41,7 +43,7 @@ describe('iterate', () => {
       await expect(it.next()).resolves.toEqual({ value: 2 });
     });
 
-    it('should abort using controller (multiplexer)', async () => {
+    it('should abort using controller (multiplexer)', async ({ expect }) => {
       const off = offGroup();
       const it = iterate(mlt, 'src', { off });
 

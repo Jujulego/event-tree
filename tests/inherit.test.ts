@@ -1,3 +1,5 @@
+import { beforeEach, describe, it, vi } from 'vitest';
+
 import { inherit, Listener, multiplexer, Multiplexer, source, Source } from '@/src';
 
 // Setup
@@ -20,9 +22,9 @@ beforeEach(() => {
 // Tests
 describe('inherit', () => {
   describe('next', () => {
-    it('should emit from int', () => {
-      jest.spyOn(int, 'next');
-      jest.spyOn(src, 'next');
+    it('should emit from int', ({ expect }) => {
+      vi.spyOn(int, 'next');
+      vi.spyOn(src, 'next');
 
       const child = inherit(int, { c: src });
       child.next(42);
@@ -31,9 +33,9 @@ describe('inherit', () => {
       expect(src.next).not.toHaveBeenCalled();
     });
 
-    it('should emit from src', () => {
-      jest.spyOn(mlt, 'emit');
-      jest.spyOn(src, 'next');
+    it('should emit from src', ({ expect }) => {
+      vi.spyOn(mlt, 'emit');
+      vi.spyOn(src, 'next');
 
       const child = inherit(mlt, { c: src });
       child.emit('c', 'c');
@@ -42,9 +44,9 @@ describe('inherit', () => {
       expect(src.next).toHaveBeenCalledWith('c');
     });
 
-    it('should emit from src (overriding mlt)', () => {
-      jest.spyOn(mlt, 'emit');
-      jest.spyOn(src, 'next');
+    it('should emit from src (overriding mlt)', ({ expect }) => {
+      vi.spyOn(mlt, 'emit');
+      vi.spyOn(src, 'next');
 
       const child = inherit(mlt, { a: src });
       child.emit('a', 'c');
@@ -53,9 +55,9 @@ describe('inherit', () => {
       expect(src.next).toHaveBeenCalledWith('c');
     });
 
-    it('should emit from mlt', () => {
-      jest.spyOn(mlt, 'emit');
-      jest.spyOn(src, 'next');
+    it('should emit from mlt', ({ expect }) => {
+      vi.spyOn(mlt, 'emit');
+      vi.spyOn(src, 'next');
 
       const child = inherit(mlt, { c: src });
       child.emit('a', 'a');
@@ -66,10 +68,10 @@ describe('inherit', () => {
   });
 
   describe('subscribe', () => {
-    it('should subscribe from int', () => {
-      jest.spyOn(int, 'subscribe');
+    it('should subscribe from int', ({ expect }) => {
+      vi.spyOn(int, 'subscribe');
 
-      const listener: Listener<number> = jest.fn();
+      const listener: Listener<number> = vi.fn();
       const child = inherit(int, { c: src });
       child.subscribe(listener);
 
@@ -78,10 +80,10 @@ describe('inherit', () => {
   });
 
   describe('unsubscribe', () => {
-    it('should unsubscribe from int', () => {
-      jest.spyOn(int, 'unsubscribe');
+    it('should unsubscribe from int', ({ expect }) => {
+      vi.spyOn(int, 'unsubscribe');
 
-      const listener: Listener<number> = jest.fn();
+      const listener: Listener<number> = vi.fn();
       const child = inherit(int, { c: src });
       child.unsubscribe(listener);
 
@@ -90,10 +92,10 @@ describe('inherit', () => {
   });
 
   describe('on', () => {
-    it('should subscribe to src', () => {
-      jest.spyOn(mlt, 'on');
-      jest.spyOn(src, 'subscribe');
-      const listener = jest.fn();
+    it('should subscribe to src', ({ expect }) => {
+      vi.spyOn(mlt, 'on');
+      vi.spyOn(src, 'subscribe');
+      const listener = vi.fn();
 
       const child = inherit(mlt, { c: src });
       child.on('c', listener);
@@ -102,10 +104,10 @@ describe('inherit', () => {
       expect(src.subscribe).toHaveBeenCalledWith(listener);
     });
 
-    it('should subscribe to src (overriding mlt)', () => {
-      jest.spyOn(mlt, 'on');
-      jest.spyOn(src, 'subscribe');
-      const listener = jest.fn();
+    it('should subscribe to src (overriding mlt)', ({ expect }) => {
+      vi.spyOn(mlt, 'on');
+      vi.spyOn(src, 'subscribe');
+      const listener = vi.fn();
 
       const child = inherit(mlt, { a: src });
       child.on('a', listener);
@@ -114,10 +116,10 @@ describe('inherit', () => {
       expect(src.subscribe).toHaveBeenCalledWith(listener);
     });
 
-    it('should subscribe to mlt', () => {
-      jest.spyOn(mlt, 'on');
-      jest.spyOn(src, 'subscribe');
-      const listener = jest.fn();
+    it('should subscribe to mlt', ({ expect }) => {
+      vi.spyOn(mlt, 'on');
+      vi.spyOn(src, 'subscribe');
+      const listener = vi.fn();
 
       const child = inherit(mlt, { c: src });
       child.on('a', listener);
@@ -128,10 +130,10 @@ describe('inherit', () => {
   });
 
   describe('off', () => {
-    it('should unsubscribe from src', () => {
-      jest.spyOn(mlt, 'off');
-      jest.spyOn(src, 'unsubscribe');
-      const listener = jest.fn();
+    it('should unsubscribe from src', ({ expect }) => {
+      vi.spyOn(mlt, 'off');
+      vi.spyOn(src, 'unsubscribe');
+      const listener = vi.fn();
 
       const child = inherit(mlt, { c: src });
       child.off('c', listener);
@@ -140,10 +142,10 @@ describe('inherit', () => {
       expect(src.unsubscribe).toHaveBeenCalledWith(listener);
     });
 
-    it('should unsubscribe from src (overriding mlt)', () => {
-      jest.spyOn(mlt, 'off');
-      jest.spyOn(src, 'unsubscribe');
-      const listener = jest.fn();
+    it('should unsubscribe from src (overriding mlt)', ({ expect }) => {
+      vi.spyOn(mlt, 'off');
+      vi.spyOn(src, 'unsubscribe');
+      const listener = vi.fn();
 
       const child = inherit(mlt, { a: src });
       child.off('a', listener);
@@ -152,10 +154,10 @@ describe('inherit', () => {
       expect(src.unsubscribe).toHaveBeenCalledWith(listener);
     });
 
-    it('should unsubscribe from mlt', () => {
-      jest.spyOn(mlt, 'off');
-      jest.spyOn(src, 'unsubscribe');
-      const listener = jest.fn();
+    it('should unsubscribe from mlt', ({ expect }) => {
+      vi.spyOn(mlt, 'off');
+      vi.spyOn(src, 'unsubscribe');
+      const listener = vi.fn();
 
       const child = inherit(mlt, { c: src });
       child.off('a', listener);
@@ -166,9 +168,9 @@ describe('inherit', () => {
   });
 
   describe('clear', () => {
-    it('should clear src', () => {
-      jest.spyOn(mlt, 'clear');
-      jest.spyOn(src, 'clear');
+    it('should clear src', ({ expect }) => {
+      vi.spyOn(mlt, 'clear');
+      vi.spyOn(src, 'clear');
 
       const child = inherit(mlt, { c: src });
       child.clear('c');
@@ -177,9 +179,9 @@ describe('inherit', () => {
       expect(src.clear).toHaveBeenCalled();
     });
 
-    it('should clear from src (overriding mlt)', () => {
-      jest.spyOn(mlt, 'clear');
-      jest.spyOn(src, 'clear');
+    it('should clear from src (overriding mlt)', ({ expect }) => {
+      vi.spyOn(mlt, 'clear');
+      vi.spyOn(src, 'clear');
 
       const child = inherit(mlt, { a: src });
       child.clear('a');
@@ -188,9 +190,9 @@ describe('inherit', () => {
       expect(src.clear).toHaveBeenCalled();
     });
 
-    it('should unsubscribe from mlt', () => {
-      jest.spyOn(mlt, 'clear');
-      jest.spyOn(src, 'clear');
+    it('should unsubscribe from mlt', ({ expect }) => {
+      vi.spyOn(mlt, 'clear');
+      vi.spyOn(src, 'clear');
 
       const child = inherit(mlt, { c: src });
       child.clear('a');
@@ -199,9 +201,9 @@ describe('inherit', () => {
       expect(src.clear).not.toHaveBeenCalled();
     });
 
-    it('should unsubscribe from src and mlt', () => {
-      jest.spyOn(mlt, 'clear');
-      jest.spyOn(src, 'clear');
+    it('should unsubscribe from src and mlt', ({ expect }) => {
+      vi.spyOn(mlt, 'clear');
+      vi.spyOn(src, 'clear');
 
       const child = inherit(mlt, { c: src });
       child.clear();

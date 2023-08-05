@@ -1,3 +1,5 @@
+import { beforeEach, describe, it, vi } from 'vitest';
+
 import { _group, IMultiplexer, ISource, Listener, OffFn } from '@/src';
 
 // Setup
@@ -6,25 +8,25 @@ let mlt: IMultiplexer<{ life: number }, { life: number }>;
 let src: ISource<number>;
 
 beforeEach(() => {
-  off = jest.fn();
+  off = vi.fn();
   mlt = {
-    emit: jest.fn(),
-    on: jest.fn(() => off),
-    off: jest.fn(),
-    clear: jest.fn(),
+    emit: vi.fn(),
+    on: vi.fn(() => off),
+    off: vi.fn(),
+    clear: vi.fn(),
   };
   src = {
-    next: jest.fn(),
-    subscribe: jest.fn(() => off),
-    unsubscribe: jest.fn(),
-    clear: jest.fn(),
+    next: vi.fn(),
+    subscribe: vi.fn(() => off),
+    unsubscribe: vi.fn(),
+    clear: vi.fn(),
   };
 });
 
 // Tests
 describe('_group', () => {
   describe('emit', () => {
-    it('should emit event on both multiplexer and source', () => {
+    it('should emit event on both multiplexer and source', ({ expect }) => {
       const grp = _group(mlt, src);
       grp.emit('life', 42);
 
@@ -34,9 +36,9 @@ describe('_group', () => {
   });
 
   describe('on', () => {
-    it('should listen to multiplexer', () => {
+    it('should listen to multiplexer', ({ expect }) => {
       const grp = _group(mlt, src);
-      const listener: Listener<number> = jest.fn();
+      const listener: Listener<number> = vi.fn();
 
       expect(grp.on('life', listener)).toBe(off);
 
@@ -46,9 +48,9 @@ describe('_group', () => {
   });
 
   describe('off', () => {
-    it('should stop listening to multiplexer', () => {
+    it('should stop listening to multiplexer', ({ expect }) => {
       const grp = _group(mlt, src);
-      const listener: Listener<number> = jest.fn();
+      const listener: Listener<number> = vi.fn();
 
       grp.off('life', listener);
 
@@ -58,9 +60,9 @@ describe('_group', () => {
   });
 
   describe('subscribe', () => {
-    it('should subscribe to source', () => {
+    it('should subscribe to source', ({ expect }) => {
       const grp = _group(mlt, src);
-      const listener: Listener<number> = jest.fn();
+      const listener: Listener<number> = vi.fn();
 
       expect(grp.subscribe(listener)).toBe(off);
 
@@ -70,9 +72,9 @@ describe('_group', () => {
   });
 
   describe('unsubscribe', () => {
-    it('should unsubscribe from source', () => {
+    it('should unsubscribe from source', ({ expect }) => {
       const grp = _group(mlt, src);
-      const listener: Listener<number> = jest.fn();
+      const listener: Listener<number> = vi.fn();
 
       grp.unsubscribe(listener);
 
@@ -82,7 +84,7 @@ describe('_group', () => {
   });
 
   describe('clear', () => {
-    it('should clear only one event of multiplexer', () => {
+    it('should clear only one event of multiplexer', ({ expect }) => {
       const grp = _group(mlt, src);
 
       grp.clear('life');
@@ -91,7 +93,7 @@ describe('_group', () => {
       expect(src.clear).not.toHaveBeenCalled();
     });
 
-    it('should clear all events of multiplexer & source', () => {
+    it('should clear all events of multiplexer & source', ({ expect }) => {
       const grp = _group(mlt, src);
 
       grp.clear();

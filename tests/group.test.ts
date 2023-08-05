@@ -1,3 +1,5 @@
+import { beforeEach, describe, it, vi } from 'vitest';
+
 import { Group, group, Listener, multiplexer, Multiplexer, Source, source } from '@/src';
 
 // Setup
@@ -27,8 +29,8 @@ beforeEach(() => {
 
 // Tests
 describe('group', () => {
-  it('should call group listener when emitting a child event', () => {
-    const listener: Listener<number | string | boolean> = jest.fn();
+  it('should call group listener when emitting a child event', ({ expect }) => {
+    const listener: Listener<number | string | boolean> = vi.fn();
 
     grp.subscribe(listener);
     grp.emit('int', 1);
@@ -40,8 +42,8 @@ describe('group', () => {
     expect(listener).toHaveBeenCalledWith(true);
   });
 
-  it('should not call removed listeners (off method)', () => {
-    const listener: Listener<number | string | boolean> = jest.fn();
+  it('should not call removed listeners (off method)', ({ expect }) => {
+    const listener: Listener<number | string | boolean> = vi.fn();
 
     grp.subscribe(listener);
     grp.unsubscribe(listener);
@@ -53,8 +55,8 @@ describe('group', () => {
     expect(listener).not.toHaveBeenCalled();
   });
 
-  it('should not call removed listeners (returned off)', () => {
-    const listener: Listener<number | string | boolean> = jest.fn();
+  it('should not call removed listeners (returned off)', ({ expect }) => {
+    const listener: Listener<number | string | boolean> = vi.fn();
 
     const off = grp.subscribe(listener);
     off();
@@ -67,97 +69,97 @@ describe('group', () => {
   });
 
   describe('emit', () => {
-    it('should emit child event', () => {
-      jest.spyOn(int, 'next');
+    it('should emit child event', ({ expect }) => {
+      vi.spyOn(int, 'next');
 
       grp.emit('int', 1);
 
       expect(int.next).toHaveBeenCalledWith(1);
     });
 
-    it('should emit deep child event', () => {
-      jest.spyOn(boo, 'next');
+    it('should emit deep child event', ({ expect }) => {
+      vi.spyOn(boo, 'next');
 
       grp.emit('deep.boo', true);
 
       expect(boo.next).toHaveBeenCalledWith(true);
     });
 
-    it('should not emit child event as child doesn\'t exists', () => {
+    it('should not emit child event as child doesn\'t exists', ({ expect }) => {
       expect(() => grp.emit('toto' as 'int', 1))
         .toThrow(new Error('Child source toto not found'));
     });
   });
 
   describe('on', () => {
-    it('should subscribe to child source', () => {
-      jest.spyOn(int, 'subscribe');
-      const listener = jest.fn();
+    it('should subscribe to child source', ({ expect }) => {
+      vi.spyOn(int, 'subscribe');
+      const listener = vi.fn();
 
       grp.on('int', listener);
 
       expect(int.subscribe).toHaveBeenCalledWith(listener);
     });
 
-    it('should subscribe to deep child event', () => {
-      jest.spyOn(boo, 'subscribe');
-      const listener = jest.fn();
+    it('should subscribe to deep child event', ({ expect }) => {
+      vi.spyOn(boo, 'subscribe');
+      const listener = vi.fn();
 
       grp.on('deep.boo', listener);
 
       expect(boo.subscribe).toHaveBeenCalledWith(listener);
     });
 
-    it('should not subscribe to child event as child doesn\'t exists', () => {
-      expect(() => grp.on('toto' as 'int', jest.fn()))
+    it('should not subscribe to child event as child doesn\'t exists', ({ expect }) => {
+      expect(() => grp.on('toto' as 'int', vi.fn()))
         .toThrow(new Error('Child source toto not found'));
     });
   });
 
   describe('off', () => {
-    it('should unsubscribe from child source', () => {
-      jest.spyOn(int, 'unsubscribe');
-      const listener = jest.fn();
+    it('should unsubscribe from child source', ({ expect }) => {
+      vi.spyOn(int, 'unsubscribe');
+      const listener = vi.fn();
 
       grp.off('int', listener);
 
       expect(int.unsubscribe).toHaveBeenCalledWith(listener);
     });
 
-    it('should unsubscribe from deep child event', () => {
-      jest.spyOn(boo, 'unsubscribe');
-      const listener = jest.fn();
+    it('should unsubscribe from deep child event', ({ expect }) => {
+      vi.spyOn(boo, 'unsubscribe');
+      const listener = vi.fn();
 
       grp.off('deep.boo', listener);
 
       expect(boo.unsubscribe).toHaveBeenCalledWith(listener);
     });
 
-    it('should not unsubscribe from child event as child doesn\'t exists', () => {
-      expect(() => grp.off('toto' as 'int', jest.fn()))
+    it('should not unsubscribe from child event as child doesn\'t exists', ({ expect }) => {
+      expect(() => grp.off('toto' as 'int', vi.fn()))
         .toThrow(new Error('Child source toto not found'));
     });
   });
 
   describe('clear', () => {
-    it('should clear child source', () => {
-      jest.spyOn(int, 'clear');
+    it('should clear child source', ({ expect }) => {
+      vi.spyOn(int, 'clear');
       grp.clear('int');
 
       expect(int.clear).toHaveBeenCalled();
     });
 
-    it('should clear deep child source', () => {
-      jest.spyOn(boo, 'clear');
+    it('should clear deep child source', ({ expect }) => {
+      vi.spyOn(boo, 'clear');
       grp.clear('deep.boo');
 
       expect(boo.clear).toHaveBeenCalled();
     });
 
-    it('should clear all child sources', () => {
-      jest.spyOn(int, 'clear');
-      jest.spyOn(str, 'clear');
-      jest.spyOn(boo, 'clear');
+    it('should clear all child sources', ({ expect }) => {
+      vi.spyOn(int, 'clear');
+      vi.spyOn(str, 'clear');
+      vi.spyOn(boo, 'clear');
       grp.clear();
 
       expect(int.clear).toHaveBeenCalled();
@@ -165,7 +167,7 @@ describe('group', () => {
       expect(boo.clear).toHaveBeenCalled();
     });
 
-    it('should not clear child as child doesn\'t exists', () => {
+    it('should not clear child as child doesn\'t exists', ({ expect }) => {
       expect(() => grp.clear('toto' as 'int'))
         .toThrow(new Error('Child source toto not found'));
     });
