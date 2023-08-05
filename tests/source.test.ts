@@ -1,6 +1,7 @@
 import { vi } from 'vitest';
 
-import { Listener, Source, source } from '@/src';
+import { Listener } from '@/src/defs';
+import { source, Source } from '@/src/source';
 
 // Setup
 let src: Source<number>;

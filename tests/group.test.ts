@@ -1,6 +1,9 @@
 import { vi } from 'vitest';
 
-import { Group, group, Listener, multiplexer, Multiplexer, Source, source } from '@/src';
+import { Listener } from '@/src/defs';
+import { group, Group } from '@/src/group';
+import { multiplexer, Multiplexer } from '@/src/multiplexer';
+import { source, Source } from '@/src/source';
 
 // Setup
 let int: Source<number>;

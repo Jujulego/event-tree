@@ -1,17 +1,10 @@
 import { vi } from 'vitest';
 
-import {
-  EventMap,
-  group,
-  Group,
-  IListenable,
-  IObservable,
-  lazy,
-  multiplexer,
-  Multiplexer,
-  source,
-  Source
-} from '@/src';
+import { EventMap, IListenable, IObservable } from '@/src/defs';
+import { group, Group } from '@/src/group';
+import { lazy } from '@/src/lazy';
+import { multiplexer, Multiplexer } from '@/src/multiplexer';
+import { source, Source } from '@/src/source';
 
 // Setup
 let src: Source<number>;

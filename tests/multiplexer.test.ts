@@ -1,6 +1,7 @@
 import { vi } from 'vitest';
 
-import { Multiplexer, multiplexer, Source, source } from '@/src';
+import { multiplexer, Multiplexer } from '@/src/multiplexer';
+import { source, Source } from '@/src/source';
 
 // Setup
 let int: Source<number>;
