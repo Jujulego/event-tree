@@ -7,6 +7,9 @@ export default defineConfig({
     coverage: {
       include: ['src/**'],
       reporter: ['text', 'lcovonly'],
+    },
+    typecheck: {
+      tsconfig: 'tests/tsconfig.json',
     }
   },
   plugins: [

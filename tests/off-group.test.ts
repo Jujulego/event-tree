@@ -1,10 +1,10 @@
-import { describe, it, vi } from 'vitest';
+import { vi } from 'vitest';
 
 import { offGroup } from '@/src';
 
 // Tests
 describe('offGroup', () => {
-  it('should call grouped functions', ({ expect }) => {
+  it('should call grouped functions', () => {
     const spy1 = vi.fn();
     const spy2 = vi.fn();
 
@@ -17,7 +17,7 @@ describe('offGroup', () => {
     expect(spy2).toHaveBeenCalledTimes(1);
   });
 
-  it('should call also added other group (add)', ({ expect }) => {
+  it('should call also added other group (add)', () => {
     const spy1 = vi.fn();
     const spy2 = vi.fn();
     const spy3 = vi.fn();
@@ -32,7 +32,7 @@ describe('offGroup', () => {
     expect(spy3).toHaveBeenCalledTimes(1);
   });
 
-  it('should call also added other group (init)', ({ expect }) => {
+  it('should call also added other group (init)', () => {
     const spy1 = vi.fn();
     const spy2 = vi.fn();
     const spy3 = vi.fn();

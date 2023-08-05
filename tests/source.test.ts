@@ -1,4 +1,4 @@
-import { beforeEach, describe, it, vi } from 'vitest';
+import { vi } from 'vitest';
 
 import { Listener, Source, source } from '@/src';
 
@@ -11,7 +11,7 @@ beforeEach(() => {
 
 // Tests
 describe('source', () => {
-  it('should call listeners when an event is emitted', ({ expect }) => {
+  it('should call listeners when an event is emitted', () => {
     const listener: Listener<number> = vi.fn();
 
     src.subscribe(listener);
@@ -20,7 +20,7 @@ describe('source', () => {
     expect(listener).toHaveBeenCalledWith(1);
   });
 
-  it('should not call removed listeners (off method)', ({ expect }) => {
+  it('should not call removed listeners (off method)', () => {
     const listener: Listener<number> = vi.fn();
 
     src.subscribe(listener);
@@ -30,7 +30,7 @@ describe('source', () => {
     expect(listener).not.toHaveBeenCalled();
   });
 
-  it('should not call removed listeners (returned off)', ({ expect }) => {
+  it('should not call removed listeners (returned off)', () => {
     const listener: Listener<number> = vi.fn();
 
     const off = src.subscribe(listener);
@@ -41,7 +41,7 @@ describe('source', () => {
     expect(listener).not.toHaveBeenCalled();
   });
 
-  it('should not call removed listeners (clear)', ({ expect }) => {
+  it('should not call removed listeners (clear)', () => {
     const listener: Listener<number> = vi.fn();
 
     src.subscribe(listener);

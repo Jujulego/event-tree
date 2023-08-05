@@ -1,4 +1,4 @@
-import { beforeEach, describe, it, vi } from 'vitest';
+import { vi } from 'vitest';
 
 import { group, Group, multiplexer, Multiplexer, offGroup, source, Source, waitFor } from '@/src';
 
@@ -15,13 +15,13 @@ beforeEach(() => {
 
 describe('waitFor', () => {
   describe('on an observable', () => {
-    it('should resolve when observable emits', async ({ expect }) => {
+    it('should resolve when observable emits', async () => {
       setTimeout(() => src.next(1), 0);
 
       await expect(waitFor(src)).resolves.toBe(1);
     });
 
-    it('should join given off group', async ({ expect }) => {
+    it('should join given off group', async () => {
       const off = offGroup();
       vi.spyOn(off, 'add');
 
@@ -36,13 +36,13 @@ describe('waitFor', () => {
   });
 
   describe('on a listenable', () => {
-    it('should resolve when listenable emits', async ({ expect }) => {
+    it('should resolve when listenable emits', async () => {
       setTimeout(() => mlt.emit('src', 1), 0);
 
       await expect(waitFor(mlt, 'src')).resolves.toBe(1);
     });
 
-    it('should join given off group', async ({ expect }) => {
+    it('should join given off group', async () => {
       const off = offGroup();
       vi.spyOn(off, 'add');
 
@@ -57,7 +57,7 @@ describe('waitFor', () => {
   });
 
   describe('on a listenable observable', () => {
-    it('should resolve when listenable part emits', async ({ expect }) => {
+    it('should resolve when listenable part emits', async () => {
       setTimeout(() => grp.emit('src', 1), 0);
       vi.spyOn(grp, 'on');
       vi.spyOn(grp, 'subscribe');
@@ -68,7 +68,7 @@ describe('waitFor', () => {
       expect(grp.subscribe).not.toHaveBeenCalled();
     });
 
-    it('should resolve when observable part emits', async ({ expect }) => {
+    it('should resolve when observable part emits', async () => {
       setTimeout(() => grp.emit('src', 1), 0);
       vi.spyOn(grp, 'on');
       vi.spyOn(grp, 'subscribe');

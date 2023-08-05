@@ -1,4 +1,4 @@
-import { beforeEach, describe, it, vi } from 'vitest';
+import { vi } from 'vitest';
 
 import { dynamic, multiplexer, Multiplexer, Source, source } from '@/src';
 
@@ -15,7 +15,7 @@ describe('dynamic', () => {
       origin = source();
     });
 
-    it('should call previously registered listeners', ({ expect }) => {
+    it('should call previously registered listeners', () => {
       const dyn = dynamic(origin);
       const spy = vi.fn();
 
@@ -27,7 +27,7 @@ describe('dynamic', () => {
       expect(spy).toHaveBeenCalledWith(42);
     });
 
-    it('should call next registered listeners', ({ expect }) => {
+    it('should call next registered listeners', () => {
       const dyn = dynamic(origin);
       const spy = vi.fn();
 
@@ -40,7 +40,7 @@ describe('dynamic', () => {
       expect(spy).toHaveBeenCalledWith(42);
     });
 
-    it('should not call removed listener (callback)', ({ expect }) => {
+    it('should not call removed listener (callback)', () => {
       const dyn = dynamic(origin);
       const spy = vi.fn();
 
@@ -53,7 +53,7 @@ describe('dynamic', () => {
       expect(spy).not.toHaveBeenCalledWith();
     });
 
-    it('should not call removed listener (off)', ({ expect }) => {
+    it('should not call removed listener (off)', () => {
       const dyn = dynamic(origin);
       const spy = vi.fn();
 
@@ -66,7 +66,7 @@ describe('dynamic', () => {
       expect(spy).not.toHaveBeenCalledWith();
     });
 
-    it('should not call removed listener (clear)', ({ expect }) => {
+    it('should not call removed listener (clear)', () => {
       const dyn = dynamic(origin);
       const spy = vi.fn();
 
@@ -79,7 +79,7 @@ describe('dynamic', () => {
       expect(spy).not.toHaveBeenCalledWith();
     });
 
-    it('should not call registered listener if source has been replaced', ({ expect }) => {
+    it('should not call registered listener if source has been replaced', () => {
       const dyn = dynamic(origin);
       const spy = vi.fn();
 
@@ -92,7 +92,7 @@ describe('dynamic', () => {
       expect(spy).not.toHaveBeenCalledWith();
     });
 
-    it('should call registered listener if next source emits', ({ expect }) => {
+    it('should call registered listener if next source emits', () => {
       const dyn = dynamic(origin);
       const spy = vi.fn();
 
@@ -105,7 +105,7 @@ describe('dynamic', () => {
       expect(spy).toHaveBeenCalledWith(42);
     });
 
-    it('should warn if emitted source does not support listenable operation', ({ expect }) => {
+    it('should warn if emitted source does not support listenable operation', () => {
       const dyn = dynamic(origin);
       const spy = vi.fn();
       vi.spyOn(console, 'warn');
@@ -126,7 +126,7 @@ describe('dynamic', () => {
       origin = source();
     });
 
-    it('should call previously registered listeners', ({ expect }) => {
+    it('should call previously registered listeners', () => {
       const dyn = dynamic(origin);
       const spy = vi.fn();
 
@@ -138,7 +138,7 @@ describe('dynamic', () => {
       expect(spy).toHaveBeenCalledWith(42);
     });
 
-    it('should call next registered listeners', ({ expect }) => {
+    it('should call next registered listeners', () => {
       const dyn = dynamic(origin);
       const spy = vi.fn();
 
@@ -151,7 +151,7 @@ describe('dynamic', () => {
       expect(spy).toHaveBeenCalledWith(42);
     });
 
-    it('should not call removed listener (callback)', ({ expect }) => {
+    it('should not call removed listener (callback)', () => {
       const dyn = dynamic(origin);
       const spy = vi.fn();
 
@@ -164,7 +164,7 @@ describe('dynamic', () => {
       expect(spy).not.toHaveBeenCalledWith();
     });
 
-    it('should not call removed listener (unsubscribe)', ({ expect }) => {
+    it('should not call removed listener (unsubscribe)', () => {
       const dyn = dynamic(origin);
       const spy = vi.fn();
 
@@ -177,7 +177,7 @@ describe('dynamic', () => {
       expect(spy).not.toHaveBeenCalledWith();
     });
 
-    it('should not call removed listener (clear)', ({ expect }) => {
+    it('should not call removed listener (clear)', () => {
       const dyn = dynamic(origin);
       const spy = vi.fn();
 
@@ -190,7 +190,7 @@ describe('dynamic', () => {
       expect(spy).not.toHaveBeenCalledWith();
     });
 
-    it('should not call registered listener if source has been replaced', ({ expect }) => {
+    it('should not call registered listener if source has been replaced', () => {
       const dyn = dynamic(origin);
       const spy = vi.fn();
 
@@ -203,7 +203,7 @@ describe('dynamic', () => {
       expect(spy).not.toHaveBeenCalledWith();
     });
 
-    it('should call registered listener if next source emits', ({ expect }) => {
+    it('should call registered listener if next source emits', () => {
       const dyn = dynamic(origin);
       const spy = vi.fn();
 
@@ -216,7 +216,7 @@ describe('dynamic', () => {
       expect(spy).toHaveBeenCalledWith(42);
     });
 
-    it('should warn if emitted source does not support observable operation', ({ expect }) => {
+    it('should warn if emitted source does not support observable operation', () => {
       const dyn = dynamic(origin);
       const spy = vi.fn();
       vi.spyOn(console, 'warn');

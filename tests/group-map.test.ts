@@ -1,10 +1,10 @@
-import { describe, it, vi } from 'vitest';
+import { vi } from 'vitest';
 
 import { groupMap, Listener, multiplexer, source } from '@/src';
 
 // Tests
 describe('groupMap', () => {
-  it('should call group listener when emitting a child event', ({ expect }) => {
+  it('should call group listener when emitting a child event', () => {
     const groupSpy: Listener<number> = vi.fn();
     const sourceSpy: Listener<number> = vi.fn();
     const src = source<number>();
@@ -22,7 +22,7 @@ describe('groupMap', () => {
     expect(builder).toHaveBeenCalledWith('life');
   });
 
-  it('should call group listener when emitting a deep child event', ({ expect }) => {
+  it('should call group listener when emitting a deep child event', () => {
     const groupSpy: Listener<number> = vi.fn();
     const deepSpy: Listener<number> = vi.fn();
     const deep = multiplexer({

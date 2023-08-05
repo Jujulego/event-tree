@@ -1,6 +1,6 @@
-import { describe, it, vi } from 'vitest';
+import { vi } from 'vitest';
 
-import { dom, DomEmitter } from '@/src';
+import { dom, DomEmitter } from '@/src/dom';
 
 // Types
 interface TestElementEventMap {
@@ -11,7 +11,7 @@ interface TestElementEventMap {
 // Tests
 describe('dom', () => {
   describe('on', () => {
-    it('should register listener with addEventListener', ({ expect }) => {
+    it('should register listener with addEventListener', () => {
       // Setup
       const listener = vi.fn();
       const element: DomEmitter<TestElementEventMap> = {
@@ -26,7 +26,7 @@ describe('dom', () => {
       expect(element.addEventListener).toHaveBeenCalledWith('life', listener);
     });
 
-    it('should use removeEventListener when calling off', ({ expect }) => {
+    it('should use removeEventListener when calling off', () => {
       // Setup
       const listener = vi.fn();
       const element: DomEmitter<TestElementEventMap> = {
@@ -44,7 +44,7 @@ describe('dom', () => {
   });
 
   describe('off', () => {
-    it('should unregister listener with removeEventListener', ({ expect }) => {
+    it('should unregister listener with removeEventListener', () => {
       // Setup
       const listener = vi.fn();
       const element: DomEmitter<TestElementEventMap> = {
@@ -61,7 +61,7 @@ describe('dom', () => {
   });
 
   describe('clear', () => {
-    it('should unregister all listeners', ({ expect }) => {
+    it('should unregister all listeners', () => {
       // Setup
       const listenerA = vi.fn();
       const listenerB = vi.fn();
@@ -84,7 +84,7 @@ describe('dom', () => {
       expect(element.removeEventListener).toHaveBeenCalledWith('test', listenerC);
     });
 
-    it('should unregister all life listeners', ({ expect }) => {
+    it('should unregister all life listeners', () => {
       // Setup
       const listenerA = vi.fn();
       const listenerB = vi.fn();

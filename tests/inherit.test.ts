@@ -1,4 +1,4 @@
-import { beforeEach, describe, it, vi } from 'vitest';
+import { vi } from 'vitest';
 
 import { inherit, Listener, multiplexer, Multiplexer, source, Source } from '@/src';
 
@@ -22,7 +22,7 @@ beforeEach(() => {
 // Tests
 describe('inherit', () => {
   describe('next', () => {
-    it('should emit from int', ({ expect }) => {
+    it('should emit from int', () => {
       vi.spyOn(int, 'next');
       vi.spyOn(src, 'next');
 
@@ -33,7 +33,7 @@ describe('inherit', () => {
       expect(src.next).not.toHaveBeenCalled();
     });
 
-    it('should emit from src', ({ expect }) => {
+    it('should emit from src', () => {
       vi.spyOn(mlt, 'emit');
       vi.spyOn(src, 'next');
 
@@ -44,7 +44,7 @@ describe('inherit', () => {
       expect(src.next).toHaveBeenCalledWith('c');
     });
 
-    it('should emit from src (overriding mlt)', ({ expect }) => {
+    it('should emit from src (overriding mlt)', () => {
       vi.spyOn(mlt, 'emit');
       vi.spyOn(src, 'next');
 
@@ -55,7 +55,7 @@ describe('inherit', () => {
       expect(src.next).toHaveBeenCalledWith('c');
     });
 
-    it('should emit from mlt', ({ expect }) => {
+    it('should emit from mlt', () => {
       vi.spyOn(mlt, 'emit');
       vi.spyOn(src, 'next');
 
@@ -68,7 +68,7 @@ describe('inherit', () => {
   });
 
   describe('subscribe', () => {
-    it('should subscribe from int', ({ expect }) => {
+    it('should subscribe from int', () => {
       vi.spyOn(int, 'subscribe');
 
       const listener: Listener<number> = vi.fn();
@@ -80,7 +80,7 @@ describe('inherit', () => {
   });
 
   describe('unsubscribe', () => {
-    it('should unsubscribe from int', ({ expect }) => {
+    it('should unsubscribe from int', () => {
       vi.spyOn(int, 'unsubscribe');
 
       const listener: Listener<number> = vi.fn();
@@ -92,7 +92,7 @@ describe('inherit', () => {
   });
 
   describe('on', () => {
-    it('should subscribe to src', ({ expect }) => {
+    it('should subscribe to src', () => {
       vi.spyOn(mlt, 'on');
       vi.spyOn(src, 'subscribe');
       const listener = vi.fn();
@@ -104,7 +104,7 @@ describe('inherit', () => {
       expect(src.subscribe).toHaveBeenCalledWith(listener);
     });
 
-    it('should subscribe to src (overriding mlt)', ({ expect }) => {
+    it('should subscribe to src (overriding mlt)', () => {
       vi.spyOn(mlt, 'on');
       vi.spyOn(src, 'subscribe');
       const listener = vi.fn();
@@ -116,7 +116,7 @@ describe('inherit', () => {
       expect(src.subscribe).toHaveBeenCalledWith(listener);
     });
 
-    it('should subscribe to mlt', ({ expect }) => {
+    it('should subscribe to mlt', () => {
       vi.spyOn(mlt, 'on');
       vi.spyOn(src, 'subscribe');
       const listener = vi.fn();
@@ -130,7 +130,7 @@ describe('inherit', () => {
   });
 
   describe('off', () => {
-    it('should unsubscribe from src', ({ expect }) => {
+    it('should unsubscribe from src', () => {
       vi.spyOn(mlt, 'off');
       vi.spyOn(src, 'unsubscribe');
       const listener = vi.fn();
@@ -142,7 +142,7 @@ describe('inherit', () => {
       expect(src.unsubscribe).toHaveBeenCalledWith(listener);
     });
 
-    it('should unsubscribe from src (overriding mlt)', ({ expect }) => {
+    it('should unsubscribe from src (overriding mlt)', () => {
       vi.spyOn(mlt, 'off');
       vi.spyOn(src, 'unsubscribe');
       const listener = vi.fn();
@@ -154,7 +154,7 @@ describe('inherit', () => {
       expect(src.unsubscribe).toHaveBeenCalledWith(listener);
     });
 
-    it('should unsubscribe from mlt', ({ expect }) => {
+    it('should unsubscribe from mlt', () => {
       vi.spyOn(mlt, 'off');
       vi.spyOn(src, 'unsubscribe');
       const listener = vi.fn();
@@ -168,7 +168,7 @@ describe('inherit', () => {
   });
 
   describe('clear', () => {
-    it('should clear src', ({ expect }) => {
+    it('should clear src', () => {
       vi.spyOn(mlt, 'clear');
       vi.spyOn(src, 'clear');
 
@@ -179,7 +179,7 @@ describe('inherit', () => {
       expect(src.clear).toHaveBeenCalled();
     });
 
-    it('should clear from src (overriding mlt)', ({ expect }) => {
+    it('should clear from src (overriding mlt)', () => {
       vi.spyOn(mlt, 'clear');
       vi.spyOn(src, 'clear');
 
@@ -190,7 +190,7 @@ describe('inherit', () => {
       expect(src.clear).toHaveBeenCalled();
     });
 
-    it('should unsubscribe from mlt', ({ expect }) => {
+    it('should unsubscribe from mlt', () => {
       vi.spyOn(mlt, 'clear');
       vi.spyOn(src, 'clear');
 
@@ -201,7 +201,7 @@ describe('inherit', () => {
       expect(src.clear).not.toHaveBeenCalled();
     });
 
-    it('should unsubscribe from src and mlt', ({ expect }) => {
+    it('should unsubscribe from src and mlt', () => {
       vi.spyOn(mlt, 'clear');
       vi.spyOn(src, 'clear');
 

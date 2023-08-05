@@ -28,7 +28,8 @@
     "clean": "gulp clean",
     "build": "gulp build",
     "watch": "gulp watch",
-    "test": "vitest"
+    "test": "vitest run",
+    "test:types": "vitest typecheck"
   },
   "packageManager": "yarn@3.6.1",
   "devDependencies": {

@@ -1,11 +1,12 @@
-import { describe, it, vi } from 'vitest';
+import { vi } from 'vitest';
 
-import { _multiplexer, IEmitter, IKeyEmitter, IListenable, IObservable } from '@/src';
+import { _multiplexer } from '@/src/bases';
+import { IEmitter, IKeyEmitter, IListenable, IObservable } from '@/src/defs';
 
 // Tests
 describe('_multiplexer', () => {
   describe('emit', () => {
-    it('should emit child event', ({ expect }) => {
+    it('should emit child event', () => {
       const src: IEmitter<number> = {
         next: vi.fn(),
       };
@@ -19,7 +20,7 @@ describe('_multiplexer', () => {
       expect(src.next).toHaveBeenCalledWith(42);
     });
 
-    it('should emit deep child event', ({ expect }) => {
+    it('should emit deep child event', () => {
       const deep: IKeyEmitter<{ 'life': number }> = {
         emit: vi.fn(),
       };
@@ -35,7 +36,7 @@ describe('_multiplexer', () => {
   });
 
   describe('on', () => {
-    it('should subscribe to child source', ({ expect }) => {
+    it('should subscribe to child source', () => {
       const off = vi.fn();
       const src: IObservable<number> = {
         subscribe: vi.fn(() => off),
@@ -53,7 +54,7 @@ describe('_multiplexer', () => {
       expect(src.subscribe).toHaveBeenCalledWith(listener);
     });
 
-    it('should subscribe to deep child event', ({ expect }) => {
+    it('should subscribe to deep child event', () => {
       const off = vi.fn();
       const deep: IListenable<{ 'life': number }> = {
         on: vi.fn(() => off),
@@ -73,7 +74,7 @@ describe('_multiplexer', () => {
   });
 
   describe('off', () => {
-    it('should unsubscribe from child source', ({ expect }) => {
+    it('should unsubscribe from child source', () => {
       const off = vi.fn();
       const src: IObservable<number> = {
         subscribe: vi.fn(() => off),
@@ -91,7 +92,7 @@ describe('_multiplexer', () => {
       expect(src.unsubscribe).toHaveBeenCalledWith(listener);
     });
 
-    it('should unsubscribe from deep child event', ({ expect }) => {
+    it('should unsubscribe from deep child event', () => {
       const off = vi.fn();
       const deep: IListenable<{ 'life': number }> = {
         on: vi.fn(() => off),
@@ -111,7 +112,7 @@ describe('_multiplexer', () => {
   });
 
   describe('clear', () => {
-    it('should clear child source', ({ expect }) => {
+    it('should clear child source', () => {
       const off = vi.fn();
       const src: IObservable<number> = {
         subscribe: vi.fn(() => off),
@@ -128,7 +129,7 @@ describe('_multiplexer', () => {
       expect(src.clear).toHaveBeenCalled();
     });
 
-    it('should clear deep child source', ({ expect }) => {
+    it('should clear deep child source', () => {
       const off = vi.fn();
       const deep: IListenable<{ 'life': number }> = {
         on: vi.fn(() => off),
@@ -145,7 +146,7 @@ describe('_multiplexer', () => {
       expect(deep.clear).toHaveBeenCalledWith('life');
     });
 
-    it('should clear all child sources', ({ expect }) => {
+    it('should clear all child sources', () => {
       const off = vi.fn();
       const src: IObservable<number> = {
         subscribe: vi.fn(() => off),

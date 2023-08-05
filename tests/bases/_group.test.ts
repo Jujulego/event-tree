@@ -1,6 +1,7 @@
-import { beforeEach, describe, it, vi } from 'vitest';
+import { vi } from 'vitest';
 
-import { _group, IMultiplexer, ISource, Listener, OffFn } from '@/src';
+import { _group } from '@/src/bases';
+import { IMultiplexer, ISource, Listener, OffFn } from '@/src/defs';
 
 // Setup
 let off: OffFn;
@@ -26,7 +27,7 @@ beforeEach(() => {
 // Tests
 describe('_group', () => {
   describe('emit', () => {
-    it('should emit event on both multiplexer and source', ({ expect }) => {
+    it('should emit event on both multiplexer and source', () => {
       const grp = _group(mlt, src);
       grp.emit('life', 42);
 
@@ -36,7 +37,7 @@ describe('_group', () => {
   });
 
   describe('on', () => {
-    it('should listen to multiplexer', ({ expect }) => {
+    it('should listen to multiplexer', () => {
       const grp = _group(mlt, src);
       const listener: Listener<number> = vi.fn();
 
@@ -48,7 +49,7 @@ describe('_group', () => {
   });
 
   describe('off', () => {
-    it('should stop listening to multiplexer', ({ expect }) => {
+    it('should stop listening to multiplexer', () => {
       const grp = _group(mlt, src);
       const listener: Listener<number> = vi.fn();
 
@@ -60,7 +61,7 @@ describe('_group', () => {
   });
 
   describe('subscribe', () => {
-    it('should subscribe to source', ({ expect }) => {
+    it('should subscribe to source', () => {
       const grp = _group(mlt, src);
       const listener: Listener<number> = vi.fn();
 
@@ -72,7 +73,7 @@ describe('_group', () => {
   });
 
   describe('unsubscribe', () => {
-    it('should unsubscribe from source', ({ expect }) => {
+    it('should unsubscribe from source', () => {
       const grp = _group(mlt, src);
       const listener: Listener<number> = vi.fn();
 
@@ -84,7 +85,7 @@ describe('_group', () => {
   });
 
   describe('clear', () => {
-    it('should clear only one event of multiplexer', ({ expect }) => {
+    it('should clear only one event of multiplexer', () => {
       const grp = _group(mlt, src);
 
       grp.clear('life');
@@ -93,7 +94,7 @@ describe('_group', () => {
       expect(src.clear).not.toHaveBeenCalled();
     });
 
-    it('should clear all events of multiplexer & source', ({ expect }) => {
+    it('should clear all events of multiplexer & source', () => {
       const grp = _group(mlt, src);
 
       grp.clear();

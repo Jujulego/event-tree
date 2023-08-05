@@ -1,4 +1,4 @@
-import { beforeEach, describe, it, vi } from 'vitest';
+import { vi } from 'vitest';
 
 import { multiplexer, Multiplexer, offGroup, once, source, Source } from '@/src';
 
@@ -13,7 +13,7 @@ beforeEach(() => {
 
 describe('once', () => {
   describe('on an observable', () => {
-    it('should call listener and remove it', ({ expect }) => {
+    it('should call listener and remove it', () => {
       const listener = vi.fn();
       once(src, listener);
 
@@ -23,7 +23,7 @@ describe('once', () => {
       expect(listener).toHaveBeenCalledTimes(1);
     });
 
-    it('should join given off group', ({ expect }) => {
+    it('should join given off group', () => {
       const off = offGroup();
       vi.spyOn(off, 'add');
 
@@ -40,7 +40,7 @@ describe('once', () => {
   });
 
   describe('on a listenable', () => {
-    it('should call listener and remove it', ({ expect }) => {
+    it('should call listener and remove it', () => {
       const listener = vi.fn();
       once(mlt, 'src', listener);
 
@@ -50,7 +50,7 @@ describe('once', () => {
       expect(listener).toHaveBeenCalledTimes(1);
     });
 
-    it('should join given off group', ({ expect }) => {
+    it('should join given off group', () => {
       const off = offGroup();
       vi.spyOn(off, 'add');
 
