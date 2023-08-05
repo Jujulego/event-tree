@@ -27,7 +27,7 @@
       }
     },
     {
-      "files": "tests/**/*.{js,jsx,ts,tsx}",
+      "files": "**/*.test.{js,jsx,ts,tsx}",
       "extends": [
         "plugin:vitest/recommended"
       ]
