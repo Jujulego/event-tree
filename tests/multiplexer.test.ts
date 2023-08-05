@@ -1,4 +1,7 @@
-import { Multiplexer, multiplexer, Source, source } from '@/src';
+import { vi } from 'vitest';
+
+import { multiplexer, Multiplexer } from '@/src/multiplexer';
+import { source, Source } from '@/src/source';
 
 // Setup
 let int: Source<number>;
@@ -29,7 +32,7 @@ beforeEach(() => {
 describe('multiplexer', () => {
   describe('emit', () => {
     it('should emit child event', () => {
-      jest.spyOn(int, 'next');
+      vi.spyOn(int, 'next');
 
       mlt.emit('int', 1);
 
@@ -37,7 +40,7 @@ describe('multiplexer', () => {
     });
 
     it('should emit deep child event', () => {
-      jest.spyOn(boo, 'next');
+      vi.spyOn(boo, 'next');
 
       mlt.emit('deep.boo', true);
 
@@ -52,8 +55,8 @@ describe('multiplexer', () => {
 
   describe('on', () => {
     it('should subscribe to child source', () => {
-      jest.spyOn(int, 'subscribe');
-      const listener = jest.fn();
+      vi.spyOn(int, 'subscribe');
+      const listener = vi.fn();
 
       mlt.on('int', listener);
 
@@ -61,8 +64,8 @@ describe('multiplexer', () => {
     });
 
     it('should subscribe to deep child event', () => {
-      jest.spyOn(boo, 'subscribe');
-      const listener = jest.fn();
+      vi.spyOn(boo, 'subscribe');
+      const listener = vi.fn();
 
       mlt.on('deep.boo', listener);
 
@@ -70,15 +73,15 @@ describe('multiplexer', () => {
     });
 
     it('should not subscribe to child event as child doesn\'t exists', () => {
-      expect(() => mlt.on('toto' as 'int', jest.fn()))
+      expect(() => mlt.on('toto' as 'int', vi.fn()))
         .toThrow(new Error('Child source toto not found'));
     });
   });
 
   describe('off', () => {
     it('should unsubscribe from child source', () => {
-      jest.spyOn(int, 'unsubscribe');
-      const listener = jest.fn();
+      vi.spyOn(int, 'unsubscribe');
+      const listener = vi.fn();
 
       mlt.off('int', listener);
 
@@ -86,8 +89,8 @@ describe('multiplexer', () => {
     });
 
     it('should unsubscribe from deep child event', () => {
-      jest.spyOn(boo, 'unsubscribe');
-      const listener = jest.fn();
+      vi.spyOn(boo, 'unsubscribe');
+      const listener = vi.fn();
 
       mlt.off('deep.boo', listener);
 
@@ -95,30 +98,30 @@ describe('multiplexer', () => {
     });
 
     it('should not unsubscribe from child event as child doesn\'t exists', () => {
-      expect(() => mlt.off('toto' as 'int', jest.fn()))
+      expect(() => mlt.off('toto' as 'int', vi.fn()))
         .toThrow(new Error('Child source toto not found'));
     });
   });
 
   describe('clear', () => {
     it('should clear child source', () => {
-      jest.spyOn(int, 'clear');
+      vi.spyOn(int, 'clear');
       mlt.clear('int');
 
       expect(int.clear).toHaveBeenCalled();
     });
 
     it('should clear deep child source', () => {
-      jest.spyOn(boo, 'clear');
+      vi.spyOn(boo, 'clear');
       mlt.clear('deep.boo');
 
       expect(boo.clear).toHaveBeenCalled();
     });
 
     it('should clear all child sources', () => {
-      jest.spyOn(int, 'clear');
-      jest.spyOn(str, 'clear');
-      jest.spyOn(boo, 'clear');
+      vi.spyOn(int, 'clear');
+      vi.spyOn(str, 'clear');
+      vi.spyOn(boo, 'clear');
       mlt.clear();
 
       expect(int.clear).toHaveBeenCalled();

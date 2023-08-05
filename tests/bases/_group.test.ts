@@ -1,4 +1,7 @@
-import { _group, IMultiplexer, ISource, Listener, OffFn } from '@/src';
+import { vi } from 'vitest';
+
+import { _group } from '@/src/bases';
+import { IMultiplexer, ISource, Listener, OffFn } from '@/src/defs';
 
 // Setup
 let off: OffFn;
@@ -6,18 +9,18 @@ let mlt: IMultiplexer<{ life: number }, { life: number }>;
 let src: ISource<number>;
 
 beforeEach(() => {
-  off = jest.fn();
+  off = vi.fn();
   mlt = {
-    emit: jest.fn(),
-    on: jest.fn(() => off),
-    off: jest.fn(),
-    clear: jest.fn(),
+    emit: vi.fn(),
+    on: vi.fn(() => off),
+    off: vi.fn(),
+    clear: vi.fn(),
   };
   src = {
-    next: jest.fn(),
-    subscribe: jest.fn(() => off),
-    unsubscribe: jest.fn(),
-    clear: jest.fn(),
+    next: vi.fn(),
+    subscribe: vi.fn(() => off),
+    unsubscribe: vi.fn(),
+    clear: vi.fn(),
   };
 });
 
@@ -36,7 +39,7 @@ describe('_group', () => {
   describe('on', () => {
     it('should listen to multiplexer', () => {
       const grp = _group(mlt, src);
-      const listener: Listener<number> = jest.fn();
+      const listener: Listener<number> = vi.fn();
 
       expect(grp.on('life', listener)).toBe(off);
 
@@ -48,7 +51,7 @@ describe('_group', () => {
   describe('off', () => {
     it('should stop listening to multiplexer', () => {
       const grp = _group(mlt, src);
-      const listener: Listener<number> = jest.fn();
+      const listener: Listener<number> = vi.fn();
 
       grp.off('life', listener);
 
@@ -60,7 +63,7 @@ describe('_group', () => {
   describe('subscribe', () => {
     it('should subscribe to source', () => {
       const grp = _group(mlt, src);
-      const listener: Listener<number> = jest.fn();
+      const listener: Listener<number> = vi.fn();
 
       expect(grp.subscribe(listener)).toBe(off);
 
@@ -72,7 +75,7 @@ describe('_group', () => {
   describe('unsubscribe', () => {
     it('should unsubscribe from source', () => {
       const grp = _group(mlt, src);
-      const listener: Listener<number> = jest.fn();
+      const listener: Listener<number> = vi.fn();
 
       grp.unsubscribe(listener);
 

@@ -1,4 +1,6 @@
-import { dom, DomEmitter } from '@/src';
+import { vi } from 'vitest';
+
+import { dom, DomEmitter } from '@/src/dom';
 
 // Types
 interface TestElementEventMap {
@@ -11,10 +13,10 @@ describe('dom', () => {
   describe('on', () => {
     it('should register listener with addEventListener', () => {
       // Setup
-      const listener = jest.fn();
+      const listener = vi.fn();
       const element: DomEmitter<TestElementEventMap> = {
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
       };
 
       // Register event
@@ -26,10 +28,10 @@ describe('dom', () => {
 
     it('should use removeEventListener when calling off', () => {
       // Setup
-      const listener = jest.fn();
+      const listener = vi.fn();
       const element: DomEmitter<TestElementEventMap> = {
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
       };
 
       // Register event
@@ -44,10 +46,10 @@ describe('dom', () => {
   describe('off', () => {
     it('should unregister listener with removeEventListener', () => {
       // Setup
-      const listener = jest.fn();
+      const listener = vi.fn();
       const element: DomEmitter<TestElementEventMap> = {
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
       };
 
       // Register event
@@ -61,12 +63,12 @@ describe('dom', () => {
   describe('clear', () => {
     it('should unregister all listeners', () => {
       // Setup
-      const listenerA = jest.fn();
-      const listenerB = jest.fn();
-      const listenerC = jest.fn();
+      const listenerA = vi.fn();
+      const listenerB = vi.fn();
+      const listenerC = vi.fn();
       const element: DomEmitter<TestElementEventMap> = {
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
       };
 
       // Register event
@@ -84,12 +86,12 @@ describe('dom', () => {
 
     it('should unregister all life listeners', () => {
       // Setup
-      const listenerA = jest.fn();
-      const listenerB = jest.fn();
-      const listenerC = jest.fn();
+      const listenerA = vi.fn();
+      const listenerB = vi.fn();
+      const listenerC = vi.fn();
       const element: DomEmitter<TestElementEventMap> = {
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
       };
 
       // Register event

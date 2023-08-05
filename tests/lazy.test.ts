@@ -1,15 +1,10 @@
-import {
-  EventMap,
-  group,
-  Group,
-  IListenable,
-  IObservable,
-  lazy,
-  multiplexer,
-  Multiplexer,
-  source,
-  Source
-} from '@/src';
+import { vi } from 'vitest';
+
+import { EventMap, IListenable, IObservable } from '@/src/defs';
+import { group, Group } from '@/src/group';
+import { lazy } from '@/src/lazy';
+import { multiplexer, Multiplexer } from '@/src/multiplexer';
+import { source, Source } from '@/src/source';
 
 // Setup
 let src: Source<number>;
@@ -25,7 +20,7 @@ beforeEach(() => {
 // Tests
 describe('lazy', () => {
   it('should call getter only once', () => {
-    const getter = jest.fn(() => src);
+    const getter = vi.fn(() => src);
     const lzy = lazy(getter);
 
     lzy.subscribe(() => null);

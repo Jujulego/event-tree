@@ -3,9 +3,6 @@
     "target": "esnext",
     "parser": {
       "syntax": "typescript"
-    },
-    "paths": {
-      "@/src": ["./src"]
     }
   },
   "module": {

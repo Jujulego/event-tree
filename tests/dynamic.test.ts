@@ -1,4 +1,8 @@
-import { dynamic, multiplexer, Multiplexer, Source, source } from '@/src';
+import { vi } from 'vitest';
+
+import { dynamic } from '@/src/dynamic';
+import { multiplexer, Multiplexer } from '@/src/multiplexer';
+import { source, Source } from '@/src/source';
 
 // Tests
 describe('dynamic', () => {
@@ -15,7 +19,7 @@ describe('dynamic', () => {
 
     it('should call previously registered listeners', () => {
       const dyn = dynamic(origin);
-      const spy = jest.fn();
+      const spy = vi.fn();
 
       dyn.on('life', spy);
       origin.next(mlt);
@@ -27,7 +31,7 @@ describe('dynamic', () => {
 
     it('should call next registered listeners', () => {
       const dyn = dynamic(origin);
-      const spy = jest.fn();
+      const spy = vi.fn();
 
       dyn.on('life', () => null);
       origin.next(mlt);
@@ -40,7 +44,7 @@ describe('dynamic', () => {
 
     it('should not call removed listener (callback)', () => {
       const dyn = dynamic(origin);
-      const spy = jest.fn();
+      const spy = vi.fn();
 
       const off = dyn.on('life', spy);
       origin.next(mlt);
@@ -53,7 +57,7 @@ describe('dynamic', () => {
 
     it('should not call removed listener (off)', () => {
       const dyn = dynamic(origin);
-      const spy = jest.fn();
+      const spy = vi.fn();
 
       dyn.on('life', spy);
       dyn.off('life', spy);
@@ -66,7 +70,7 @@ describe('dynamic', () => {
 
     it('should not call removed listener (clear)', () => {
       const dyn = dynamic(origin);
-      const spy = jest.fn();
+      const spy = vi.fn();
 
       dyn.on('life', spy);
       dyn.clear();
@@ -79,7 +83,7 @@ describe('dynamic', () => {
 
     it('should not call registered listener if source has been replaced', () => {
       const dyn = dynamic(origin);
-      const spy = jest.fn();
+      const spy = vi.fn();
 
       dyn.on('life', spy);
       origin.next(mlt);
@@ -92,7 +96,7 @@ describe('dynamic', () => {
 
     it('should call registered listener if next source emits', () => {
       const dyn = dynamic(origin);
-      const spy = jest.fn();
+      const spy = vi.fn();
 
       dyn.on('life', spy);
       origin.next(multiplexer({ life: source() }));
@@ -105,8 +109,8 @@ describe('dynamic', () => {
 
     it('should warn if emitted source does not support listenable operation', () => {
       const dyn = dynamic(origin);
-      const spy = jest.fn();
-      jest.spyOn(console, 'warn');
+      const spy = vi.fn();
+      vi.spyOn(console, 'warn');
 
       dyn.on('life', spy);
       origin.next(source() as unknown as Multiplexer<{ life: Source<number> }>);
@@ -126,7 +130,7 @@ describe('dynamic', () => {
 
     it('should call previously registered listeners', () => {
       const dyn = dynamic(origin);
-      const spy = jest.fn();
+      const spy = vi.fn();
 
       dyn.subscribe(spy);
       origin.next(src);
@@ -138,7 +142,7 @@ describe('dynamic', () => {
 
     it('should call next registered listeners', () => {
       const dyn = dynamic(origin);
-      const spy = jest.fn();
+      const spy = vi.fn();
 
       dyn.subscribe(() => null);
       origin.next(src);
@@ -151,7 +155,7 @@ describe('dynamic', () => {
 
     it('should not call removed listener (callback)', () => {
       const dyn = dynamic(origin);
-      const spy = jest.fn();
+      const spy = vi.fn();
 
       const off = dyn.subscribe(spy);
       origin.next(src);
@@ -164,7 +168,7 @@ describe('dynamic', () => {
 
     it('should not call removed listener (unsubscribe)', () => {
       const dyn = dynamic(origin);
-      const spy = jest.fn();
+      const spy = vi.fn();
 
       dyn.subscribe(spy);
       dyn.unsubscribe(spy);
@@ -177,7 +181,7 @@ describe('dynamic', () => {
 
     it('should not call removed listener (clear)', () => {
       const dyn = dynamic(origin);
-      const spy = jest.fn();
+      const spy = vi.fn();
 
       dyn.subscribe(spy);
       dyn.clear();
@@ -190,7 +194,7 @@ describe('dynamic', () => {
 
     it('should not call registered listener if source has been replaced', () => {
       const dyn = dynamic(origin);
-      const spy = jest.fn();
+      const spy = vi.fn();
 
       dyn.subscribe(spy);
       origin.next(src);
@@ -203,7 +207,7 @@ describe('dynamic', () => {
 
     it('should call registered listener if next source emits', () => {
       const dyn = dynamic(origin);
-      const spy = jest.fn();
+      const spy = vi.fn();
 
       dyn.subscribe(spy);
       origin.next(source());
@@ -216,8 +220,8 @@ describe('dynamic', () => {
 
     it('should warn if emitted source does not support observable operation', () => {
       const dyn = dynamic(origin);
-      const spy = jest.fn();
-      jest.spyOn(console, 'warn');
+      const spy = vi.fn();
+      vi.spyOn(console, 'warn');
 
       dyn.subscribe(spy);
       origin.next(multiplexer({}) as unknown as Source<number>);

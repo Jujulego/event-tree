@@ -1,4 +1,10 @@
-import { group, Group, multiplexer, Multiplexer, offGroup, source, Source, waitFor } from '@/src';
+import { vi } from 'vitest';
+
+import { group, Group } from '@/src/group';
+import { multiplexer, Multiplexer } from '@/src/multiplexer';
+import { offGroup } from '@/src/off-group';
+import { source, Source } from '@/src/source';
+import { waitFor } from '@/src/wait-for';
 
 // Setup
 let src: Source<number>;
@@ -21,7 +27,7 @@ describe('waitFor', () => {
 
     it('should join given off group', async () => {
       const off = offGroup();
-      jest.spyOn(off, 'add');
+      vi.spyOn(off, 'add');
 
       const prom = waitFor(src, { off });
 
@@ -42,7 +48,7 @@ describe('waitFor', () => {
 
     it('should join given off group', async () => {
       const off = offGroup();
-      jest.spyOn(off, 'add');
+      vi.spyOn(off, 'add');
 
       const prom = waitFor(mlt, 'src', { off });
 
@@ -57,8 +63,8 @@ describe('waitFor', () => {
   describe('on a listenable observable', () => {
     it('should resolve when listenable part emits', async () => {
       setTimeout(() => grp.emit('src', 1), 0);
-      jest.spyOn(grp, 'on');
-      jest.spyOn(grp, 'subscribe');
+      vi.spyOn(grp, 'on');
+      vi.spyOn(grp, 'subscribe');
 
       await expect(waitFor(grp, 'src')).resolves.toBe(1);
 
@@ -68,8 +74,8 @@ describe('waitFor', () => {
 
     it('should resolve when observable part emits', async () => {
       setTimeout(() => grp.emit('src', 1), 0);
-      jest.spyOn(grp, 'on');
-      jest.spyOn(grp, 'subscribe');
+      vi.spyOn(grp, 'on');
+      vi.spyOn(grp, 'subscribe');
 
       await expect(waitFor(grp)).resolves.toBe(1);
 

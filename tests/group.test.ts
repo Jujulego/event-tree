@@ -1,4 +1,9 @@
-import { Group, group, Listener, multiplexer, Multiplexer, Source, source } from '@/src';
+import { vi } from 'vitest';
+
+import { Listener } from '@/src/defs';
+import { group, Group } from '@/src/group';
+import { multiplexer, Multiplexer } from '@/src/multiplexer';
+import { source, Source } from '@/src/source';
 
 // Setup
 let int: Source<number>;
@@ -28,7 +33,7 @@ beforeEach(() => {
 // Tests
 describe('group', () => {
   it('should call group listener when emitting a child event', () => {
-    const listener: Listener<number | string | boolean> = jest.fn();
+    const listener: Listener<number | string | boolean> = vi.fn();
 
     grp.subscribe(listener);
     grp.emit('int', 1);
@@ -41,7 +46,7 @@ describe('group', () => {
   });
 
   it('should not call removed listeners (off method)', () => {
-    const listener: Listener<number | string | boolean> = jest.fn();
+    const listener: Listener<number | string | boolean> = vi.fn();
 
     grp.subscribe(listener);
     grp.unsubscribe(listener);
@@ -54,7 +59,7 @@ describe('group', () => {
   });
 
   it('should not call removed listeners (returned off)', () => {
-    const listener: Listener<number | string | boolean> = jest.fn();
+    const listener: Listener<number | string | boolean> = vi.fn();
 
     const off = grp.subscribe(listener);
     off();
@@ -68,7 +73,7 @@ describe('group', () => {
 
   describe('emit', () => {
     it('should emit child event', () => {
-      jest.spyOn(int, 'next');
+      vi.spyOn(int, 'next');
 
       grp.emit('int', 1);
 
@@ -76,7 +81,7 @@ describe('group', () => {
     });
 
     it('should emit deep child event', () => {
-      jest.spyOn(boo, 'next');
+      vi.spyOn(boo, 'next');
 
       grp.emit('deep.boo', true);
 
@@ -91,8 +96,8 @@ describe('group', () => {
 
   describe('on', () => {
     it('should subscribe to child source', () => {
-      jest.spyOn(int, 'subscribe');
-      const listener = jest.fn();
+      vi.spyOn(int, 'subscribe');
+      const listener = vi.fn();
 
       grp.on('int', listener);
 
@@ -100,8 +105,8 @@ describe('group', () => {
     });
 
     it('should subscribe to deep child event', () => {
-      jest.spyOn(boo, 'subscribe');
-      const listener = jest.fn();
+      vi.spyOn(boo, 'subscribe');
+      const listener = vi.fn();
 
       grp.on('deep.boo', listener);
 
@@ -109,15 +114,15 @@ describe('group', () => {
     });
 
     it('should not subscribe to child event as child doesn\'t exists', () => {
-      expect(() => grp.on('toto' as 'int', jest.fn()))
+      expect(() => grp.on('toto' as 'int', vi.fn()))
         .toThrow(new Error('Child source toto not found'));
     });
   });
 
   describe('off', () => {
     it('should unsubscribe from child source', () => {
-      jest.spyOn(int, 'unsubscribe');
-      const listener = jest.fn();
+      vi.spyOn(int, 'unsubscribe');
+      const listener = vi.fn();
 
       grp.off('int', listener);
 
@@ -125,8 +130,8 @@ describe('group', () => {
     });
 
     it('should unsubscribe from deep child event', () => {
-      jest.spyOn(boo, 'unsubscribe');
-      const listener = jest.fn();
+      vi.spyOn(boo, 'unsubscribe');
+      const listener = vi.fn();
 
       grp.off('deep.boo', listener);
 
@@ -134,30 +139,30 @@ describe('group', () => {
     });
 
     it('should not unsubscribe from child event as child doesn\'t exists', () => {
-      expect(() => grp.off('toto' as 'int', jest.fn()))
+      expect(() => grp.off('toto' as 'int', vi.fn()))
         .toThrow(new Error('Child source toto not found'));
     });
   });
 
   describe('clear', () => {
     it('should clear child source', () => {
-      jest.spyOn(int, 'clear');
+      vi.spyOn(int, 'clear');
       grp.clear('int');
 
       expect(int.clear).toHaveBeenCalled();
     });
 
     it('should clear deep child source', () => {
-      jest.spyOn(boo, 'clear');
+      vi.spyOn(boo, 'clear');
       grp.clear('deep.boo');
 
       expect(boo.clear).toHaveBeenCalled();
     });
 
     it('should clear all child sources', () => {
-      jest.spyOn(int, 'clear');
-      jest.spyOn(str, 'clear');
-      jest.spyOn(boo, 'clear');
+      vi.spyOn(int, 'clear');
+      vi.spyOn(str, 'clear');
+      vi.spyOn(boo, 'clear');
       grp.clear();
 
       expect(int.clear).toHaveBeenCalled();

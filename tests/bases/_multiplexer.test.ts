@@ -1,14 +1,17 @@
-import { _multiplexer, IEmitter, IKeyEmitter, IListenable, IObservable } from '@/src';
+import { vi } from 'vitest';
+
+import { _multiplexer } from '@/src/bases';
+import { IEmitter, IKeyEmitter, IListenable, IObservable } from '@/src/defs';
 
 // Tests
 describe('_multiplexer', () => {
   describe('emit', () => {
     it('should emit child event', () => {
       const src: IEmitter<number> = {
-        next: jest.fn(),
+        next: vi.fn(),
       };
 
-      const getSource = jest.fn(() => src);
+      const getSource = vi.fn(() => src);
 
       const mlt = _multiplexer<Record<string, typeof src>>(() => [src], getSource);
       mlt.emit('life', 42);
@@ -19,10 +22,10 @@ describe('_multiplexer', () => {
 
     it('should emit deep child event', () => {
       const deep: IKeyEmitter<{ 'life': number }> = {
-        emit: jest.fn(),
+        emit: vi.fn(),
       };
 
-      const getSource = jest.fn(() => deep);
+      const getSource = vi.fn(() => deep);
 
       const mlt = _multiplexer<Record<string, typeof deep>>(() => [deep], getSource);
       mlt.emit('deep.life', 42);
@@ -34,17 +37,17 @@ describe('_multiplexer', () => {
 
   describe('on', () => {
     it('should subscribe to child source', () => {
-      const off = jest.fn();
+      const off = vi.fn();
       const src: IObservable<number> = {
-        subscribe: jest.fn(() => off),
-        unsubscribe: jest.fn(),
-        clear: jest.fn(),
+        subscribe: vi.fn(() => off),
+        unsubscribe: vi.fn(),
+        clear: vi.fn(),
       };
 
-      const getSource = jest.fn(() => src);
+      const getSource = vi.fn(() => src);
       const mlt = _multiplexer(() => [src], getSource);
 
-      const listener = jest.fn();
+      const listener = vi.fn();
       expect(mlt.on('life', listener)).toBe(off);
 
       expect(getSource).toHaveBeenCalledWith('life');
@@ -52,17 +55,17 @@ describe('_multiplexer', () => {
     });
 
     it('should subscribe to deep child event', () => {
-      const off = jest.fn();
+      const off = vi.fn();
       const deep: IListenable<{ 'life': number }> = {
-        on: jest.fn(() => off),
-        off: jest.fn(),
-        clear: jest.fn(),
+        on: vi.fn(() => off),
+        off: vi.fn(),
+        clear: vi.fn(),
       };
 
-      const getSource = jest.fn(() => deep);
+      const getSource = vi.fn(() => deep);
       const mlt = _multiplexer(() => [deep], getSource);
 
-      const listener = jest.fn();
+      const listener = vi.fn();
       expect(mlt.on('deep.life', listener)).toBe(off);
 
       expect(getSource).toHaveBeenCalledWith('deep');
@@ -72,17 +75,17 @@ describe('_multiplexer', () => {
 
   describe('off', () => {
     it('should unsubscribe from child source', () => {
-      const off = jest.fn();
+      const off = vi.fn();
       const src: IObservable<number> = {
-        subscribe: jest.fn(() => off),
-        unsubscribe: jest.fn(),
-        clear: jest.fn(),
+        subscribe: vi.fn(() => off),
+        unsubscribe: vi.fn(),
+        clear: vi.fn(),
       };
 
-      const getSource = jest.fn(() => src);
+      const getSource = vi.fn(() => src);
       const mlt = _multiplexer(() => [src], getSource);
 
-      const listener = jest.fn();
+      const listener = vi.fn();
       mlt.off('life', listener);
 
       expect(getSource).toHaveBeenCalledWith('life');
@@ -90,17 +93,17 @@ describe('_multiplexer', () => {
     });
 
     it('should unsubscribe from deep child event', () => {
-      const off = jest.fn();
+      const off = vi.fn();
       const deep: IListenable<{ 'life': number }> = {
-        on: jest.fn(() => off),
-        off: jest.fn(),
-        clear: jest.fn(),
+        on: vi.fn(() => off),
+        off: vi.fn(),
+        clear: vi.fn(),
       };
 
-      const getSource = jest.fn(() => deep);
+      const getSource = vi.fn(() => deep);
       const mlt = _multiplexer(() => [deep], getSource);
 
-      const listener = jest.fn();
+      const listener = vi.fn();
       mlt.off('deep.life', listener);
 
       expect(getSource).toHaveBeenCalledWith('deep');
@@ -110,14 +113,14 @@ describe('_multiplexer', () => {
 
   describe('clear', () => {
     it('should clear child source', () => {
-      const off = jest.fn();
+      const off = vi.fn();
       const src: IObservable<number> = {
-        subscribe: jest.fn(() => off),
-        unsubscribe: jest.fn(),
-        clear: jest.fn(),
+        subscribe: vi.fn(() => off),
+        unsubscribe: vi.fn(),
+        clear: vi.fn(),
       };
 
-      const getSource = jest.fn(() => src);
+      const getSource = vi.fn(() => src);
       const mlt = _multiplexer(() => [src], getSource);
 
       mlt.clear('life');
@@ -127,14 +130,14 @@ describe('_multiplexer', () => {
     });
 
     it('should clear deep child source', () => {
-      const off = jest.fn();
+      const off = vi.fn();
       const deep: IListenable<{ 'life': number }> = {
-        on: jest.fn(() => off),
-        off: jest.fn(),
-        clear: jest.fn(),
+        on: vi.fn(() => off),
+        off: vi.fn(),
+        clear: vi.fn(),
       };
 
-      const getSource = jest.fn(() => deep);
+      const getSource = vi.fn(() => deep);
       const mlt = _multiplexer(() => [deep], getSource);
 
       mlt.clear('deep.life');
@@ -144,19 +147,19 @@ describe('_multiplexer', () => {
     });
 
     it('should clear all child sources', () => {
-      const off = jest.fn();
+      const off = vi.fn();
       const src: IObservable<number> = {
-        subscribe: jest.fn(() => off),
-        unsubscribe: jest.fn(),
-        clear: jest.fn(),
+        subscribe: vi.fn(() => off),
+        unsubscribe: vi.fn(),
+        clear: vi.fn(),
       };
       const deep: IListenable<{ 'life': number }> = {
-        on: jest.fn(() => off),
-        off: jest.fn(),
-        clear: jest.fn(),
+        on: vi.fn(() => off),
+        off: vi.fn(),
+        clear: vi.fn(),
       };
 
-      const listSource = jest.fn(() => [src, deep]);
+      const listSource = vi.fn(() => [src, deep]);
       const mlt = _multiplexer(listSource, () => src);
 
       mlt.clear();

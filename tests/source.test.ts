@@ -1,4 +1,7 @@
-import { Listener, Source, source } from '@/src';
+import { vi } from 'vitest';
+
+import { Listener } from '@/src/defs';
+import { source, Source } from '@/src/source';
 
 // Setup
 let src: Source<number>;
@@ -10,7 +13,7 @@ beforeEach(() => {
 // Tests
 describe('source', () => {
   it('should call listeners when an event is emitted', () => {
-    const listener: Listener<number> = jest.fn();
+    const listener: Listener<number> = vi.fn();
 
     src.subscribe(listener);
     src.next(1);
@@ -19,7 +22,7 @@ describe('source', () => {
   });
 
   it('should not call removed listeners (off method)', () => {
-    const listener: Listener<number> = jest.fn();
+    const listener: Listener<number> = vi.fn();
 
     src.subscribe(listener);
     src.unsubscribe(listener);
@@ -29,7 +32,7 @@ describe('source', () => {
   });
 
   it('should not call removed listeners (returned off)', () => {
-    const listener: Listener<number> = jest.fn();
+    const listener: Listener<number> = vi.fn();
 
     const off = src.subscribe(listener);
     off();
@@ -40,7 +43,7 @@ describe('source', () => {
   });
 
   it('should not call removed listeners (clear)', () => {
-    const listener: Listener<number> = jest.fn();
+    const listener: Listener<number> = vi.fn();
 
     src.subscribe(listener);
     src.clear();

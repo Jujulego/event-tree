@@ -1,13 +1,18 @@
-import { groupMap, Listener, multiplexer, source } from '@/src';
+import { vi } from 'vitest';
+
+import { Listener } from '@/src/defs';
+import { groupMap } from '@/src/group-map';
+import { multiplexer } from '@/src/multiplexer';
+import { source } from '@/src/source';
 
 // Tests
 describe('groupMap', () => {
   it('should call group listener when emitting a child event', () => {
-    const groupSpy: Listener<number> = jest.fn();
-    const sourceSpy: Listener<number> = jest.fn();
+    const groupSpy: Listener<number> = vi.fn();
+    const sourceSpy: Listener<number> = vi.fn();
     const src = source<number>();
 
-    const builder = jest.fn(() => src);
+    const builder = vi.fn(() => src);
 
     const grp = groupMap(builder);
     grp.subscribe(groupSpy);
@@ -21,13 +26,13 @@ describe('groupMap', () => {
   });
 
   it('should call group listener when emitting a deep child event', () => {
-    const groupSpy: Listener<number> = jest.fn();
-    const deepSpy: Listener<number> = jest.fn();
+    const groupSpy: Listener<number> = vi.fn();
+    const deepSpy: Listener<number> = vi.fn();
     const deep = multiplexer({
       life: source<number>(),
     });
 
-    const builder = jest.fn(() => deep);
+    const builder = vi.fn(() => deep);
 
     const grp = groupMap(builder);
     grp.subscribe(groupSpy);

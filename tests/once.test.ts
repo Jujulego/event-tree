@@ -1,4 +1,9 @@
-import { multiplexer, Multiplexer, offGroup, once, source, Source } from '@/src';
+import { vi } from 'vitest';
+
+import { multiplexer, Multiplexer } from '@/src/multiplexer';
+import { offGroup } from '@/src/off-group';
+import { once } from '@/src/once';
+import { source, Source } from '@/src/source';
 
 // Setup
 let src: Source<number>;
@@ -12,7 +17,7 @@ beforeEach(() => {
 describe('once', () => {
   describe('on an observable', () => {
     it('should call listener and remove it', () => {
-      const listener = jest.fn();
+      const listener = vi.fn();
       once(src, listener);
 
       src.next(1);
@@ -23,9 +28,9 @@ describe('once', () => {
 
     it('should join given off group', () => {
       const off = offGroup();
-      jest.spyOn(off, 'add');
+      vi.spyOn(off, 'add');
 
-      const listener = jest.fn();
+      const listener = vi.fn();
 
       expect(once(src, listener, { off })).toBe(off);
       expect(off.add).toHaveBeenCalledTimes(1);
@@ -39,7 +44,7 @@ describe('once', () => {
 
   describe('on a listenable', () => {
     it('should call listener and remove it', () => {
-      const listener = jest.fn();
+      const listener = vi.fn();
       once(mlt, 'src', listener);
 
       mlt.emit('src', 1);
@@ -50,9 +55,9 @@ describe('once', () => {
 
     it('should join given off group', () => {
       const off = offGroup();
-      jest.spyOn(off, 'add');
+      vi.spyOn(off, 'add');
 
-      const listener = jest.fn();
+      const listener = vi.fn();
 
       expect(once(mlt, 'src', listener, { off })).toBe(off);
       expect(off.add).toHaveBeenCalledTimes(1);

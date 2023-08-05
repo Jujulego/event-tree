@@ -1,10 +1,12 @@
-import { offGroup } from '@/src';
+import { vi } from 'vitest';
+
+import { offGroup } from '@/src/off-group';
 
 // Tests
 describe('offGroup', () => {
   it('should call grouped functions', () => {
-    const spy1 = jest.fn();
-    const spy2 = jest.fn();
+    const spy1 = vi.fn();
+    const spy2 = vi.fn();
 
     const grp = offGroup(spy1);
     grp.add(spy2);
@@ -16,9 +18,9 @@ describe('offGroup', () => {
   });
 
   it('should call also added other group (add)', () => {
-    const spy1 = jest.fn();
-    const spy2 = jest.fn();
-    const spy3 = jest.fn();
+    const spy1 = vi.fn();
+    const spy2 = vi.fn();
+    const spy3 = vi.fn();
 
     const grp = offGroup(spy1, spy2);
     grp.add(offGroup(spy3));
@@ -31,9 +33,9 @@ describe('offGroup', () => {
   });
 
   it('should call also added other group (init)', () => {
-    const spy1 = jest.fn();
-    const spy2 = jest.fn();
-    const spy3 = jest.fn();
+    const spy1 = vi.fn();
+    const spy2 = vi.fn();
+    const spy3 = vi.fn();
 
     const grp = offGroup(spy1, spy2, offGroup(spy3));
 
