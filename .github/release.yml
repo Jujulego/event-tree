@@ -14,4 +14,4 @@ changelog:
 
     - title: ":space_invader: Other"
       labels:
-        - *
+        - "*"
