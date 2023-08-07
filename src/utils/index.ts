@@ -1,2 +1,2 @@
-export * from './key';
-export * from './listeners-map';
+export * from './key.js';
+export * from './listeners-map.js';

@@ -1,4 +1,4 @@
-import { ISource, Listener } from './defs';
+import { ISource, Listener } from './defs/index.js';
 
 // Types
 export interface Source<D> extends ISource<D> {

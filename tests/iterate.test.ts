@@ -1,9 +1,9 @@
 import { it } from 'vitest';
 
-import { iterate } from '@/src/iterate';
-import { multiplexer, Multiplexer } from '@/src/multiplexer';
-import { offGroup } from '@/src/off-group';
-import { source, Source } from '@/src/source';
+import { iterate } from '@/src/iterate.js';
+import { multiplexer, Multiplexer } from '@/src/multiplexer.js';
+import { offGroup } from '@/src/off-group.js';
+import { source, Source } from '@/src/source.js';
 
 // Setup
 let src: Source<number>;

@@ -1,7 +1,7 @@
 import { vi } from 'vitest';
 
-import { _group } from '@/src/bases';
-import { IMultiplexer, ISource, Listener, OffFn } from '@/src/defs';
+import { _group } from '@/src/bases/_group.js';
+import { IMultiplexer, ISource, Listener, OffFn } from '@/src/defs/index.js';
 
 // Setup
 let off: OffFn;

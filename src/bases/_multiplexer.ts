@@ -9,8 +9,8 @@ import {
   ListenEventMap,
   OffFn,
   SourceTree
-} from '../defs';
-import { splitKey } from '../utils/key';
+} from '../defs/index.js';
+import { splitKey } from '../utils/key.js';
 
 // Types
 /** @internal */

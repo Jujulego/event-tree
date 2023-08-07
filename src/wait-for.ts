@@ -1,6 +1,6 @@
-import { EventData, EventKey, EventMap, IListenable, IObservable, Key, Listener } from './defs';
-import { once, OnceArgs, OnceOpts } from './once';
-import { OffGroup, offGroup } from './off-group';
+import { EventData, EventKey, EventMap, IListenable, IObservable, Key, Listener } from './defs/index.js';
+import { once, OnceArgs, OnceOpts } from './once.js';
+import { OffGroup, offGroup } from './off-group.js';
 
 // Types
 /** @internal */

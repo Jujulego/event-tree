@@ -1,9 +1,9 @@
 import { vi } from 'vitest';
 
-import { Listener } from '@/src/defs';
-import { groupMap } from '@/src/group-map';
-import { multiplexer } from '@/src/multiplexer';
-import { source } from '@/src/source';
+import { Listener } from '@/src/defs/index.js';
+import { groupMap } from '@/src/group-map.js';
+import { multiplexer } from '@/src/multiplexer.js';
+import { source } from '@/src/source.js';
 
 // Tests
 describe('groupMap', () => {

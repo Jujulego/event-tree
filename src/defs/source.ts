@@ -1,5 +1,5 @@
-import { IEmitter } from './emitter';
-import { IObservable } from './observable';
+import { IEmitter } from './emitter.js';
+import { IObservable } from './observable.js';
 
 /**
  * Simplest event source

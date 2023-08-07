@@ -1,4 +1,4 @@
-import { Key, KeyPart, Listener } from './utils';
+import { Key, KeyPart, Listener } from './utils.js';
 
 // Utils
 export type EventMap = Record<Key, unknown>;

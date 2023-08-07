@@ -1,7 +1,7 @@
-import { AnySource, EmitEventMap, EventData, IGroup, KeyPart, ListenEventMap, SourceTree } from './defs';
-import { multiplexer } from './multiplexer';
-import { source, Source } from './source';
-import { _group } from './bases';
+import { AnySource, EmitEventMap, EventData, IGroup, KeyPart, ListenEventMap, SourceTree } from './defs/index.js';
+import { multiplexer } from './multiplexer.js';
+import { source, Source } from './source.js';
+import { _group } from './bases/index.js';
 
 // Types
 export interface Group<T extends SourceTree> extends IGroup<EmitEventMap<T>, ListenEventMap<T>> {

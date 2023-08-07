@@ -1,9 +1,9 @@
-import { IEmitter } from './emitter';
-import { AssertEventMap, EventKey, EventMap, PrependEventMapKeys } from './event-map';
-import { IKeyEmitter } from './key-emitter';
-import { IListenable } from './listenable';
-import { IObservable } from './observable';
-import { KeyPart, MapValueIntersection } from './utils';
+import { IEmitter } from './emitter.js';
+import { AssertEventMap, EventKey, EventMap, PrependEventMapKeys } from './event-map.js';
+import { IKeyEmitter } from './key-emitter.js';
+import { IListenable } from './listenable.js';
+import { IObservable } from './observable.js';
+import { KeyPart, MapValueIntersection } from './utils.js';
 
 // Utils
 export type AnySource = IEmitter<unknown> | IKeyEmitter<EventMap> | IObservable<unknown> | IListenable<EventMap>;

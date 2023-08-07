@@ -1,6 +1,6 @@
-import { AnySource, EventMap, IEmitter, IMultiplexer, Inherit, IObservable, Listener, SourceTree } from './defs';
-import { multiplexer } from './multiplexer';
-import { splitKey } from './utils';
+import { AnySource, EventMap, IEmitter, IMultiplexer, Inherit, IObservable, Listener, SourceTree } from './defs/index.js';
+import { multiplexer } from './multiplexer.js';
+import { splitKey } from './utils/index.js';
 
 export function inherit<S extends AnySource, T extends SourceTree>(parent: S, map: T): Inherit<S, T>;
 

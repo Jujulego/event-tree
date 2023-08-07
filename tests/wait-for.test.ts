@@ -1,10 +1,10 @@
 import { vi } from 'vitest';
 
-import { group, Group } from '@/src/group';
-import { multiplexer, Multiplexer } from '@/src/multiplexer';
-import { offGroup } from '@/src/off-group';
-import { source, Source } from '@/src/source';
-import { waitFor } from '@/src/wait-for';
+import { group, Group } from '@/src/group.js';
+import { multiplexer, Multiplexer } from '@/src/multiplexer.js';
+import { offGroup } from '@/src/off-group.js';
+import { source, Source } from '@/src/source.js';
+import { waitFor } from '@/src/wait-for.js';
 
 // Setup
 let src: Source<number>;

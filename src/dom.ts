@@ -1,5 +1,5 @@
-import { EventMap, IListenable, Listener } from './defs';
-import { listenersMap } from './utils';
+import { EventMap, IListenable, Listener } from './defs/index.js';
+import { listenersMap } from './utils/index.js';
 
 export interface DomEmitter<M> {
   addEventListener<K extends keyof M>(type: K, listener: (event: M[K]) => void): void;

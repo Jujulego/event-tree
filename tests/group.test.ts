@@ -1,9 +1,9 @@
 import { vi } from 'vitest';
 
-import { Listener } from '@/src/defs';
-import { group, Group } from '@/src/group';
-import { multiplexer, Multiplexer } from '@/src/multiplexer';
-import { source, Source } from '@/src/source';
+import { Listener } from '@/src/defs/index.js';
+import { group, Group } from '@/src/group.js';
+import { multiplexer, Multiplexer } from '@/src/multiplexer.js';
+import { source, Source } from '@/src/source.js';
 
 // Setup
 let int: Source<number>;

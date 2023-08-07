@@ -1,7 +1,7 @@
 import { vi } from 'vitest';
 
-import { _multiplexer } from '@/src/bases';
-import { IEmitter, IKeyEmitter, IListenable, IObservable } from '@/src/defs';
+import { _multiplexer } from '@/src/bases/_multiplexer.js';
+import { IEmitter, IKeyEmitter, IListenable, IObservable } from '@/src/defs/index.js';
 
 // Tests
 describe('_multiplexer', () => {
