@@ -1,7 +1,7 @@
-import { EventData, EventKey, EventMap, IListenable, IObservable } from './defs';
-import { OnceOpts } from './once';
-import { waitFor, WaitForArgs, WaitForListenableArgs, WaitForObservableArgs } from './wait-for';
-import { offGroup, OffGroup } from './off-group';
+import { EventData, EventKey, EventMap, IListenable, IObservable } from './defs/index.js';
+import { OnceOpts } from './once.js';
+import { waitFor, WaitForArgs, WaitForListenableArgs, WaitForObservableArgs } from './wait-for.js';
+import { offGroup, OffGroup } from './off-group.js';
 
 /**
  * Returns an iterator over observable events

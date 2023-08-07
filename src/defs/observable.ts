@@ -1,4 +1,4 @@
-import { Listener, OffFn } from './utils';
+import { Listener, OffFn } from './utils.js';
 
 export interface IObservable<D> {
   /**

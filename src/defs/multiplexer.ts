@@ -1,6 +1,6 @@
-import { EventMap } from './event-map';
-import { IListenable } from './listenable';
-import { IKeyEmitter } from './key-emitter';
+import { EventMap } from './event-map.js';
+import { IListenable } from './listenable.js';
+import { IKeyEmitter } from './key-emitter.js';
 
 /**
  * Allows to emit and subscribe to many events

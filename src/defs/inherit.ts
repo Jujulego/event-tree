@@ -1,9 +1,9 @@
-import { IEmitter } from './emitter';
-import { InheritEventMap } from './event-map';
-import { IKeyEmitter } from './key-emitter';
-import { IListenable } from './listenable';
-import { IObservable } from './observable';
-import { AnySource, EmitEventMap, ListenEventMap, SourceTree } from './source-tree';
+import { IEmitter } from './emitter.js';
+import { InheritEventMap } from './event-map.js';
+import { IKeyEmitter } from './key-emitter.js';
+import { IListenable } from './listenable.js';
+import { IObservable } from './observable.js';
+import { AnySource, EmitEventMap, ListenEventMap, SourceTree } from './source-tree.js';
 
 // Type
 export type Inherit<PS extends AnySource, T extends SourceTree> =

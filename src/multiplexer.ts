@@ -1,5 +1,5 @@
-import { AnySource, EmitEventMap, IMultiplexer, KeyPart, ListenEventMap, SourceTree } from './defs';
-import { _multiplexer } from './bases';
+import { AnySource, EmitEventMap, IMultiplexer, KeyPart, ListenEventMap, SourceTree } from './defs/index.js';
+import { _multiplexer } from './bases/index.js';
 
 // Types
 export interface Multiplexer<T extends SourceTree> extends IMultiplexer<EmitEventMap<T>, ListenEventMap<T>> {

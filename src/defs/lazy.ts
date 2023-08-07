@@ -1,9 +1,9 @@
-import { IEmitter } from './emitter';
-import { IKeyEmitter } from './key-emitter';
-import { EventMap } from './event-map';
-import { IObservable } from './observable';
-import { IListenable } from './listenable';
-import { AnySource } from './source-tree';
+import { IEmitter } from './emitter.js';
+import { IKeyEmitter } from './key-emitter.js';
+import { EventMap } from './event-map.js';
+import { IObservable } from './observable.js';
+import { IListenable } from './listenable.js';
+import { AnySource } from './source-tree.js';
 
 // Types
 export type LazySource =

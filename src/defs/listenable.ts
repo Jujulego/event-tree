@@ -1,5 +1,5 @@
-import { EventKey, EventListener, EventMap } from './event-map';
-import { OffFn } from './utils';
+import { EventKey, EventListener, EventMap } from './event-map.js';
+import { OffFn } from './utils.js';
 
 export interface IListenable<M extends EventMap> {
   __listen_event_map?: M | undefined;

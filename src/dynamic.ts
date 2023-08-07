@@ -1,7 +1,7 @@
-import { AnySource, DynamicSource, Dynamify, EventMap, IListenable, IObservable, Listener, OffFn } from './defs';
-import { offGroup } from './off-group';
-import { Source } from './source';
-import { listenersMap } from './utils';
+import { AnySource, DynamicSource, Dynamify, EventMap, IListenable, IObservable, Listener, OffFn } from './defs/index.js';
+import { offGroup } from './off-group.js';
+import { Source } from './source.js';
+import { listenersMap } from './utils/index.js';
 
 function dynamicWarn(key?: string) {
   const type = key ? `"${key}" event listeners` : 'subscribers';

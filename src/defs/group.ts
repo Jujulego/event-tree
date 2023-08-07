@@ -1,6 +1,6 @@
-import { EventData, EventKey, EventMap } from './event-map';
-import { IObservable } from './observable';
-import { IMultiplexer } from './multiplexer';
+import { EventData, EventKey, EventMap } from './event-map.js';
+import { IObservable } from './observable.js';
+import { IMultiplexer } from './multiplexer.js';
 
 /**
  * Multiplexer that can be observed.

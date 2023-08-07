@@ -1,5 +1,5 @@
-import { AnySource, EmitEventRecord, IMultiplexer, KeyPart, ListenEventRecord } from './defs';
-import { _multiplexer } from './bases';
+import { AnySource, EmitEventRecord, IMultiplexer, KeyPart, ListenEventRecord } from './defs/index.js';
+import { _multiplexer } from './bases/index.js';
 
 // Types
 export interface MultiplexerMap<K extends KeyPart, S extends AnySource> extends IMultiplexer<EmitEventRecord<K, S>, ListenEventRecord<K, S>> {

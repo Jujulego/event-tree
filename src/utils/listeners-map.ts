@@ -1,4 +1,4 @@
-import { Listener } from '../defs';
+import { Listener } from '../defs/index.js';
 
 // Utils
 export function listenersMap() {

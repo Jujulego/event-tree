@@ -1,6 +1,6 @@
-import { EventMap } from './event-map';
-import { IObservable } from './observable';
-import { IListenable } from './listenable';
+import { EventMap } from './event-map.js';
+import { IObservable } from './observable.js';
+import { IListenable } from './listenable.js';
 
 // Types
 export type DynamicSource =

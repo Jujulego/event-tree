@@ -1,2 +1,2 @@
-export * from './_group';
-export * from './_multiplexer';
+export * from './_group.js';
+export * from './_multiplexer.js';
