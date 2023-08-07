@@ -1,6 +1,6 @@
 import { vi } from 'vitest';
 
-import { offGroup } from '@/src/off-group';
+import { offGroup } from '@/src/off-group.js';
 
 // Tests
 describe('offGroup', () => {

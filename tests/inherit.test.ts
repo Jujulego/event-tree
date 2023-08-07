@@ -1,9 +1,9 @@
 import { vi } from 'vitest';
 
-import { Listener } from '@/src/defs';
-import { inherit } from '@/src/inherit';
-import { multiplexer, Multiplexer } from '@/src/multiplexer';
-import { source, Source } from '@/src/source';
+import { Listener } from '@/src/defs/index.js';
+import { inherit } from '@/src/inherit.js';
+import { multiplexer, Multiplexer } from '@/src/multiplexer.js';
+import { source, Source } from '@/src/source.js';
 
 // Setup
 let mlt: Multiplexer<{

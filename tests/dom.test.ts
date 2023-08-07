@@ -1,6 +1,6 @@
 import { vi } from 'vitest';
 
-import { dom, DomEmitter } from '@/src/dom';
+import { dom, DomEmitter } from '@/src/dom.js';
 
 // Types
 interface TestElementEventMap {

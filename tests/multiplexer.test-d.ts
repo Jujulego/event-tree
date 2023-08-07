@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { assertType } from 'vitest';
 
-import { group } from '@/src/group';
-import { multiplexer } from '@/src/multiplexer';
-import { source } from '@/src/source';
+import { group } from '@/src/group.js';
+import { multiplexer } from '@/src/multiplexer.js';
+import { source } from '@/src/source.js';
 
 describe('nested source', () => {
   const mlt = multiplexer({

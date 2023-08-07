@@ -1,7 +1,7 @@
 import { vi } from 'vitest';
 
-import { IEmitter, IKeyEmitter, IListenable, IObservable } from '@/src/defs';
-import { multiplexerMap } from '@/src/multiplexer-map';
+import { IEmitter, IKeyEmitter, IListenable, IObservable } from '@/src/defs/index.js';
+import { multiplexerMap } from '@/src/multiplexer-map.js';
 
 // Tests
 describe('multiplexerMap', () => {

@@ -1,8 +1,8 @@
 import { vi } from 'vitest';
 
-import { dynamic } from '@/src/dynamic';
-import { multiplexer, Multiplexer } from '@/src/multiplexer';
-import { source, Source } from '@/src/source';
+import { dynamic } from '@/src/dynamic.js';
+import { multiplexer, Multiplexer } from '@/src/multiplexer.js';
+import { source, Source } from '@/src/source.js';
 
 // Tests
 describe('dynamic', () => {
