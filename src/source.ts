@@ -7,7 +7,7 @@ export interface SourceObj<D> extends Source<D> {
 }
 
 // Utils
-export function source<D>(): SourceObj<D> {
+export function source$<D>(): SourceObj<D> {
   const listeners = new Set<Listener<D>>();
 
   return {
@@ -29,3 +29,6 @@ export function source<D>(): SourceObj<D> {
     }
   };
 }
+
+/** @deprecated */
+export const source = source$;

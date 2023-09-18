@@ -1,11 +1,11 @@
 import { AnySource, EventMap, Emitter, Multiplexer, Inherit, Observable, Listener, SourceTree } from './defs/index.js';
-import { multiplexer } from './multiplexer.js';
+import { multiplexer$ } from './multiplexer.js';
 import { splitKey } from './utils/index.js';
 
-export function inherit<S extends AnySource, T extends SourceTree>(parent: S, map: T): Inherit<S, T>;
+export function inherit$<S extends AnySource, T extends SourceTree>(parent: S, map: T): Inherit<S, T>;
 
-export function inherit(parent: AnySource, map: SourceTree): AnySource {
-  const child = multiplexer(map);
+export function inherit$(parent: AnySource, map: SourceTree): AnySource {
+  const child = multiplexer$(map);
 
   function targetOf(key: string): Multiplexer<EventMap, EventMap> {
     const [part] = splitKey(key);
@@ -48,3 +48,6 @@ export function inherit(parent: AnySource, map: SourceTree): AnySource {
     }
   };
 }
+
+/** @deprecated */
+export const inherit = inherit$;

@@ -1,5 +1,5 @@
+import { _multiplexer$ } from './bases/index.js';
 import { AnySource, EmitEventRecord, Multiplexer, KeyPart, ListenEventRecord } from './defs/index.js';
-import { _multiplexer } from './bases/index.js';
 
 // Types
 export interface MultiplexerMap<K extends KeyPart, S extends AnySource> extends Multiplexer<EmitEventRecord<K, S>, ListenEventRecord<K, S>> {
@@ -8,7 +8,7 @@ export interface MultiplexerMap<K extends KeyPart, S extends AnySource> extends 
 }
 
 // Utils
-export function multiplexerMap<K extends KeyPart, S extends AnySource>(builder: (key: K) => S): MultiplexerMap<K, S> {
+export function multiplexerMap$<K extends KeyPart, S extends AnySource>(builder: (key: K) => S): MultiplexerMap<K, S> {
   const sources = new Map<K, S>();
 
   function getSource(key: K): S {
@@ -23,7 +23,10 @@ export function multiplexerMap<K extends KeyPart, S extends AnySource>(builder: 
   }
 
   return Object.assign(
-    _multiplexer<Record<K, S>>(() => sources.values(), getSource),
+    _multiplexer$<Record<K, S>>(() => sources.values(), getSource),
     { sources }
   );
 }
+
+/** @deprecated */
+export const multiplexerMap = multiplexerMap$;

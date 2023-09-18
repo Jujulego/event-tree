@@ -1,7 +1,7 @@
 import { EventData, EventMap, Group, Multiplexer, Source, Key } from '../defs/index.js';
 
 /** @internal */
-export function _group<EmitMap extends EventMap, ListenMap extends EventMap>(mlt: Multiplexer<EmitMap, ListenMap>, src: Source<EventData<EmitMap>>): Group<EmitMap, ListenMap> {
+export function _group$<EmitMap extends EventMap, ListenMap extends EventMap>(mlt: Multiplexer<EmitMap, ListenMap>, src: Source<EventData<EmitMap>>): Group<EmitMap, ListenMap> {
   return {
     emit(key: Key, data: EventData<EmitMap>) {
       mlt.emit(key, data);
@@ -23,3 +23,6 @@ export function _group<EmitMap extends EventMap, ListenMap extends EventMap>(mlt
     }
   };
 }
+
+/** @deprecated */
+export const _group = _group$;

@@ -1,14 +1,14 @@
 import { vi } from 'vitest';
 
-import { offGroup } from '@/src/off-group.js';
+import { off$ } from '@/src/off.js';
 
 // Tests
-describe('offGroup', () => {
+describe('off$', () => {
   it('should call grouped functions', () => {
     const spy1 = vi.fn();
     const spy2 = vi.fn();
 
-    const grp = offGroup(spy1);
+    const grp = off$(spy1);
     grp.add(spy2);
 
     grp();
@@ -22,8 +22,8 @@ describe('offGroup', () => {
     const spy2 = vi.fn();
     const spy3 = vi.fn();
 
-    const grp = offGroup(spy1, spy2);
-    grp.add(offGroup(spy3));
+    const grp = off$(spy1, spy2);
+    grp.add(off$(spy3));
 
     grp();
 
@@ -37,7 +37,7 @@ describe('offGroup', () => {
     const spy2 = vi.fn();
     const spy3 = vi.fn();
 
-    const grp = offGroup(spy1, spy2, offGroup(spy3));
+    const grp = off$(spy1, spy2, off$(spy3));
 
     grp();
 

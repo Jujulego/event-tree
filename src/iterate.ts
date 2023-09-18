@@ -1,14 +1,14 @@
 import { EventData, EventKey, EventMap, Listenable, Observable } from './defs/index.js';
+import { off$, OffGroup } from './off.js';
 import { OnceOpts } from './once.js';
-import { waitFor, WaitForArgs, WaitForListenableArgs, WaitForObservableArgs } from './wait-for.js';
-import { offGroup, OffGroup } from './off-group.js';
+import { waitFor$, WaitForArgs, WaitForListenableArgs, WaitForObservableArgs } from './wait-for.js';
 
 /**
  * Returns an iterator over observable events
  * @param obs
  * @param opts
  */
-export function iterate<D>(obs: Observable<D>, opts?: OnceOpts): AsyncIterableIterator<D>;
+export function iterate$<D>(obs: Observable<D>, opts?: OnceOpts): AsyncIterableIterator<D>;
 
 /**
  * Returns an iterator over multiplexer events
@@ -16,17 +16,17 @@ export function iterate<D>(obs: Observable<D>, opts?: OnceOpts): AsyncIterableIt
  * @param key
  * @param opts
  */
-export function iterate<M extends EventMap, K extends EventKey<M>>(source: Listenable<M>, key: K, opts?: OnceOpts): AsyncIterableIterator<EventData<M, K>>;
+export function iterate$<M extends EventMap, K extends EventKey<M>>(source: Listenable<M>, key: K, opts?: OnceOpts): AsyncIterableIterator<EventData<M, K>>;
 
-export function iterate(...args: WaitForArgs): AsyncIterableIterator<unknown> {
+export function iterate$(...args: WaitForArgs): AsyncIterableIterator<unknown> {
   const parsed = parseArgs(args);
-  const off = parsed.off ?? offGroup();
+  const off = parsed.off ?? off$();
 
   const abort = new Promise<unknown>((_, reject) => off.add(() => reject(new Error('Unsubscribed !'))));
 
   return {
     next: async () => {
-      const value = await Promise.race([waitFor(...args), abort]);
+      const value = await Promise.race([waitFor$(...args), abort]);
       return { value };
     },
     [Symbol.asyncIterator]() {
@@ -34,6 +34,9 @@ export function iterate(...args: WaitForArgs): AsyncIterableIterator<unknown> {
     },
   };
 }
+
+/** @deprecated */
+export const iterate = iterate$;
 
 // Utils
 function parseArgs(args: WaitForArgs): { args: WaitForArgs; off: OffGroup | undefined } {

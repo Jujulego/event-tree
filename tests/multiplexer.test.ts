@@ -1,7 +1,7 @@
 import { vi } from 'vitest';
 
-import { multiplexer, MultiplexerObj } from '@/src/multiplexer.js';
-import { source, SourceObj } from '@/src/source.js';
+import { multiplexer$, MultiplexerObj } from '@/src/multiplexer.js';
+import { source$, SourceObj } from '@/src/source.js';
 
 // Setup
 let int: SourceObj<number>;
@@ -16,20 +16,20 @@ let mlt: MultiplexerObj<{
 }>;
 
 beforeEach(() => {
-  int = source();
-  str = source();
-  boo = source();
-  mlt = multiplexer({
+  int = source$();
+  str = source$();
+  boo = source$();
+  mlt = multiplexer$({
     int,
     str,
-    deep: multiplexer({
+    deep: multiplexer$({
       boo
     })
   });
 });
 
 // Tests
-describe('multiplexer', () => {
+describe('multiplexer$', () => {
   describe('emit', () => {
     it('should emit child event', () => {
       vi.spyOn(int, 'next');

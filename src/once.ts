@@ -1,5 +1,5 @@
 import { EventData, EventKey, EventMap, Listenable, Observable, Key, Listener, OffFn } from './defs/index.js';
-import { OffGroup } from './off-group.js';
+import { OffGroup } from './off.js';
 
 // Types
 export interface OnceOpts {
@@ -21,7 +21,7 @@ export type OnceArgs = OnceObservableArgs | OnceListenableArgs;
  * @param listener
  * @param opts
  */
-export function once<D>(obs: Observable<D>, listener: Listener<D>, opts?: OnceOpts): OffFn;
+export function once$<D>(obs: Observable<D>, listener: Listener<D>, opts?: OnceOpts): OffFn;
 
 /**
  * Returns a promise that resolves when the given source emits the "key" event
@@ -30,12 +30,12 @@ export function once<D>(obs: Observable<D>, listener: Listener<D>, opts?: OnceOp
  * @param listener
  * @param opts
  */
-export function once<M extends EventMap, K extends EventKey<M>>(source: Listenable<M>, key: K, listener: Listener<EventData<M, K>>, opts?: OnceOpts): OffFn;
+export function once$<M extends EventMap, K extends EventKey<M>>(source: Listenable<M>, key: K, listener: Listener<EventData<M, K>>, opts?: OnceOpts): OffFn;
 
 /** @internal */
-export function once(...args: OnceArgs): OffFn;
+export function once$(...args: OnceArgs): OffFn;
 
-export function once(...args: OnceArgs): OffFn {
+export function once$(...args: OnceArgs): OffFn {
   let off: OffFn;
 
   if (typeof args[1] === 'function') {
@@ -56,6 +56,9 @@ export function once(...args: OnceArgs): OffFn {
 
   return off;
 }
+
+/** @deprecated */
+export const once = once$;
 
 // Utils
 function keepOrJoin(group: OffGroup | undefined, off: OffFn): OffFn {

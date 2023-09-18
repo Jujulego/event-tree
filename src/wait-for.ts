@@ -1,6 +1,6 @@
 import { EventData, EventKey, EventMap, Listenable, Observable, Key, Listener } from './defs/index.js';
-import { once, OnceArgs, OnceOpts } from './once.js';
-import { OffGroup, offGroup } from './off-group.js';
+import { OffGroup, off$ } from './off.js';
+import { once$, OnceArgs, OnceOpts } from './once.js';
 
 // Types
 /** @internal */
@@ -17,7 +17,7 @@ export type WaitForArgs = WaitForObservableArgs | WaitForListenableArgs;
  * @param obs
  * @param opts
  */
-export function waitFor<D>(obs: Observable<D>, opts?: OnceOpts): Promise<D>;
+export function waitFor$<D>(obs: Observable<D>, opts?: OnceOpts): Promise<D>;
 
 /**
  * Returns a promise that resolves when the given source emits the "key" event
@@ -25,20 +25,23 @@ export function waitFor<D>(obs: Observable<D>, opts?: OnceOpts): Promise<D>;
  * @param key
  * @param opts
  */
-export function waitFor<M extends EventMap, K extends EventKey<M>>(source: Listenable<M>, key: K, opts?: OnceOpts): Promise<EventData<M, K>>;
+export function waitFor$<M extends EventMap, K extends EventKey<M>>(source: Listenable<M>, key: K, opts?: OnceOpts): Promise<EventData<M, K>>;
 
 /** @internal */
-export function waitFor(...args: WaitForArgs): Promise<unknown>;
+export function waitFor$(...args: WaitForArgs): Promise<unknown>;
 
-export function waitFor(...args: WaitForArgs): Promise<unknown> {
+export function waitFor$(...args: WaitForArgs): Promise<unknown> {
   return new Promise((resolve, reject) => {
     const parsed = parseArgs(args, resolve);
-    const off = parsed.off ?? offGroup();
+    const off = parsed.off ?? off$();
 
-    off.add(once(...parsed.args));
+    off.add(once$(...parsed.args));
     off.add(() => reject(new Error('Unsubscribed !')));
   });
 }
+
+/** @deprecated */
+export const waitFor = waitFor$;
 
 // Utils
 function parseArgs(args: WaitForArgs, resolve: Listener<unknown>): { args: OnceArgs; off: OffGroup | undefined } {

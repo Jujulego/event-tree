@@ -5,7 +5,7 @@ export interface OffGroup extends OffFn {
   add(fn: OffFn): void;
 }
 
-export function offGroup(...offs: OffFn[]): OffGroup {
+export function off$(...offs: OffFn[]): OffGroup {
   const fns = new Set<OffFn>(offs);
   
   // Create group
@@ -19,3 +19,6 @@ export function offGroup(...offs: OffFn[]): OffGroup {
     add: (fn: OffFn) => fns.add(fn),
   });
 }
+
+/** @deprecated */
+export const offGroup = off$;
