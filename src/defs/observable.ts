@@ -3,7 +3,7 @@ import { Listener, OffFn } from './utils.js';
 /**
  * Object allowing to observe one kind of events
  */
-export interface Observable<D> {
+export interface Observable<D = unknown> {
   /**
    * Subscribe to event
    * @param listener

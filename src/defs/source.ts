@@ -4,4 +4,4 @@ import { Observable } from './observable.js';
 /**
  * Simplest event source
  */
-export interface Source<D> extends Observable<D>, Emitter<D> {}
+export interface Source<D = unknown> extends Observable<D>, Emitter<D> {}
