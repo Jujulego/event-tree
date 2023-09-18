@@ -1,6 +1,6 @@
 import { vi } from 'vitest';
 
-import { _multiplexer } from '@/src/bases/_multiplexer.js';
+import { _multiplexer$ } from '@/src/bases/_multiplexer.js';
 import { Emitter, KeyEmitter, Listenable, Observable } from '@/src/defs/index.js';
 
 // Tests
@@ -13,7 +13,7 @@ describe('_multiplexer', () => {
 
       const getSource = vi.fn(() => src);
 
-      const mlt = _multiplexer<Record<string, typeof src>>(() => [src], getSource);
+      const mlt = _multiplexer$<Record<string, typeof src>>(() => [src], getSource);
       mlt.emit('life', 42);
 
       expect(getSource).toHaveBeenCalledWith('life');
@@ -27,7 +27,7 @@ describe('_multiplexer', () => {
 
       const getSource = vi.fn(() => deep);
 
-      const mlt = _multiplexer<Record<string, typeof deep>>(() => [deep], getSource);
+      const mlt = _multiplexer$<Record<string, typeof deep>>(() => [deep], getSource);
       mlt.emit('deep.life', 42);
 
       expect(getSource).toHaveBeenCalledWith('deep');
@@ -45,7 +45,7 @@ describe('_multiplexer', () => {
       };
 
       const getSource = vi.fn(() => src);
-      const mlt = _multiplexer(() => [src], getSource);
+      const mlt = _multiplexer$(() => [src], getSource);
 
       const listener = vi.fn();
       expect(mlt.on('life', listener)).toBe(off);
@@ -63,7 +63,7 @@ describe('_multiplexer', () => {
       };
 
       const getSource = vi.fn(() => deep);
-      const mlt = _multiplexer(() => [deep], getSource);
+      const mlt = _multiplexer$(() => [deep], getSource);
 
       const listener = vi.fn();
       expect(mlt.on('deep.life', listener)).toBe(off);
@@ -83,7 +83,7 @@ describe('_multiplexer', () => {
       };
 
       const getSource = vi.fn(() => src);
-      const mlt = _multiplexer(() => [src], getSource);
+      const mlt = _multiplexer$(() => [src], getSource);
 
       const listener = vi.fn();
       mlt.off('life', listener);
@@ -101,7 +101,7 @@ describe('_multiplexer', () => {
       };
 
       const getSource = vi.fn(() => deep);
-      const mlt = _multiplexer(() => [deep], getSource);
+      const mlt = _multiplexer$(() => [deep], getSource);
 
       const listener = vi.fn();
       mlt.off('deep.life', listener);
@@ -121,7 +121,7 @@ describe('_multiplexer', () => {
       };
 
       const getSource = vi.fn(() => src);
-      const mlt = _multiplexer(() => [src], getSource);
+      const mlt = _multiplexer$(() => [src], getSource);
 
       mlt.clear('life');
 
@@ -138,7 +138,7 @@ describe('_multiplexer', () => {
       };
 
       const getSource = vi.fn(() => deep);
-      const mlt = _multiplexer(() => [deep], getSource);
+      const mlt = _multiplexer$(() => [deep], getSource);
 
       mlt.clear('deep.life');
 
@@ -160,7 +160,7 @@ describe('_multiplexer', () => {
       };
 
       const listSource = vi.fn(() => [src, deep]);
-      const mlt = _multiplexer(listSource, () => src);
+      const mlt = _multiplexer$(listSource, () => src);
 
       mlt.clear();
 

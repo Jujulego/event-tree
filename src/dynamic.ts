@@ -1,7 +1,6 @@
 import { AnySource, DynamicSource, Dynamify, EventMap, Listenable, Observable, Listener, OffFn } from './defs/index.js';
 import { off$ } from './off.js';
 import { listenersMap } from './utils/index.js';
-import { dom$ } from './dom.js';
 
 function dynamicWarn(key?: string) {
   const type = key ? `"${key}" event listeners` : 'subscribers';

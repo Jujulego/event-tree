@@ -1,5 +1,4 @@
 import { AnySource, Lazify, LazySource } from './defs/index.js';
-import { dom$ } from './dom.js';
 
 /**
  * Defines a lazy source.

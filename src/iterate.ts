@@ -1,8 +1,7 @@
 import { EventData, EventKey, EventMap, Listenable, Observable } from './defs/index.js';
+import { off$, OffGroup } from './off.js';
 import { OnceOpts } from './once.js';
 import { waitFor$, WaitForArgs, WaitForListenableArgs, WaitForObservableArgs } from './wait-for.js';
-import { off$, OffGroup } from './off.js';
-import { dom$ } from './dom.js';
 
 /**
  * Returns an iterator over observable events

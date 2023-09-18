@@ -1,6 +1,5 @@
+import { _multiplexer$ } from './bases/index.js';
 import { AnySource, EmitEventMap, Multiplexer, KeyPart, ListenEventMap, SourceTree } from './defs/index.js';
-import { _multiplexer } from './bases/index.js';
-import { dom$ } from './dom.js';
 
 // Types
 export interface MultiplexerObj<T extends SourceTree> extends Multiplexer<EmitEventMap<T>, ListenEventMap<T>> {
@@ -23,7 +22,7 @@ export function multiplexer$<T extends SourceTree>(map: T): MultiplexerObj<T> {
   }
 
   return Object.assign(
-    _multiplexer<T>(() => sources.values(), getSource),
+    _multiplexer$<T>(() => sources.values(), getSource),
     { sources }
   );
 }

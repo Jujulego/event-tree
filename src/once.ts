@@ -1,6 +1,5 @@
 import { EventData, EventKey, EventMap, Listenable, Observable, Key, Listener, OffFn } from './defs/index.js';
 import { OffGroup } from './off.js';
-import { dom$ } from './dom.js';
 
 // Types
 export interface OnceOpts {

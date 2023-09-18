@@ -24,7 +24,7 @@ export type ListSourcesFn<T extends SourceTree> = () => Iterable<T[keyof T]>;
 export type GetSourceFn<T extends SourceTree> = <K extends keyof T & KeyPart>(key: K) => T[K];
 
 /** @internal */
-export function _multiplexer<T extends SourceTree>(listSources: ListSourcesFn<T>, getSource: GetSourceFn<T>): Multiplexer<EmitEventMap<T>, ListenEventMap<T>> {
+export function _multiplexer$<T extends SourceTree>(listSources: ListSourcesFn<T>, getSource: GetSourceFn<T>): Multiplexer<EmitEventMap<T>, ListenEventMap<T>> {
   function routeEvent<R>(key: Key, next: NextCb<R>, end: EndCb<R>): R {
     const [part, subkey] = splitKey(key);
     const src = getSource(part);
@@ -72,3 +72,6 @@ export function _multiplexer<T extends SourceTree>(listSources: ListSourcesFn<T>
     }
   };
 }
+
+/** @deprecated */
+export const _multiplexer = _multiplexer$;

@@ -1,5 +1,4 @@
 import { Source, Listener } from './defs/index.js';
-import { dom$ } from './dom.js';
 
 // Types
 export interface SourceObj<D> extends Source<D> {

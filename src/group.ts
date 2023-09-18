@@ -1,8 +1,7 @@
+import { _group$ } from './bases/index.js';
 import { AnySource, EmitEventMap, EventData, Group, KeyPart, ListenEventMap, SourceTree } from './defs/index.js';
 import { multiplexer$ } from './multiplexer.js';
 import { source$, SourceObj } from './source.js';
-import { _group } from './bases/index.js';
-import { dom$ } from './dom.js';
 
 // Types
 export interface GroupObj<T extends SourceTree> extends Group<EmitEventMap<T>, ListenEventMap<T>> {
@@ -19,7 +18,7 @@ export function group$<T extends SourceTree>(map: T): GroupObj<T> {
   return {
     sources: mlt.sources,
     listeners: src.listeners,
-    ..._group(mlt, src),
+    ..._group$(mlt, src),
   };
 }
 
