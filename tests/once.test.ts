@@ -1,13 +1,13 @@
 import { vi } from 'vitest';
 
-import { multiplexer, Multiplexer } from '@/src/multiplexer.js';
+import { multiplexer, MultiplexerObj } from '@/src/multiplexer.js';
 import { offGroup } from '@/src/off-group.js';
 import { once } from '@/src/once.js';
-import { source, Source } from '@/src/source.js';
+import { source, SourceObj } from '@/src/source.js';
 
 // Setup
-let src: Source<number>;
-let mlt: Multiplexer<{ src: Source<number> }>;
+let src: SourceObj<number>;
+let mlt: MultiplexerObj<{ src: SourceObj<number> }>;
 
 beforeEach(() => {
   src = source();

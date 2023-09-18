@@ -1,4 +1,7 @@
-export interface IEmitter<D> {
+/**
+ * Objects emitting events
+ */
+export interface Emitter<D> {
   /**
    * Emits event
    * @param data

@@ -1,13 +1,13 @@
-import { EventData, EventKey, EventMap, IListenable, IObservable, Key, Listener } from './defs/index.js';
+import { EventData, EventKey, EventMap, Listenable, Observable, Key, Listener } from './defs/index.js';
 import { once, OnceArgs, OnceOpts } from './once.js';
 import { OffGroup, offGroup } from './off-group.js';
 
 // Types
 /** @internal */
-export type WaitForObservableArgs = [obs: IObservable<unknown>, opts?: OnceOpts | undefined];
+export type WaitForObservableArgs = [obs: Observable<unknown>, opts?: OnceOpts | undefined];
 
 /** @internal */
-export type WaitForListenableArgs = [source: IListenable<EventMap>, key: Key, opts?: OnceOpts | undefined];
+export type WaitForListenableArgs = [source: Listenable<EventMap>, key: Key, opts?: OnceOpts | undefined];
 
 /** @internal */
 export type WaitForArgs = WaitForObservableArgs | WaitForListenableArgs;
@@ -17,7 +17,7 @@ export type WaitForArgs = WaitForObservableArgs | WaitForListenableArgs;
  * @param obs
  * @param opts
  */
-export function waitFor<D>(obs: IObservable<D>, opts?: OnceOpts): Promise<D>;
+export function waitFor<D>(obs: Observable<D>, opts?: OnceOpts): Promise<D>;
 
 /**
  * Returns a promise that resolves when the given source emits the "key" event
@@ -25,7 +25,7 @@ export function waitFor<D>(obs: IObservable<D>, opts?: OnceOpts): Promise<D>;
  * @param key
  * @param opts
  */
-export function waitFor<M extends EventMap, K extends EventKey<M>>(source: IListenable<M>, key: K, opts?: OnceOpts): Promise<EventData<M, K>>;
+export function waitFor<M extends EventMap, K extends EventKey<M>>(source: Listenable<M>, key: K, opts?: OnceOpts): Promise<EventData<M, K>>;
 
 /** @internal */
 export function waitFor(...args: WaitForArgs): Promise<unknown>;

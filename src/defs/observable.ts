@@ -1,6 +1,9 @@
 import { Listener, OffFn } from './utils.js';
 
-export interface IObservable<D> {
+/**
+ * Object allowing to observe one kind of events
+ */
+export interface Observable<D> {
   /**
    * Subscribe to event
    * @param listener

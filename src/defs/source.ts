@@ -1,7 +1,7 @@
-import { IEmitter } from './emitter.js';
-import { IObservable } from './observable.js';
+import { Emitter } from './emitter.js';
+import { Observable } from './observable.js';
 
 /**
  * Simplest event source
  */
-export interface ISource<D> extends IObservable<D>, IEmitter<D> {}
+export interface Source<D> extends Observable<D>, Emitter<D> {}

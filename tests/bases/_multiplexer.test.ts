@@ -1,13 +1,13 @@
 import { vi } from 'vitest';
 
 import { _multiplexer } from '@/src/bases/_multiplexer.js';
-import { IEmitter, IKeyEmitter, IListenable, IObservable } from '@/src/defs/index.js';
+import { Emitter, KeyEmitter, Listenable, Observable } from '@/src/defs/index.js';
 
 // Tests
 describe('_multiplexer', () => {
   describe('emit', () => {
     it('should emit child event', () => {
-      const src: IEmitter<number> = {
+      const src: Emitter<number> = {
         next: vi.fn(),
       };
 
@@ -21,7 +21,7 @@ describe('_multiplexer', () => {
     });
 
     it('should emit deep child event', () => {
-      const deep: IKeyEmitter<{ 'life': number }> = {
+      const deep: KeyEmitter<{ 'life': number }> = {
         emit: vi.fn(),
       };
 
@@ -38,7 +38,7 @@ describe('_multiplexer', () => {
   describe('on', () => {
     it('should subscribe to child source', () => {
       const off = vi.fn();
-      const src: IObservable<number> = {
+      const src: Observable<number> = {
         subscribe: vi.fn(() => off),
         unsubscribe: vi.fn(),
         clear: vi.fn(),
@@ -56,7 +56,7 @@ describe('_multiplexer', () => {
 
     it('should subscribe to deep child event', () => {
       const off = vi.fn();
-      const deep: IListenable<{ 'life': number }> = {
+      const deep: Listenable<{ 'life': number }> = {
         on: vi.fn(() => off),
         off: vi.fn(),
         clear: vi.fn(),
@@ -76,7 +76,7 @@ describe('_multiplexer', () => {
   describe('off', () => {
     it('should unsubscribe from child source', () => {
       const off = vi.fn();
-      const src: IObservable<number> = {
+      const src: Observable<number> = {
         subscribe: vi.fn(() => off),
         unsubscribe: vi.fn(),
         clear: vi.fn(),
@@ -94,7 +94,7 @@ describe('_multiplexer', () => {
 
     it('should unsubscribe from deep child event', () => {
       const off = vi.fn();
-      const deep: IListenable<{ 'life': number }> = {
+      const deep: Listenable<{ 'life': number }> = {
         on: vi.fn(() => off),
         off: vi.fn(),
         clear: vi.fn(),
@@ -114,7 +114,7 @@ describe('_multiplexer', () => {
   describe('clear', () => {
     it('should clear child source', () => {
       const off = vi.fn();
-      const src: IObservable<number> = {
+      const src: Observable<number> = {
         subscribe: vi.fn(() => off),
         unsubscribe: vi.fn(),
         clear: vi.fn(),
@@ -131,7 +131,7 @@ describe('_multiplexer', () => {
 
     it('should clear deep child source', () => {
       const off = vi.fn();
-      const deep: IListenable<{ 'life': number }> = {
+      const deep: Listenable<{ 'life': number }> = {
         on: vi.fn(() => off),
         off: vi.fn(),
         clear: vi.fn(),
@@ -148,12 +148,12 @@ describe('_multiplexer', () => {
 
     it('should clear all child sources', () => {
       const off = vi.fn();
-      const src: IObservable<number> = {
+      const src: Observable<number> = {
         subscribe: vi.fn(() => off),
         unsubscribe: vi.fn(),
         clear: vi.fn(),
       };
-      const deep: IListenable<{ 'life': number }> = {
+      const deep: Listenable<{ 'life': number }> = {
         on: vi.fn(() => off),
         off: vi.fn(),
         clear: vi.fn(),

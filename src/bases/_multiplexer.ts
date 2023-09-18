@@ -1,8 +1,8 @@
 import {
   EmitEventMap, EventData, EventKey,
   EventMap,
-  IMultiplexer,
-  ISource,
+  Multiplexer,
+  Source,
   Key,
   KeyPart,
   Listener,
@@ -14,25 +14,25 @@ import { splitKey } from '../utils/key.js';
 
 // Types
 /** @internal */
-type NextCb<R> = (src: IMultiplexer<EventMap, EventMap>, key: Key) => R;
+type NextCb<R> = (src: Multiplexer<EventMap, EventMap>, key: Key) => R;
 
 /** @internal */
-type EndCb<R> = (src: ISource<unknown>) => R;
+type EndCb<R> = (src: Source<unknown>) => R;
 
 export type ListSourcesFn<T extends SourceTree> = () => Iterable<T[keyof T]>;
 
 export type GetSourceFn<T extends SourceTree> = <K extends keyof T & KeyPart>(key: K) => T[K];
 
 /** @internal */
-export function _multiplexer<T extends SourceTree>(listSources: ListSourcesFn<T>, getSource: GetSourceFn<T>): IMultiplexer<EmitEventMap<T>, ListenEventMap<T>> {
+export function _multiplexer<T extends SourceTree>(listSources: ListSourcesFn<T>, getSource: GetSourceFn<T>): Multiplexer<EmitEventMap<T>, ListenEventMap<T>> {
   function routeEvent<R>(key: Key, next: NextCb<R>, end: EndCb<R>): R {
     const [part, subkey] = splitKey(key);
     const src = getSource(part);
 
     if (subkey) {
-      return next(src as IMultiplexer<EventMap, EventMap>, subkey);
+      return next(src as Multiplexer<EventMap, EventMap>, subkey);
     } else {
-      return end(src as ISource<unknown>);
+      return end(src as Source<unknown>);
     }
   }
 

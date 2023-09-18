@@ -1,9 +1,9 @@
 import { EventMap } from './event-map.js';
-import { IListenable } from './listenable.js';
-import { IKeyEmitter } from './key-emitter.js';
+import { Listenable } from './listenable.js';
+import { KeyEmitter } from './key-emitter.js';
 
 /**
  * Allows to emit and subscribe to many events
  */
-export interface IMultiplexer<EmitMap extends EventMap, ListenMap extends EventMap>
-  extends IKeyEmitter<EmitMap>, IListenable<ListenMap> {}
+export interface Multiplexer<EmitMap extends EventMap, ListenMap extends EventMap>
+  extends KeyEmitter<EmitMap>, Listenable<ListenMap> {}

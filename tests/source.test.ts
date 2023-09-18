@@ -1,10 +1,10 @@
 import { vi } from 'vitest';
 
 import { Listener } from '@/src/defs/index.js';
-import { source, Source } from '@/src/source.js';
+import { source, SourceObj } from '@/src/source.js';
 
 // Setup
-let src: Source<number>;
+let src: SourceObj<number>;
 
 beforeEach(() => {
   src = source();
