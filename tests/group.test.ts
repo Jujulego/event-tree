@@ -1,9 +1,9 @@
 import { vi } from 'vitest';
 
 import { Listener } from '@/src/defs/index.js';
-import { group, GroupObj } from '@/src/group.js';
-import { multiplexer, MultiplexerObj } from '@/src/multiplexer.js';
-import { source, SourceObj } from '@/src/source.js';
+import { group$, GroupObj } from '@/src/group.js';
+import { multiplexer$, MultiplexerObj } from '@/src/multiplexer.js';
+import { source$, SourceObj } from '@/src/source.js';
 
 // Setup
 let int: SourceObj<number>;
@@ -18,20 +18,20 @@ let grp: GroupObj<{
 }>;
 
 beforeEach(() => {
-  int = source();
-  str = source();
-  boo = source();
-  grp = group({
+  int = source$();
+  str = source$();
+  boo = source$();
+  grp = group$({
     int,
     str,
-    deep: multiplexer({
+    deep: multiplexer$({
       boo
     })
   });
 });
 
 // Tests
-describe('group', () => {
+describe('group$', () => {
   it('should call group listener when emitting a child event', () => {
     const listener: Listener<number | string | boolean> = vi.fn();
 

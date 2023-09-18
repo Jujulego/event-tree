@@ -1,24 +1,24 @@
 import { vi } from 'vitest';
 
-import { multiplexer, MultiplexerObj } from '@/src/multiplexer.js';
-import { offGroup } from '@/src/off-group.js';
-import { once } from '@/src/once.js';
-import { source, SourceObj } from '@/src/source.js';
+import { multiplexer$, MultiplexerObj } from '@/src/multiplexer.js';
+import { off$ } from '@/src/off.js';
+import { once$ } from '@/src/once.js';
+import { source$, SourceObj } from '@/src/source.js';
 
 // Setup
 let src: SourceObj<number>;
 let mlt: MultiplexerObj<{ src: SourceObj<number> }>;
 
 beforeEach(() => {
-  src = source();
-  mlt = multiplexer({ src });
+  src = source$();
+  mlt = multiplexer$({ src });
 });
 
-describe('once', () => {
+describe('once$', () => {
   describe('on an observable', () => {
     it('should call listener and remove it', () => {
       const listener = vi.fn();
-      once(src, listener);
+      once$(src, listener);
 
       src.next(1);
       src.next(1);
@@ -27,12 +27,12 @@ describe('once', () => {
     });
 
     it('should join given off group', () => {
-      const off = offGroup();
+      const off = off$();
       vi.spyOn(off, 'add');
 
       const listener = vi.fn();
 
-      expect(once(src, listener, { off })).toBe(off);
+      expect(once$(src, listener, { off })).toBe(off);
       expect(off.add).toHaveBeenCalledTimes(1);
 
       off();
@@ -45,7 +45,7 @@ describe('once', () => {
   describe('on a listenable', () => {
     it('should call listener and remove it', () => {
       const listener = vi.fn();
-      once(mlt, 'src', listener);
+      once$(mlt, 'src', listener);
 
       mlt.emit('src', 1);
       mlt.emit('src', 1);
@@ -54,12 +54,12 @@ describe('once', () => {
     });
 
     it('should join given off group', () => {
-      const off = offGroup();
+      const off = off$();
       vi.spyOn(off, 'add');
 
       const listener = vi.fn();
 
-      expect(once(mlt, 'src', listener, { off })).toBe(off);
+      expect(once$(mlt, 'src', listener, { off })).toBe(off);
       expect(off.add).toHaveBeenCalledTimes(1);
 
       off();

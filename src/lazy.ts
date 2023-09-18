@@ -1,4 +1,5 @@
 import { AnySource, Lazify, LazySource } from './defs/index.js';
+import { dom$ } from './dom.js';
 
 /**
  * Defines a lazy source.
@@ -6,9 +7,9 @@ import { AnySource, Lazify, LazySource } from './defs/index.js';
  *
  * @param cb
  */
-export function lazy<S extends AnySource>(cb: () => S): Lazify<S>;
+export function lazy$<S extends AnySource>(cb: () => S): Lazify<S>;
 
-export function lazy(cb: () => AnySource): LazySource {
+export function lazy$(cb: () => AnySource): LazySource {
   let _src: AnySource | null = null;
 
   function load(): AnySource {
@@ -47,6 +48,9 @@ export function lazy(cb: () => AnySource): LazySource {
     },
   } as LazySource;
 }
+
+/** @deprecated */
+export const lazy = lazy$;
 
 // Utils
 function replaceProp<P extends keyof LazySource>(obj: LazySource, prop: P, emt: AnySource): void {

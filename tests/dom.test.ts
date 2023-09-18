@@ -1,6 +1,6 @@
 import { vi } from 'vitest';
 
-import { dom, DomEmitter } from '@/src/dom.js';
+import { dom$, DomEmitter } from '@/src/dom.js';
 
 // Types
 interface TestElementEventMap {
@@ -9,7 +9,7 @@ interface TestElementEventMap {
 }
 
 // Tests
-describe('dom', () => {
+describe('dom$', () => {
   describe('on', () => {
     it('should register listener with addEventListener', () => {
       // Setup
@@ -20,7 +20,7 @@ describe('dom', () => {
       };
 
       // Register event
-      const src = dom<TestElementEventMap>(element);
+      const src = dom$<TestElementEventMap>(element);
       src.on('life', listener);
 
       expect(element.addEventListener).toHaveBeenCalledWith('life', listener);
@@ -35,7 +35,7 @@ describe('dom', () => {
       };
 
       // Register event
-      const src = dom<TestElementEventMap>(element);
+      const src = dom$<TestElementEventMap>(element);
       const off = src.on('life', listener);
       off();
 
@@ -53,7 +53,7 @@ describe('dom', () => {
       };
 
       // Register event
-      const src = dom<TestElementEventMap>(element);
+      const src = dom$<TestElementEventMap>(element);
       src.off('life', listener);
 
       expect(element.removeEventListener).toHaveBeenCalledWith('life', listener);
@@ -72,7 +72,7 @@ describe('dom', () => {
       };
 
       // Register event
-      const src = dom<TestElementEventMap>(element);
+      const src = dom$<TestElementEventMap>(element);
       src.on('life', listenerA);
       src.on('life', listenerB);
       src.on('test', listenerC);
@@ -95,7 +95,7 @@ describe('dom', () => {
       };
 
       // Register event
-      const src = dom<TestElementEventMap>(element);
+      const src = dom$<TestElementEventMap>(element);
       src.on('life', listenerA);
       src.on('life', listenerB);
       src.on('test', listenerC);

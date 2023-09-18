@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { assertType } from 'vitest';
 
-import { group } from '@/src/group.js';
-import { multiplexer } from '@/src/multiplexer.js';
-import { source } from '@/src/source.js';
+import { group$ } from '@/src/group.js';
+import { multiplexer$ } from '@/src/multiplexer.js';
+import { source$ } from '@/src/source.js';
 
 describe('nested source', () => {
-  const mlt = multiplexer({
-    life: source<42>(),
-    toto: source<'toto'>(),
+  const mlt = multiplexer$({
+    life: source$<42>(),
+    toto: source$<'toto'>(),
   });
 
   it('should accept valid life events', () => {
@@ -27,10 +27,10 @@ describe('nested source', () => {
 });
 
 describe('nested multiplexer', () => {
-  const mlt = multiplexer({
-    mlt: multiplexer({
-      life: source<42>(),
-      toto: source<'toto'>(),
+  const mlt = multiplexer$({
+    mlt: multiplexer$({
+      life: source$<42>(),
+      toto: source$<'toto'>(),
     }),
   });
 
@@ -63,10 +63,10 @@ describe('nested multiplexer', () => {
 });
 
 describe('nested group', () => {
-  const mlt = multiplexer({
-    grp: group({
-      life: source<42>(),
-      toto: source<'toto'>(),
+  const mlt = multiplexer$({
+    grp: group$({
+      life: source$<42>(),
+      toto: source$<'toto'>(),
     }),
   });
 

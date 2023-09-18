@@ -1,17 +1,17 @@
 import { vi } from 'vitest';
 
 import { Listener } from '@/src/defs/index.js';
-import { source, SourceObj } from '@/src/source.js';
+import { source$, SourceObj } from '@/src/source.js';
 
 // Setup
 let src: SourceObj<number>;
 
 beforeEach(() => {
-  src = source();
+  src = source$();
 });
 
 // Tests
-describe('source', () => {
+describe('source$', () => {
   it('should call listeners when an event is emitted', () => {
     const listener: Listener<number> = vi.fn();
 

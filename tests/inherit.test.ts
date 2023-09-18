@@ -1,9 +1,9 @@
 import { vi } from 'vitest';
 
 import { Listener } from '@/src/defs/index.js';
-import { inherit } from '@/src/inherit.js';
-import { multiplexer, MultiplexerObj } from '@/src/multiplexer.js';
-import { source, SourceObj } from '@/src/source.js';
+import { inherit$ } from '@/src/inherit.js';
+import { multiplexer$, MultiplexerObj } from '@/src/multiplexer.js';
+import { source$, SourceObj } from '@/src/source.js';
 
 // Setup
 let mlt: MultiplexerObj<{
@@ -14,22 +14,22 @@ let src: SourceObj<'c'>;
 let int: SourceObj<number>;
 
 beforeEach(() => {
-  mlt = multiplexer({
-    a: source(),
-    b: source(),
+  mlt = multiplexer$({
+    a: source$(),
+    b: source$(),
   });
-  src = source();
-  int = source<number>();
+  src = source$();
+  int = source$<number>();
 });
 
 // Tests
-describe('inherit', () => {
+describe('inherit$', () => {
   describe('next', () => {
     it('should emit from int', () => {
       vi.spyOn(int, 'next');
       vi.spyOn(src, 'next');
 
-      const child = inherit(int, { c: src });
+      const child = inherit$(int, { c: src });
       child.next(42);
 
       expect(int.next).toHaveBeenCalledWith(42);
@@ -40,7 +40,7 @@ describe('inherit', () => {
       vi.spyOn(mlt, 'emit');
       vi.spyOn(src, 'next');
 
-      const child = inherit(mlt, { c: src });
+      const child = inherit$(mlt, { c: src });
       child.emit('c', 'c');
 
       expect(mlt.emit).not.toHaveBeenCalled();
@@ -51,7 +51,7 @@ describe('inherit', () => {
       vi.spyOn(mlt, 'emit');
       vi.spyOn(src, 'next');
 
-      const child = inherit(mlt, { a: src });
+      const child = inherit$(mlt, { a: src });
       child.emit('a', 'c');
 
       expect(mlt.emit).not.toHaveBeenCalled();
@@ -62,7 +62,7 @@ describe('inherit', () => {
       vi.spyOn(mlt, 'emit');
       vi.spyOn(src, 'next');
 
-      const child = inherit(mlt, { c: src });
+      const child = inherit$(mlt, { c: src });
       child.emit('a', 'a');
 
       expect(mlt.emit).toHaveBeenCalledWith('a', 'a');
@@ -75,7 +75,7 @@ describe('inherit', () => {
       vi.spyOn(int, 'subscribe');
 
       const listener: Listener<number> = vi.fn();
-      const child = inherit(int, { c: src });
+      const child = inherit$(int, { c: src });
       child.subscribe(listener);
 
       expect(int.subscribe).toHaveBeenCalledWith(listener);
@@ -87,7 +87,7 @@ describe('inherit', () => {
       vi.spyOn(int, 'unsubscribe');
 
       const listener: Listener<number> = vi.fn();
-      const child = inherit(int, { c: src });
+      const child = inherit$(int, { c: src });
       child.unsubscribe(listener);
 
       expect(int.unsubscribe).toHaveBeenCalledWith(listener);
@@ -100,7 +100,7 @@ describe('inherit', () => {
       vi.spyOn(src, 'subscribe');
       const listener = vi.fn();
 
-      const child = inherit(mlt, { c: src });
+      const child = inherit$(mlt, { c: src });
       child.on('c', listener);
 
       expect(mlt.on).not.toHaveBeenCalled();
@@ -112,7 +112,7 @@ describe('inherit', () => {
       vi.spyOn(src, 'subscribe');
       const listener = vi.fn();
 
-      const child = inherit(mlt, { a: src });
+      const child = inherit$(mlt, { a: src });
       child.on('a', listener);
 
       expect(mlt.on).not.toHaveBeenCalled();
@@ -124,7 +124,7 @@ describe('inherit', () => {
       vi.spyOn(src, 'subscribe');
       const listener = vi.fn();
 
-      const child = inherit(mlt, { c: src });
+      const child = inherit$(mlt, { c: src });
       child.on('a', listener);
 
       expect(mlt.on).toHaveBeenCalledWith('a', listener);
@@ -138,7 +138,7 @@ describe('inherit', () => {
       vi.spyOn(src, 'unsubscribe');
       const listener = vi.fn();
 
-      const child = inherit(mlt, { c: src });
+      const child = inherit$(mlt, { c: src });
       child.off('c', listener);
 
       expect(mlt.off).not.toHaveBeenCalled();
@@ -150,7 +150,7 @@ describe('inherit', () => {
       vi.spyOn(src, 'unsubscribe');
       const listener = vi.fn();
 
-      const child = inherit(mlt, { a: src });
+      const child = inherit$(mlt, { a: src });
       child.off('a', listener);
 
       expect(mlt.off).not.toHaveBeenCalled();
@@ -162,7 +162,7 @@ describe('inherit', () => {
       vi.spyOn(src, 'unsubscribe');
       const listener = vi.fn();
 
-      const child = inherit(mlt, { c: src });
+      const child = inherit$(mlt, { c: src });
       child.off('a', listener);
 
       expect(mlt.off).toHaveBeenCalledWith('a', listener);
@@ -175,7 +175,7 @@ describe('inherit', () => {
       vi.spyOn(mlt, 'clear');
       vi.spyOn(src, 'clear');
 
-      const child = inherit(mlt, { c: src });
+      const child = inherit$(mlt, { c: src });
       child.clear('c');
 
       expect(mlt.clear).not.toHaveBeenCalled();
@@ -186,7 +186,7 @@ describe('inherit', () => {
       vi.spyOn(mlt, 'clear');
       vi.spyOn(src, 'clear');
 
-      const child = inherit(mlt, { a: src });
+      const child = inherit$(mlt, { a: src });
       child.clear('a');
 
       expect(mlt.clear).not.toHaveBeenCalled();
@@ -197,7 +197,7 @@ describe('inherit', () => {
       vi.spyOn(mlt, 'clear');
       vi.spyOn(src, 'clear');
 
-      const child = inherit(mlt, { c: src });
+      const child = inherit$(mlt, { c: src });
       child.clear('a');
 
       expect(mlt.clear).toHaveBeenCalledWith('a');
@@ -208,7 +208,7 @@ describe('inherit', () => {
       vi.spyOn(mlt, 'clear');
       vi.spyOn(src, 'clear');
 
-      const child = inherit(mlt, { c: src });
+      const child = inherit$(mlt, { c: src });
       child.clear();
 
       expect(mlt.clear).toHaveBeenCalled();

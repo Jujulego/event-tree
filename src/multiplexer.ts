@@ -1,5 +1,6 @@
 import { AnySource, EmitEventMap, Multiplexer, KeyPart, ListenEventMap, SourceTree } from './defs/index.js';
 import { _multiplexer } from './bases/index.js';
+import { dom$ } from './dom.js';
 
 // Types
 export interface MultiplexerObj<T extends SourceTree> extends Multiplexer<EmitEventMap<T>, ListenEventMap<T>> {
@@ -8,7 +9,7 @@ export interface MultiplexerObj<T extends SourceTree> extends Multiplexer<EmitEv
 }
 
 // Utils
-export function multiplexer<T extends SourceTree>(map: T): MultiplexerObj<T> {
+export function multiplexer$<T extends SourceTree>(map: T): MultiplexerObj<T> {
   const sources = new Map(Object.entries(map) as [keyof T & KeyPart, T[keyof T & KeyPart]][]);
 
   function getSource<K extends keyof T & KeyPart>(key: K): T[K] {
@@ -27,3 +28,5 @@ export function multiplexer<T extends SourceTree>(map: T): MultiplexerObj<T> {
   );
 }
 
+/** @deprecated */
+export const multiplexer = multiplexer$;

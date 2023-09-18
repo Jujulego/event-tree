@@ -1,7 +1,7 @@
 import { vi } from 'vitest';
 
 import { Emitter, KeyEmitter, Listenable, Observable } from '@/src/defs/index.js';
-import { multiplexerMap } from '@/src/multiplexer-map.js';
+import { multiplexerMap$ } from '@/src/multiplexer-map.js';
 
 // Tests
 describe('multiplexerMap', () => {
@@ -13,7 +13,7 @@ describe('multiplexerMap', () => {
 
       const builder = vi.fn(() => src);
 
-      const mlt = multiplexerMap(builder);
+      const mlt = multiplexerMap$(builder);
       mlt.emit('life', 42);
 
       expect(builder).toHaveBeenCalledWith('life');
@@ -27,7 +27,7 @@ describe('multiplexerMap', () => {
 
       const builder = vi.fn(() => deep);
 
-      const mlt = multiplexerMap(builder);
+      const mlt = multiplexerMap$(builder);
       mlt.emit('deep.life', 42);
 
       expect(builder).toHaveBeenCalledWith('deep');
@@ -45,7 +45,7 @@ describe('multiplexerMap', () => {
       };
 
       const builder = vi.fn(() => src);
-      const mlt = multiplexerMap(builder);
+      const mlt = multiplexerMap$(builder);
 
       const listener = vi.fn();
       expect(mlt.on('life', listener)).toBe(off);
@@ -63,7 +63,7 @@ describe('multiplexerMap', () => {
       };
 
       const builder = vi.fn(() => deep);
-      const mlt = multiplexerMap(builder);
+      const mlt = multiplexerMap$(builder);
 
       const listener = vi.fn();
       expect(mlt.on('deep.life', listener)).toBe(off);
@@ -83,7 +83,7 @@ describe('multiplexerMap', () => {
       };
 
       const builder = vi.fn(() => src);
-      const mlt = multiplexerMap(builder);
+      const mlt = multiplexerMap$(builder);
 
       const listener = vi.fn();
       mlt.off('life', listener);
@@ -101,7 +101,7 @@ describe('multiplexerMap', () => {
       };
 
       const builder = vi.fn(() => deep);
-      const mlt = multiplexerMap(builder);
+      const mlt = multiplexerMap$(builder);
 
       const listener = vi.fn();
       mlt.off('deep.life', listener);
@@ -120,7 +120,7 @@ describe('multiplexerMap', () => {
         clear: vi.fn(),
       };
 
-      const mlt = multiplexerMap(() => src);
+      const mlt = multiplexerMap$(() => src);
       mlt.on('life', () => null); // <= creates source
       mlt.clear('life');
 
@@ -135,7 +135,7 @@ describe('multiplexerMap', () => {
         clear: vi.fn(),
       };
 
-      const mlt = multiplexerMap(() => deep);
+      const mlt = multiplexerMap$(() => deep);
       mlt.on('deep.life', () => null); // <= creates source
       mlt.clear('deep.life');
 
@@ -150,7 +150,7 @@ describe('multiplexerMap', () => {
         clear: vi.fn(),
       };
 
-      const mlt = multiplexerMap(() => deep);
+      const mlt = multiplexerMap$(() => deep);
       mlt.on('deep1.life', () => null); // <= creates source
       mlt.on('deep2.life', () => null); // <= creates source
       mlt.clear();

@@ -1,10 +1,10 @@
 import { vi } from 'vitest';
 
-import { group, GroupObj } from '@/src/group.js';
-import { multiplexer, MultiplexerObj } from '@/src/multiplexer.js';
-import { offGroup } from '@/src/off-group.js';
-import { source, SourceObj } from '@/src/source.js';
-import { waitFor } from '@/src/wait-for.js';
+import { group$, GroupObj } from '@/src/group.js';
+import { multiplexer$, MultiplexerObj } from '@/src/multiplexer.js';
+import { off$ } from '@/src/off.js';
+import { source$, SourceObj } from '@/src/source.js';
+import { waitFor$ } from '@/src/wait-for.js';
 
 // Setup
 let src: SourceObj<number>;
@@ -12,24 +12,24 @@ let mlt: MultiplexerObj<{ src: SourceObj<number> }>;
 let grp: GroupObj<{ src: SourceObj<number> }>;
 
 beforeEach(() => {
-  src = source();
-  mlt = multiplexer({ src });
-  grp = group({ src });
+  src = source$();
+  mlt = multiplexer$({ src });
+  grp = group$({ src });
 });
 
-describe('waitFor', () => {
+describe('waitFor$', () => {
   describe('on an observable', () => {
     it('should resolve when observable emits', async () => {
       setTimeout(() => src.next(1), 0);
 
-      await expect(waitFor(src)).resolves.toBe(1);
+      await expect(waitFor$(src)).resolves.toBe(1);
     });
 
     it('should join given off group', async () => {
-      const off = offGroup();
+      const off = off$();
       vi.spyOn(off, 'add');
 
-      const prom = waitFor(src, { off });
+      const prom = waitFor$(src, { off });
 
       expect(off.add).toHaveBeenCalledTimes(2);
 
@@ -43,14 +43,14 @@ describe('waitFor', () => {
     it('should resolve when listenable emits', async () => {
       setTimeout(() => mlt.emit('src', 1), 0);
 
-      await expect(waitFor(mlt, 'src')).resolves.toBe(1);
+      await expect(waitFor$(mlt, 'src')).resolves.toBe(1);
     });
 
     it('should join given off group', async () => {
-      const off = offGroup();
+      const off = off$();
       vi.spyOn(off, 'add');
 
-      const prom = waitFor(mlt, 'src', { off });
+      const prom = waitFor$(mlt, 'src', { off });
 
       expect(off.add).toHaveBeenCalledTimes(2);
 
@@ -66,7 +66,7 @@ describe('waitFor', () => {
       vi.spyOn(grp, 'on');
       vi.spyOn(grp, 'subscribe');
 
-      await expect(waitFor(grp, 'src')).resolves.toBe(1);
+      await expect(waitFor$(grp, 'src')).resolves.toBe(1);
 
       expect(grp.on).toHaveBeenCalledWith('src', expect.any(Function));
       expect(grp.subscribe).not.toHaveBeenCalled();
@@ -77,7 +77,7 @@ describe('waitFor', () => {
       vi.spyOn(grp, 'on');
       vi.spyOn(grp, 'subscribe');
 
-      await expect(waitFor(grp)).resolves.toBe(1);
+      await expect(waitFor$(grp)).resolves.toBe(1);
 
       expect(grp.on).not.toHaveBeenCalled();
       expect(grp.subscribe).toHaveBeenCalled();
