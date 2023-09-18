@@ -1,15 +1,15 @@
 import { vi } from 'vitest';
 
-import { group, Group } from '@/src/group.js';
-import { multiplexer, Multiplexer } from '@/src/multiplexer.js';
+import { group, GroupObj } from '@/src/group.js';
+import { multiplexer, MultiplexerObj } from '@/src/multiplexer.js';
 import { offGroup } from '@/src/off-group.js';
-import { source, Source } from '@/src/source.js';
+import { source, SourceObj } from '@/src/source.js';
 import { waitFor } from '@/src/wait-for.js';
 
 // Setup
-let src: Source<number>;
-let mlt: Multiplexer<{ src: Source<number> }>;
-let grp: Group<{ src: Source<number> }>;
+let src: SourceObj<number>;
+let mlt: MultiplexerObj<{ src: SourceObj<number> }>;
+let grp: GroupObj<{ src: SourceObj<number> }>;
 
 beforeEach(() => {
   src = source();

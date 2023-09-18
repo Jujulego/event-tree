@@ -1,4 +1,4 @@
-import { EventData, EventKey, EventMap, IListenable, IObservable, Key, Listener, OffFn } from './defs/index.js';
+import { EventData, EventKey, EventMap, Listenable, Observable, Key, Listener, OffFn } from './defs/index.js';
 import { OffGroup } from './off-group.js';
 
 // Types
@@ -7,10 +7,10 @@ export interface OnceOpts {
 }
 
 /** @internal */
-export type OnceObservableArgs = [obs: IObservable<unknown>, listener: Listener<unknown>, opts?: OnceOpts | undefined];
+export type OnceObservableArgs = [obs: Observable<unknown>, listener: Listener<unknown>, opts?: OnceOpts | undefined];
 
 /** @internal */
-export type OnceListenableArgs = [source: IListenable<EventMap>, key: Key, listener: Listener<unknown>, opts?: OnceOpts | undefined];
+export type OnceListenableArgs = [source: Listenable<EventMap>, key: Key, listener: Listener<unknown>, opts?: OnceOpts | undefined];
 
 /** @internal */
 export type OnceArgs = OnceObservableArgs | OnceListenableArgs;
@@ -21,7 +21,7 @@ export type OnceArgs = OnceObservableArgs | OnceListenableArgs;
  * @param listener
  * @param opts
  */
-export function once<D>(obs: IObservable<D>, listener: Listener<D>, opts?: OnceOpts): OffFn;
+export function once<D>(obs: Observable<D>, listener: Listener<D>, opts?: OnceOpts): OffFn;
 
 /**
  * Returns a promise that resolves when the given source emits the "key" event
@@ -30,7 +30,7 @@ export function once<D>(obs: IObservable<D>, listener: Listener<D>, opts?: OnceO
  * @param listener
  * @param opts
  */
-export function once<M extends EventMap, K extends EventKey<M>>(source: IListenable<M>, key: K, listener: Listener<EventData<M, K>>, opts?: OnceOpts): OffFn;
+export function once<M extends EventMap, K extends EventKey<M>>(source: Listenable<M>, key: K, listener: Listener<EventData<M, K>>, opts?: OnceOpts): OffFn;
 
 /** @internal */
 export function once(...args: OnceArgs): OffFn;

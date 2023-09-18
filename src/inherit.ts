@@ -1,4 +1,4 @@
-import { AnySource, EventMap, IEmitter, IMultiplexer, Inherit, IObservable, Listener, SourceTree } from './defs/index.js';
+import { AnySource, EventMap, Emitter, Multiplexer, Inherit, Observable, Listener, SourceTree } from './defs/index.js';
 import { multiplexer } from './multiplexer.js';
 import { splitKey } from './utils/index.js';
 
@@ -7,9 +7,9 @@ export function inherit<S extends AnySource, T extends SourceTree>(parent: S, ma
 export function inherit(parent: AnySource, map: SourceTree): AnySource {
   const child = multiplexer(map);
 
-  function targetOf(key: string): IMultiplexer<EventMap, EventMap> {
+  function targetOf(key: string): Multiplexer<EventMap, EventMap> {
     const [part] = splitKey(key);
-    return (part in map ? child : parent) as IMultiplexer<EventMap, EventMap>;
+    return (part in map ? child : parent) as Multiplexer<EventMap, EventMap>;
   }
 
   return {
@@ -18,13 +18,13 @@ export function inherit(parent: AnySource, map: SourceTree): AnySource {
       return target.emit(key, data);
     },
     next(data: unknown) {
-      return (parent as IEmitter<unknown>).next(data);
+      return (parent as Emitter<unknown>).next(data);
     },
     subscribe(listener: Listener<unknown>) {
-      return (parent as IObservable<unknown>).subscribe(listener);
+      return (parent as Observable<unknown>).subscribe(listener);
     },
     unsubscribe(listener: Listener<unknown>) {
-      return (parent as IObservable<unknown>).unsubscribe(listener);
+      return (parent as Observable<unknown>).unsubscribe(listener);
     },
     on(key: string, listener: Listener<unknown>) {
       const target = targetOf(key);

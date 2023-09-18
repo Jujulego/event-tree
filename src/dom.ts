@@ -1,4 +1,4 @@
-import { EventMap, IListenable, Listener } from './defs/index.js';
+import { EventMap, Listenable, Listener } from './defs/index.js';
 import { listenersMap } from './utils/index.js';
 
 export interface DomEmitter<M> {
@@ -10,9 +10,9 @@ export interface DomEmitter<M> {
  * Wraps an dom element
  * @param element
  */
-export function dom<M = HTMLElementEventMap>(element: DomEmitter<M>): IListenable<M & Record<never, never>>;
+export function dom<M = HTMLElementEventMap>(element: DomEmitter<M>): Listenable<M & Record<never, never>>;
 
-export function dom(element: DomEmitter<EventMap>): IListenable<EventMap> {
+export function dom(element: DomEmitter<EventMap>): Listenable<EventMap> {
   const listeners = listenersMap();
 
   function removeListener(key: string, listener: Listener<unknown>) {

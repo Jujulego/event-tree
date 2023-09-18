@@ -2,16 +2,16 @@ import { vi } from 'vitest';
 
 import { Listener } from '@/src/defs/index.js';
 import { inherit } from '@/src/inherit.js';
-import { multiplexer, Multiplexer } from '@/src/multiplexer.js';
-import { source, Source } from '@/src/source.js';
+import { multiplexer, MultiplexerObj } from '@/src/multiplexer.js';
+import { source, SourceObj } from '@/src/source.js';
 
 // Setup
-let mlt: Multiplexer<{
-  a: Source<'a'>,
-  b: Source<'b'>,
+let mlt: MultiplexerObj<{
+  a: SourceObj<'a'>,
+  b: SourceObj<'b'>,
 }>;
-let src: Source<'c'>;
-let int: Source<number>;
+let src: SourceObj<'c'>;
+let int: SourceObj<number>;
 
 beforeEach(() => {
   mlt = multiplexer({

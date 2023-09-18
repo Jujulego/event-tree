@@ -1,4 +1,4 @@
-import { EventData, EventKey, EventMap, IListenable, IObservable } from './defs/index.js';
+import { EventData, EventKey, EventMap, Listenable, Observable } from './defs/index.js';
 import { OnceOpts } from './once.js';
 import { waitFor, WaitForArgs, WaitForListenableArgs, WaitForObservableArgs } from './wait-for.js';
 import { offGroup, OffGroup } from './off-group.js';
@@ -8,7 +8,7 @@ import { offGroup, OffGroup } from './off-group.js';
  * @param obs
  * @param opts
  */
-export function iterate<D>(obs: IObservable<D>, opts?: OnceOpts): AsyncIterableIterator<D>;
+export function iterate<D>(obs: Observable<D>, opts?: OnceOpts): AsyncIterableIterator<D>;
 
 /**
  * Returns an iterator over multiplexer events
@@ -16,7 +16,7 @@ export function iterate<D>(obs: IObservable<D>, opts?: OnceOpts): AsyncIterableI
  * @param key
  * @param opts
  */
-export function iterate<M extends EventMap, K extends EventKey<M>>(source: IListenable<M>, key: K, opts?: OnceOpts): AsyncIterableIterator<EventData<M, K>>;
+export function iterate<M extends EventMap, K extends EventKey<M>>(source: Listenable<M>, key: K, opts?: OnceOpts): AsyncIterableIterator<EventData<M, K>>;
 
 export function iterate(...args: WaitForArgs): AsyncIterableIterator<unknown> {
   const parsed = parseArgs(args);

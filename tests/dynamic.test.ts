@@ -1,14 +1,14 @@
 import { vi } from 'vitest';
 
 import { dynamic } from '@/src/dynamic.js';
-import { multiplexer, Multiplexer } from '@/src/multiplexer.js';
-import { source, Source } from '@/src/source.js';
+import { multiplexer, MultiplexerObj } from '@/src/multiplexer.js';
+import { source, SourceObj } from '@/src/source.js';
 
 // Tests
 describe('dynamic', () => {
   describe('for listenable', () => {
-    let mlt: Multiplexer<{ 'life': Source<number> }>;
-    let origin: Source<typeof mlt>;
+    let mlt: MultiplexerObj<{ 'life': SourceObj<number> }>;
+    let origin: SourceObj<typeof mlt>;
 
     beforeEach(() => {
       mlt = multiplexer({
@@ -113,15 +113,15 @@ describe('dynamic', () => {
       vi.spyOn(console, 'warn');
 
       dyn.on('life', spy);
-      origin.next(source() as unknown as Multiplexer<{ life: Source<number> }>);
+      origin.next(source() as unknown as MultiplexerObj<{ life: SourceObj<number> }>);
 
       expect(console.warn).toHaveBeenCalled();
     });
   });
 
   describe('for observable', () => {
-    let src: Source<number>;
-    let origin: Source<typeof src>;
+    let src: SourceObj<number>;
+    let origin: SourceObj<typeof src>;
 
     beforeEach(() => {
       src = source();
@@ -224,7 +224,7 @@ describe('dynamic', () => {
       vi.spyOn(console, 'warn');
 
       dyn.subscribe(spy);
-      origin.next(multiplexer({}) as unknown as Source<number>);
+      origin.next(multiplexer({}) as unknown as SourceObj<number>);
 
       expect(console.warn).toHaveBeenCalled();
     });

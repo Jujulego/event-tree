@@ -1,10 +1,10 @@
 import { EventMap } from './event-map.js';
-import { IObservable } from './observable.js';
-import { IListenable } from './listenable.js';
+import { Observable } from './observable.js';
+import { Listenable } from './listenable.js';
 
 // Types
 export type DynamicSource =
-  & Partial<IObservable<unknown>>
-  & Partial<IListenable<EventMap>>;
+  & Partial<Observable<unknown>>
+  & Partial<Listenable<EventMap>>;
 
-export type Dynamify<S extends IListenable<EventMap> | IObservable<unknown>> = Pick<S, Extract<keyof S, keyof DynamicSource>>;
+export type Dynamify<S extends Listenable<EventMap> | Observable<unknown>> = Pick<S, Extract<keyof S, keyof DynamicSource>>;

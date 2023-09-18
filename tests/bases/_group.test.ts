@@ -1,12 +1,12 @@
 import { vi } from 'vitest';
 
 import { _group } from '@/src/bases/_group.js';
-import { IMultiplexer, ISource, Listener, OffFn } from '@/src/defs/index.js';
+import { Multiplexer, Source, Listener, OffFn } from '@/src/defs/index.js';
 
 // Setup
 let off: OffFn;
-let mlt: IMultiplexer<{ life: number }, { life: number }>;
-let src: ISource<number>;
+let mlt: Multiplexer<{ life: number }, { life: number }>;
+let src: Source<number>;
 
 beforeEach(() => {
   off = vi.fn();

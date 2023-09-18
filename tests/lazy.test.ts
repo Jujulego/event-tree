@@ -1,15 +1,15 @@
 import { vi } from 'vitest';
 
-import { EventMap, IListenable, IObservable } from '@/src/defs/index.js';
-import { group, Group } from '@/src/group.js';
+import { EventMap, Listenable, Observable } from '@/src/defs/index.js';
+import { group, GroupObj } from '@/src/group.js';
 import { lazy } from '@/src/lazy.js';
-import { multiplexer, Multiplexer } from '@/src/multiplexer.js';
-import { source, Source } from '@/src/source.js';
+import { multiplexer, MultiplexerObj } from '@/src/multiplexer.js';
+import { source, SourceObj } from '@/src/source.js';
 
 // Setup
-let src: Source<number>;
-let grp: Group<{ src: Source<number> }>;
-let mlt: Multiplexer<{ src: Source<number> }>;
+let src: SourceObj<number>;
+let grp: GroupObj<{ src: SourceObj<number> }>;
+let mlt: MultiplexerObj<{ src: SourceObj<number> }>;
 
 beforeEach(() => {
   src = source();
@@ -48,12 +48,12 @@ describe('lazy', () => {
 
     it('should return undefined for subscribe', () => {
       const lzy = lazy(() => mlt);
-      expect((lzy as unknown as IObservable<unknown>).subscribe).toBeUndefined();
+      expect((lzy as unknown as Observable<unknown>).subscribe).toBeUndefined();
     });
 
     it('should return undefined for unsubscribe', () => {
       const lzy = lazy(() => mlt);
-      expect((lzy as unknown as IObservable<unknown>).unsubscribe).toBeUndefined();
+      expect((lzy as unknown as Observable<unknown>).unsubscribe).toBeUndefined();
     });
 
     it('should return original clear', () => {
@@ -70,12 +70,12 @@ describe('lazy', () => {
 
     it('should return undefined for on', () => {
       const lzy = lazy(() => src);
-      expect((lzy as unknown as IListenable<EventMap>).on).toBeUndefined();
+      expect((lzy as unknown as Listenable<EventMap>).on).toBeUndefined();
     });
 
     it('should return undefined for off', () => {
       const lzy = lazy(() => src);
-      expect((lzy as unknown as IListenable<EventMap>).off).toBeUndefined();
+      expect((lzy as unknown as Listenable<EventMap>).off).toBeUndefined();
     });
 
     it('should return original subscribe', () => {

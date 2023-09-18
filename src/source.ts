@@ -1,13 +1,13 @@
-import { ISource, Listener } from './defs/index.js';
+import { Source, Listener } from './defs/index.js';
 
 // Types
-export interface Source<D> extends ISource<D> {
+export interface SourceObj<D> extends Source<D> {
   // Attributes
   listeners: Set<Listener<D>>;
 }
 
 // Utils
-export function source<D>(): Source<D> {
+export function source<D>(): SourceObj<D> {
   const listeners = new Set<Listener<D>>();
 
   return {

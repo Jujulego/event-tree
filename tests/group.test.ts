@@ -1,19 +1,19 @@
 import { vi } from 'vitest';
 
 import { Listener } from '@/src/defs/index.js';
-import { group, Group } from '@/src/group.js';
-import { multiplexer, Multiplexer } from '@/src/multiplexer.js';
-import { source, Source } from '@/src/source.js';
+import { group, GroupObj } from '@/src/group.js';
+import { multiplexer, MultiplexerObj } from '@/src/multiplexer.js';
+import { source, SourceObj } from '@/src/source.js';
 
 // Setup
-let int: Source<number>;
-let str: Source<string>;
-let boo: Source<boolean>;
-let grp: Group<{
-  int: Source<number>,
-  str: Source<string>,
-  deep: Multiplexer<{
-    boo: Source<boolean>,
+let int: SourceObj<number>;
+let str: SourceObj<string>;
+let boo: SourceObj<boolean>;
+let grp: GroupObj<{
+  int: SourceObj<number>,
+  str: SourceObj<string>,
+  deep: MultiplexerObj<{
+    boo: SourceObj<boolean>,
   }>
 }>;
 

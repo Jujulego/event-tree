@@ -1,7 +1,10 @@
 import { EventKey, EventListener, EventMap } from './event-map.js';
 import { OffFn } from './utils.js';
 
-export interface IListenable<M extends EventMap> {
+/**
+ * Object allowing to listen to multiple events, defined by keys
+ */
+export interface Listenable<M extends EventMap> {
   __listen_event_map?: M | undefined;
 
   /**
