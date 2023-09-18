@@ -2,7 +2,7 @@ export * from './bases/index.js';
 export * from './defs/index.js';
 export * from './dom.js';
 export * from './dynamic.js';
-export * from './group$.js';
+export * from './group.js';
 export * from './group-map.js';
 export * from './inherit.js';
 export * from './iterate.js';
