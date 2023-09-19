@@ -21,3 +21,6 @@ export interface Observable<D = unknown> {
    */
   clear(): void;
 }
+
+// Utils
+export type ObservedValue<O extends Observable> = O extends Observable<infer D> ? D : never;
