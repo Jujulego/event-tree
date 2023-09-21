@@ -13,7 +13,11 @@ describe('_multiplexer', () => {
 
       const getSource = vi.fn(() => src);
 
-      const mlt = _multiplexer$<Record<string, typeof src>>(() => [src], getSource);
+      const mlt = _multiplexer$<Record<'life', typeof src>>({
+        keys: () => ['life'],
+        sources: () => [src],
+        getSource,
+      });
       mlt.emit('life', 42);
 
       expect(getSource).toHaveBeenCalledWith('life');
@@ -27,7 +31,11 @@ describe('_multiplexer', () => {
 
       const getSource = vi.fn(() => deep);
 
-      const mlt = _multiplexer$<Record<string, typeof deep>>(() => [deep], getSource);
+      const mlt = _multiplexer$<Record<'deep', typeof deep>>({
+        keys: () => ['deep.life'],
+        sources: () => [deep],
+        getSource,
+      });
       mlt.emit('deep.life', 42);
 
       expect(getSource).toHaveBeenCalledWith('deep');
@@ -45,7 +53,11 @@ describe('_multiplexer', () => {
       };
 
       const getSource = vi.fn(() => src);
-      const mlt = _multiplexer$(() => [src], getSource);
+      const mlt = _multiplexer$<Record<'life', typeof src>>({
+        keys: () => ['life'],
+        sources: () => [src],
+        getSource,
+      });
 
       const listener = vi.fn();
       expect(mlt.on('life', listener)).toBe(off);
@@ -57,13 +69,18 @@ describe('_multiplexer', () => {
     it('should subscribe to deep child event', () => {
       const off = vi.fn();
       const deep: Listenable<{ 'life': number }> = {
+        keys: () => ['life'],
         on: vi.fn(() => off),
         off: vi.fn(),
         clear: vi.fn(),
       };
 
       const getSource = vi.fn(() => deep);
-      const mlt = _multiplexer$(() => [deep], getSource);
+      const mlt = _multiplexer$<Record<'deep', typeof deep>>({
+        keys: () => ['deep.life'],
+        sources: () => [deep],
+        getSource,
+      });
 
       const listener = vi.fn();
       expect(mlt.on('deep.life', listener)).toBe(off);
@@ -83,7 +100,11 @@ describe('_multiplexer', () => {
       };
 
       const getSource = vi.fn(() => src);
-      const mlt = _multiplexer$(() => [src], getSource);
+      const mlt = _multiplexer$({
+        keys: () => ['life'],
+        sources: () => [src],
+        getSource,
+      });
 
       const listener = vi.fn();
       mlt.off('life', listener);
@@ -95,13 +116,18 @@ describe('_multiplexer', () => {
     it('should unsubscribe from deep child event', () => {
       const off = vi.fn();
       const deep: Listenable<{ 'life': number }> = {
+        keys: () => ['life'],
         on: vi.fn(() => off),
         off: vi.fn(),
         clear: vi.fn(),
       };
 
       const getSource = vi.fn(() => deep);
-      const mlt = _multiplexer$(() => [deep], getSource);
+      const mlt = _multiplexer$<Record<'deep', typeof deep>>({
+        keys: () => ['deep.life'],
+        sources: () => [deep],
+        getSource,
+      });
 
       const listener = vi.fn();
       mlt.off('deep.life', listener);
@@ -121,7 +147,11 @@ describe('_multiplexer', () => {
       };
 
       const getSource = vi.fn(() => src);
-      const mlt = _multiplexer$(() => [src], getSource);
+      const mlt = _multiplexer$<Record<'life', typeof src>>({
+        keys: () => ['life'],
+        sources: () => [src],
+        getSource,
+      });
 
       mlt.clear('life');
 
@@ -132,13 +162,18 @@ describe('_multiplexer', () => {
     it('should clear deep child source', () => {
       const off = vi.fn();
       const deep: Listenable<{ 'life': number }> = {
+        keys: () => ['life'],
         on: vi.fn(() => off),
         off: vi.fn(),
         clear: vi.fn(),
       };
 
       const getSource = vi.fn(() => deep);
-      const mlt = _multiplexer$(() => [deep], getSource);
+      const mlt = _multiplexer$<Record<string, typeof deep>>({
+        keys: () => ['deep.life'],
+        sources: () => [deep],
+        getSource,
+      });
 
       mlt.clear('deep.life');
 
@@ -154,17 +189,22 @@ describe('_multiplexer', () => {
         clear: vi.fn(),
       };
       const deep: Listenable<{ 'life': number }> = {
+        keys: () => ['life'],
         on: vi.fn(() => off),
         off: vi.fn(),
         clear: vi.fn(),
       };
 
-      const listSource = vi.fn(() => [src, deep]);
-      const mlt = _multiplexer$(listSource, () => src);
+      const sources = vi.fn(() => [src, deep]);
+      const mlt = _multiplexer$<Record<'life' | 'deep', typeof src | typeof deep>>({
+        keys: () => ['life', 'deep.life'],
+        sources,
+        getSource: () => src,
+      });
 
       mlt.clear();
 
-      expect(listSource).toHaveBeenCalled();
+      expect(sources).toHaveBeenCalled();
       expect(src.clear).toHaveBeenCalled();
       expect(deep.clear).toHaveBeenCalled();
     });
