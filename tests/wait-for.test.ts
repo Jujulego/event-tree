@@ -79,7 +79,7 @@ describe('waitFor$', () => {
 
       await expect(waitFor$(grp)).resolves.toBe(1);
 
-      expect(grp.on).not.toHaveBeenCalled();
+      expect(grp.on).toHaveBeenCalledWith('src', expect.any(Function));
       expect(grp.subscribe).toHaveBeenCalled();
     });
   });

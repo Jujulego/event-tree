@@ -7,7 +7,7 @@ import { Multiplexer } from './multiplexer.js';
  * It's listeners would be called each time a child emits
  */
 export interface Group<EmitMap extends EventMap, ListenMap extends EventMap>
-  extends Observable<EventData<EmitMap>>, Multiplexer<EmitMap, ListenMap> {
+  extends Observable<EventData<ListenMap>>, Multiplexer<EmitMap, ListenMap> {
   /**
    * Unregister all listeners, or only "key" listeners if given
    */

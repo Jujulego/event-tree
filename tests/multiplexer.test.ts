@@ -30,6 +30,10 @@ beforeEach(() => {
 
 // Tests
 describe('multiplexer$', () => {
+  it('should return all available keys', () => {
+    expect(Array.from(mlt.keys())).toEqual(['int', 'str', 'deep.boo']);
+  });
+
   describe('emit', () => {
     it('should emit child event', () => {
       vi.spyOn(int, 'next');

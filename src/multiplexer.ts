@@ -1,5 +1,5 @@
 import { _multiplexer$ } from './bases/index.js';
-import { AnySource, EmitEventMap, Multiplexer, KeyPart, ListenEventMap, SourceTree } from './defs/index.js';
+import { AnySource, EmitEventMap, Multiplexer, KeyPart, ListenEventMap, SourceTree, EventKey } from './defs/index.js';
 
 // Types
 export interface MultiplexerObj<T extends SourceTree> extends Multiplexer<EmitEventMap<T>, ListenEventMap<T>> {
@@ -8,21 +8,38 @@ export interface MultiplexerObj<T extends SourceTree> extends Multiplexer<EmitEv
 }
 
 // Utils
-export function multiplexer$<T extends SourceTree>(map: T): MultiplexerObj<T> {
-  const sources = new Map(Object.entries(map) as [keyof T & KeyPart, T[keyof T & KeyPart]][]);
+export function multiplexer$<T extends SourceTree>(tree: T): MultiplexerObj<T> {
+  const keys = new Set<EventKey<ListenEventMap<T>>>();
+  const sources = new Map<keyof T & KeyPart, T[keyof T & KeyPart]>();
 
-  function getSource<K extends keyof T & KeyPart>(key: K): T[K] {
-    const src = sources.get(key);
+  for (const [key, src] of Object.entries(tree)) {
+    sources.set(key, src as T[keyof T & KeyPart]);
 
-    if (!src) {
-      throw new Error(`Child source ${key} not found`);
+    if ('subscribe' in src) {
+      keys.add(key);
     }
 
-    return src as T[K];
+    if ('keys' in src) {
+      for (const childKey of src.keys()) {
+        keys.add(`${key}.${childKey}`);
+      }
+    }
   }
 
   return Object.assign(
-    _multiplexer$<T>(() => sources.values(), getSource),
+    _multiplexer$<T>({
+      keys: () => keys,
+      sources: () => sources.values(),
+      getSource<K extends keyof T & KeyPart>(key: K): T[K] {
+        const src = sources.get(key);
+
+        if (!src) {
+          throw new Error(`Child source ${key} not found`);
+        }
+
+        return src as T[K];
+      }
+    }),
     { sources }
   );
 }

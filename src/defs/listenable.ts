@@ -8,6 +8,11 @@ export interface Listenable<M extends EventMap> {
   __listen_event_map?: M | undefined;
 
   /**
+   * Returns every listenable keys
+   */
+  keys(): Iterable<EventKey<M>>;
+
+  /**
    * Registers listener on given "key" event
    * @param key
    * @param listener

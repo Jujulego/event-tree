@@ -45,6 +45,15 @@ describe('group$', () => {
     expect(listener).toHaveBeenCalledWith(true);
   });
 
+  it('should call group listener when a child emits', () => {
+    const listener: Listener<number | string | boolean> = vi.fn();
+
+    grp.subscribe(listener);
+    int.next(1);
+
+    expect(listener).toHaveBeenCalledWith(1);
+  });
+
   it('should not call removed listeners (off method)', () => {
     const listener: Listener<number | string | boolean> = vi.fn();
 
