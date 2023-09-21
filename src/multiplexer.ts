@@ -1,5 +1,5 @@
 import { _multiplexer$ } from './bases/index.js';
-import { AnySource, EmitEventMap, Multiplexer, KeyPart, ListenEventMap, SourceTree } from './defs/index.js';
+import { AnySource, EmitEventMap, Multiplexer, KeyPart, ListenEventMap, SourceTree, EventKey } from './defs/index.js';
 
 // Types
 export interface MultiplexerObj<T extends SourceTree> extends Multiplexer<EmitEventMap<T>, ListenEventMap<T>> {
@@ -14,9 +14,9 @@ export function multiplexer$<T extends SourceTree>(tree: T): MultiplexerObj<T> {
   return Object.assign(
     _multiplexer$<T>({
       *keys() {
-        for (const [key, src] of Object.entries(tree)) {
+        for (const [key, src] of sources.entries()) {
           if ('subscribe' in src) {
-            yield key;
+            yield key as EventKey<ListenEventMap<T>>;
           }
 
           if ('keys' in src) {
