@@ -20,17 +20,16 @@ type NextCb<R> = (src: Multiplexer<EventMap, EventMap>, key: Key) => R;
 type EndCb<R> = (src: Source) => R;
 
 /** @internal */
-export interface MultiplexerOpts<T extends SourceTree> {
-  keys(): Iterable<EventKey<ListenEventMap<T>>>;
-  sources(): Iterable<T[keyof T & KeyPart]>;
-  getSource<K extends keyof T & KeyPart>(key: K): T[K];
-}
+export type SourcesMap<T extends SourceTree> = Map<keyof T & KeyPart, T[keyof T & KeyPart]>;
 
 /** @internal */
-export function _multiplexer$<T extends SourceTree>(opts: MultiplexerOpts<T>): Multiplexer<EmitEventMap<T>, ListenEventMap<T>> {
+export type GetSourceFn<T extends SourceTree> = <K extends keyof T & KeyPart>(key: K) => T[K];
+
+/** @internal */
+export function _multiplexer$<T extends SourceTree>(sources: SourcesMap<T>, getSource: GetSourceFn<T>): Multiplexer<EmitEventMap<T>, ListenEventMap<T>> {
   function routeEvent<R>(key: Key, next: NextCb<R>, end: EndCb<R>): R {
     const [part, subkey] = splitKey(key);
-    const src = opts.getSource(part);
+    const src = getSource(part);
 
     if (subkey) {
       return next(src as Multiplexer<EventMap, EventMap>, subkey);
@@ -47,7 +46,19 @@ export function _multiplexer$<T extends SourceTree>(opts: MultiplexerOpts<T>): M
       );
     },
 
-    keys: opts.keys,
+    *keys() {
+      for (const [key, src] of sources.entries()) {
+        if ('subscribe' in src) {
+          yield key as EventKey<ListenEventMap<T>>;
+        }
+
+        if ('keys' in src) {
+          for (const childKey of src.keys()) {
+            yield `${key}.${childKey}`;
+          }
+        }
+      }
+    },
 
     on<K extends EventKey<ListenEventMap<T>>>(key: K, listener: Listener<EventData<ListenEventMap<T>, K>>): OffFn {
       return routeEvent(key,
@@ -65,12 +76,12 @@ export function _multiplexer$<T extends SourceTree>(opts: MultiplexerOpts<T>): M
 
     clear(key?: Key): void {
       if (!key) {
-        for (const src of opts.sources()) {
+        for (const src of sources.values()) {
           if ('clear' in src) src.clear();
         }
       } else {
         const [part, subkey] = splitKey(key);
-        const src = opts.getSource(part);
+        const src = getSource(part);
 
         if ('clear' in src) src.clear(subkey);
       }
