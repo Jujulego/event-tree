@@ -1,10 +1,8 @@
 import {
-  EventData,
-  EventKey,
   EventMap,
   KeyEmitter, Listenable,
   Listener,
-  OffFn,
+  OffFn, PickableKey,
   PickableSource,
   PickedSource
 } from './defs/index.js';
@@ -19,22 +17,24 @@ function isListenable<M extends EventMap>(src: PickableSource<M>): src is Listen
 }
 
 // Builder
-export function pick$<M extends EventMap, S extends PickableSource<M>, K extends EventKey<M>>(src: S, key: K): PickedSource<M, S, K> {
+export function pick$<S extends PickableSource, K extends PickableKey<S>>(src: S, key: K): PickedSource<S, K>;
+
+export function pick$(src: PickableSource, key: string) {
   let result = {};
 
   if (isEmitter(src)) {
     result = Object.assign(result, {
-      next: (data: EventData<M, K>) => src.emit(key, data),
+      next: (data: unknown) => src.emit(key, data),
     });
   }
 
   if (isListenable(src)) {
     result = Object.assign(result, {
-      subscribe: (listener: Listener<EventData<M, K>>): OffFn => src.on(key, listener),
-      unsubscribe: (listener: Listener<EventData<M, K>>) => src.off(key, listener),
+      subscribe: (listener: Listener<unknown>): OffFn => src.on(key, listener),
+      unsubscribe: (listener: Listener<unknown>) => src.off(key, listener),
       clear: () => src.clear(key),
     });
   }
 
-  return result as PickedSource<M, S, K>;
+  return result;
 }
