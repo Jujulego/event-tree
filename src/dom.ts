@@ -21,6 +21,7 @@ export function dom$(element: DomEmitter<EventMap>): Listenable<EventMap> {
   }
 
   return {
+    keys: () => [],
     on(key: string, listener: Listener<unknown>) {
       element.addEventListener(key, listener);
       listeners.add(key, listener);
