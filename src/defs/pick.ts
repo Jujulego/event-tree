@@ -1,5 +1,5 @@
 import { Emitter } from './emitter.js';
-import { EventData, EventKey, EventMap } from './event-map.js';
+import { EventData, EventKey } from './event-map.js';
 import { Listenable } from './listenable.js';
 import { KeyEmitter } from './key-emitter.js';
 import { Observable } from './observable.js';
@@ -7,7 +7,7 @@ import { Observable } from './observable.js';
 /**
  * Event sources that can be picked
  */
-export type PickableSource<M extends EventMap = EventMap> = Listenable<M> | KeyEmitter<M>;
+export type PickableSource = Listenable | KeyEmitter;
 
 /**
  * Extracts keys pickable from given source

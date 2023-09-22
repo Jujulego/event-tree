@@ -18,13 +18,13 @@ export function inherit$(parent: AnySource, map: SourceTree): AnySource {
       return target.emit(key, data);
     },
     next(data: unknown) {
-      return (parent as Emitter<unknown>).next(data);
+      return (parent as Emitter).next(data);
     },
     subscribe(listener: Listener<unknown>) {
-      return (parent as Observable<unknown>).subscribe(listener);
+      return (parent as Observable).subscribe(listener);
     },
     unsubscribe(listener: Listener<unknown>) {
-      return (parent as Observable<unknown>).unsubscribe(listener);
+      return (parent as Observable).unsubscribe(listener);
     },
     on(key: string, listener: Listener<unknown>) {
       const target = targetOf(key);

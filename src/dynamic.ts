@@ -1,4 +1,4 @@
-import { AnySource, DynamicSource, Dynamify, EventMap, Listenable, Observable, Listener, OffFn } from './defs/index.js';
+import { AnySource, DynamicSource, Dynamify, Listenable, Observable, Listener, OffFn } from './defs/index.js';
 import { off$ } from './off.js';
 import { listenersMap } from './utils/index.js';
 
@@ -11,9 +11,9 @@ function dynamicWarn(key?: string) {
  * Defines a dynamic source.
  * @param origin
  */
-export function dynamic$<S extends Listenable<EventMap> | Observable<unknown>>(origin: Observable<S>): Dynamify<S>;
+export function dynamic$<S extends Listenable | Observable>(origin: Observable<S>): Dynamify<S>;
 
-export function dynamic$(origin: Observable<Listenable<EventMap> | Observable<unknown>>): DynamicSource {
+export function dynamic$(origin: Observable<Listenable | Observable>): DynamicSource {
   const listeners = listenersMap();
   let current: AnySource | null = null;
   let off = off$();

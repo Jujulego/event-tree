@@ -4,10 +4,10 @@ import { once$, OnceArgs, OnceOpts } from './once.js';
 
 // Types
 /** @internal */
-export type WaitForObservableArgs = [obs: Observable<unknown>, opts?: OnceOpts | undefined];
+export type WaitForObservableArgs = [obs: Observable, opts?: OnceOpts | undefined];
 
 /** @internal */
-export type WaitForListenableArgs = [source: Listenable<EventMap>, key: Key, opts?: OnceOpts | undefined];
+export type WaitForListenableArgs = [source: Listenable, key: Key, opts?: OnceOpts | undefined];
 
 /** @internal */
 export type WaitForArgs = WaitForObservableArgs | WaitForListenableArgs;

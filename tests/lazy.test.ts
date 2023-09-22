@@ -1,6 +1,6 @@
 import { vi } from 'vitest';
 
-import { EventMap, Listenable, Observable } from '@/src/defs/index.js';
+import { Listenable, Observable } from '@/src/defs/index.js';
 import { group$, GroupObj } from '@/src/group.js';
 import { lazy$ } from '@/src/lazy.js';
 import { multiplexer$, MultiplexerObj } from '@/src/multiplexer.js';
@@ -48,12 +48,12 @@ describe('lazy$', () => {
 
     it('should return undefined for subscribe', () => {
       const lzy = lazy$(() => mlt);
-      expect((lzy as unknown as Observable<unknown>).subscribe).toBeUndefined();
+      expect((lzy as unknown as Observable).subscribe).toBeUndefined();
     });
 
     it('should return undefined for unsubscribe', () => {
       const lzy = lazy$(() => mlt);
-      expect((lzy as unknown as Observable<unknown>).unsubscribe).toBeUndefined();
+      expect((lzy as unknown as Observable).unsubscribe).toBeUndefined();
     });
 
     it('should return original clear', () => {
@@ -70,12 +70,12 @@ describe('lazy$', () => {
 
     it('should return undefined for on', () => {
       const lzy = lazy$(() => src);
-      expect((lzy as unknown as Listenable<EventMap>).on).toBeUndefined();
+      expect((lzy as unknown as Listenable).on).toBeUndefined();
     });
 
     it('should return undefined for off', () => {
       const lzy = lazy$(() => src);
-      expect((lzy as unknown as Listenable<EventMap>).off).toBeUndefined();
+      expect((lzy as unknown as Listenable).off).toBeUndefined();
     });
 
     it('should return original subscribe', () => {

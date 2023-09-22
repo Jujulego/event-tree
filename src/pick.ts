@@ -1,5 +1,4 @@
 import {
-  EventMap,
   KeyEmitter, Listenable,
   Listener,
   OffFn, PickableKey,
@@ -8,11 +7,11 @@ import {
 } from './defs/index.js';
 
 // Utils
-function isEmitter<M extends EventMap>(src: PickableSource<M>): src is KeyEmitter<M> {
+function isEmitter(src: PickableSource): src is KeyEmitter {
   return 'emit' in src;
 }
 
-function isListenable<M extends EventMap>(src: PickableSource<M>): src is Listenable<M> {
+function isListenable(src: PickableSource): src is Listenable {
   return 'on' in src;
 }
 
