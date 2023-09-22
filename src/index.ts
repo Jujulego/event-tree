@@ -9,6 +9,7 @@ export * from './iterate.js';
 export * from './lazy.js';
 export * from './multiplexer.js';
 export * from './multiplexer-map.js';
+export * from './pick.js';
 export * from './off.js';
 export * from './once.js';
 export * from './source.js';
