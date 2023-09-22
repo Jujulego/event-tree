@@ -55,6 +55,9 @@ export function groupMap$<K extends KeyPart, S extends AnySource>(builder: (key:
 
       if (!key) {
         src.clear();
+
+        // Keep listener for grouped events
+        subscribeToAll(mlt, src.next as Listener<unknown>);
       } else {
         // Keep listener for grouped events
         mlt.on(key, src.next);
