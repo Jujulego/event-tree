@@ -12,7 +12,7 @@ export interface DomEmitter<M> {
  */
 export function dom$<M = HTMLElementEventMap>(element: DomEmitter<M>): Listenable<M & Record<never, never>>;
 
-export function dom$(element: DomEmitter<EventMap>): Listenable<EventMap> {
+export function dom$(element: DomEmitter<EventMap>): Listenable {
   const listeners = listenersMap();
 
   function removeListener(key: string, listener: Listener<unknown>) {
@@ -21,6 +21,7 @@ export function dom$(element: DomEmitter<EventMap>): Listenable<EventMap> {
   }
 
   return {
+    keys: () => [],
     on(key: string, listener: Listener<unknown>) {
       element.addEventListener(key, listener);
       listeners.add(key, listener);

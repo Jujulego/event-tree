@@ -8,8 +8,8 @@ export interface MultiplexerObj<T extends SourceTree> extends Multiplexer<EmitEv
 }
 
 // Utils
-export function multiplexer$<T extends SourceTree>(map: T): MultiplexerObj<T> {
-  const sources = new Map(Object.entries(map) as [keyof T & KeyPart, T[keyof T & KeyPart]][]);
+export function multiplexer$<T extends SourceTree>(tree: T): MultiplexerObj<T> {
+  const sources = new Map(Object.entries(tree) as [keyof T & KeyPart, T[keyof T & KeyPart]][]);
 
   function getSource<K extends keyof T & KeyPart>(key: K): T[K] {
     const src = sources.get(key);
@@ -22,7 +22,7 @@ export function multiplexer$<T extends SourceTree>(map: T): MultiplexerObj<T> {
   }
 
   return Object.assign(
-    _multiplexer$<T>(() => sources.values(), getSource),
+    _multiplexer$<T>(sources, getSource),
     { sources }
   );
 }

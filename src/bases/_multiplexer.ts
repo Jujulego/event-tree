@@ -17,14 +17,16 @@ import { splitKey } from '../utils/key.js';
 type NextCb<R> = (src: Multiplexer<EventMap, EventMap>, key: Key) => R;
 
 /** @internal */
-type EndCb<R> = (src: Source<unknown>) => R;
+type EndCb<R> = (src: Source) => R;
 
-export type ListSourcesFn<T extends SourceTree> = () => Iterable<T[keyof T]>;
+/** @internal */
+export type SourcesMap<T extends SourceTree> = Map<keyof T & KeyPart, T[keyof T & KeyPart]>;
 
+/** @internal */
 export type GetSourceFn<T extends SourceTree> = <K extends keyof T & KeyPart>(key: K) => T[K];
 
 /** @internal */
-export function _multiplexer$<T extends SourceTree>(listSources: ListSourcesFn<T>, getSource: GetSourceFn<T>): Multiplexer<EmitEventMap<T>, ListenEventMap<T>> {
+export function _multiplexer$<T extends SourceTree>(sources: SourcesMap<T>, getSource: GetSourceFn<T>): Multiplexer<EmitEventMap<T>, ListenEventMap<T>> {
   function routeEvent<R>(key: Key, next: NextCb<R>, end: EndCb<R>): R {
     const [part, subkey] = splitKey(key);
     const src = getSource(part);
@@ -32,7 +34,7 @@ export function _multiplexer$<T extends SourceTree>(listSources: ListSourcesFn<T
     if (subkey) {
       return next(src as Multiplexer<EventMap, EventMap>, subkey);
     } else {
-      return end(src as Source<unknown>);
+      return end(src as Source);
     }
   }
 
@@ -42,6 +44,20 @@ export function _multiplexer$<T extends SourceTree>(listSources: ListSourcesFn<T
         (mlt, subkey) => mlt.emit(subkey, data),
         (src) => src.next(data),
       );
+    },
+
+    *keys() {
+      for (const [key, src] of sources.entries()) {
+        if ('subscribe' in src) {
+          yield key as EventKey<ListenEventMap<T>>;
+        }
+
+        if ('keys' in src) {
+          for (const childKey of src.keys()) {
+            yield `${key}.${childKey}`;
+          }
+        }
+      }
     },
 
     on<K extends EventKey<ListenEventMap<T>>>(key: K, listener: Listener<EventData<ListenEventMap<T>, K>>): OffFn {
@@ -60,7 +76,7 @@ export function _multiplexer$<T extends SourceTree>(listSources: ListSourcesFn<T
 
     clear(key?: Key): void {
       if (!key) {
-        for (const src of listSources()) {
+        for (const src of sources.values()) {
           if ('clear' in src) src.clear();
         }
       } else {

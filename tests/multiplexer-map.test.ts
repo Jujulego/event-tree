@@ -2,9 +2,27 @@ import { vi } from 'vitest';
 
 import { Emitter, KeyEmitter, Listenable, Observable } from '@/src/defs/index.js';
 import { multiplexerMap$ } from '@/src/multiplexer-map.js';
+import { multiplexer$ } from '@/src/multiplexer.js';
+import { source$ } from '@/src/source.js';
 
 // Tests
 describe('multiplexerMap', () => {
+  it('should return all available keys', () => {
+    const mlt = multiplexerMap$(() => multiplexer$({
+      int: source$<number>(),
+      deep: multiplexer$({
+        boo: source$<boolean>()
+      })
+    }));
+
+    expect(Array.from(mlt.keys())).toEqual([]);
+
+    // "create" a child source
+    mlt.emit('test.int', 42);
+
+    expect(Array.from(mlt.keys())).toEqual(['test.int', 'test.deep.boo']);
+  });
+
   describe('emit', () => {
     it('should emit child event', () => {
       const src: Emitter<number> = {
@@ -57,6 +75,7 @@ describe('multiplexerMap', () => {
     it('should subscribe to deep child event', () => {
       const off = vi.fn();
       const deep: Listenable<{ 'life': number }> = {
+        keys: () => ['life'],
         on: vi.fn(() => off),
         off: vi.fn(),
         clear: vi.fn(),
@@ -95,6 +114,7 @@ describe('multiplexerMap', () => {
     it('should unsubscribe from deep child event', () => {
       const off = vi.fn();
       const deep: Listenable<{ 'life': number }> = {
+        keys: () => ['life'],
         on: vi.fn(() => off),
         off: vi.fn(),
         clear: vi.fn(),
@@ -130,6 +150,7 @@ describe('multiplexerMap', () => {
     it('should clear deep child source', () => {
       const off = vi.fn();
       const deep: Listenable<{ 'life': number }> = {
+        keys: () => ['life'],
         on: vi.fn(() => off),
         off: vi.fn(),
         clear: vi.fn(),
@@ -145,6 +166,7 @@ describe('multiplexerMap', () => {
     it('should clear all child sources', () => {
       const off = vi.fn();
       const deep: Listenable<{ 'life': number }> = {
+        keys: () => ['life'],
         on: vi.fn(() => off),
         off: vi.fn(),
         clear: vi.fn(),

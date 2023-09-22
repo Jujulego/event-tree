@@ -23,7 +23,7 @@ export function multiplexerMap$<K extends KeyPart, S extends AnySource>(builder:
   }
 
   return Object.assign(
-    _multiplexer$<Record<K, S>>(() => sources.values(), getSource),
+    _multiplexer$<Record<K, S>>(sources, getSource),
     { sources }
   );
 }

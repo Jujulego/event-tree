@@ -1,12 +1,13 @@
 import { Emitter } from './emitter.js';
-import { AssertEventMap, EventKey, EventMap, PrependEventMapKeys } from './event-map.js';
+import { AssertEventMap, EventKey, PrependEventMapKeys } from './event-map.js';
 import { KeyEmitter } from './key-emitter.js';
 import { Listenable } from './listenable.js';
 import { Observable } from './observable.js';
 import { KeyPart, MapValueIntersection } from './utils.js';
 
 // Utils
-export type AnySource = Emitter<unknown> | KeyEmitter<EventMap> | Observable<unknown> | Listenable<EventMap>;
+export type AnySource = Emitter | KeyEmitter | Observable | Listenable;
+
 export type SourceTree = Record<KeyPart, AnySource>;
 
 type _EmitEventRecord<K extends KeyPart, S> =

@@ -3,7 +3,7 @@ import { EventData, EventKey, EventMap } from './event-map.js';
 /**
  * Object emits multiple events, defined by keys
  */
-export interface KeyEmitter<M extends EventMap> {
+export interface KeyEmitter<M extends EventMap = EventMap> {
   __emit_event_map?: M | undefined;
 
   /**
