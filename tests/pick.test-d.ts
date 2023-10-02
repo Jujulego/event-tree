@@ -1,6 +1,9 @@
 import { expectTypeOf } from 'vitest';
 
-import { KeyEmitter, Listenable, multiplexer$, pick$, source$ } from '@/src/index.js';
+import { KeyEmitter, Listenable } from '@/src/defs/index.js';
+import { multiplexer$ } from '@/src/multiplexer.js';
+import { pick$ } from '@/src/pick.js';
+import { source$ } from '@/src/source.js';
 
 // Setup
 const mlt = multiplexer$({
