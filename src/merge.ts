@@ -1,17 +1,16 @@
-import { Listener, Observable as Obs, OffFn } from './defs/index.js';
+import { Listener, MergeObservable, Observable, OffFn } from './defs/index.js';
 import { off$ } from './off.js';
+
+// Types
+export type MergeArgs = [Observable, Observable, ...Observable[]];
 
 // Utils
 /**
  * Merges 2 or more observables into one, emitting each events incoming from every given sources.
  */
-export function merge$<A, B>(a: Obs<A>, b: Obs<B>): Obs<A | B>;
-export function merge$<A, B, C>(a: Obs<A>, b: Obs<B>, c: Obs<C>): Obs<A | B | C>;
-export function merge$<A, B, C, D>(a: Obs<A>, b: Obs<B>, c: Obs<C>, d: Obs<D>): Obs<A | B | C | D>;
-export function merge$<A, B, C, D, E>(a: Obs<A>, b: Obs<B>, c: Obs<C>, d: Obs<D>, e: Obs<E>): Obs<A | B | C | D | E>;
-export function merge$(...observables: Obs[]): Obs;
+export function merge$<O extends MergeArgs>(...observables: O): MergeObservable<O>;
 
-export function merge$(...observables: Obs[]): Obs {
+export function merge$(...observables: Observable[]): Observable {
   return {
     subscribe(listener: Listener): OffFn {
       const off = off$();
