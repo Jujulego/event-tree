@@ -7,6 +7,7 @@ export * from './group-map.js';
 export * from './inherit.js';
 export * from './iterate.js';
 export * from './lazy.js';
+export * from './merge.js';
 export * from './multiplexer.js';
 export * from './multiplexer-map.js';
 export * from './pick.js';

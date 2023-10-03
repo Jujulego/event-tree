@@ -6,6 +6,7 @@ export * from './inherit.js';
 export * from './key-emitter.js';
 export * from './lazy.js';
 export * from './listenable.js';
+export * from './merge.js';
 export * from './multiplexer.js';
 export * from './pick.js';
 export * from './observable.js';
