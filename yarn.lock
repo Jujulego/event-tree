@@ -401,7 +401,7 @@ __metadata:
     "@typescript-eslint/parser": 6.7.4
     "@vitest/coverage-v8": 0.34.6
     eslint: 8.50.0
-    eslint-plugin-vitest: 0.3.1
+    eslint-plugin-vitest: 0.3.2
     shx: 0.3.4
     typescript: 5.2.2
     vite: 4.4.9
@@ -960,7 +960,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:6.7.4, @typescript-eslint/utils@npm:^6.5.0":
+"@typescript-eslint/utils@npm:6.7.4, @typescript-eslint/utils@npm:^6.6.0":
   version: 6.7.4
   resolution: "@typescript-eslint/utils@npm:6.7.4"
   dependencies:
@@ -1937,19 +1937,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-vitest@npm:0.3.1":
-  version: 0.3.1
-  resolution: "eslint-plugin-vitest@npm:0.3.1"
+"eslint-plugin-vitest@npm:0.3.2":
+  version: 0.3.2
+  resolution: "eslint-plugin-vitest@npm:0.3.2"
   dependencies:
-    "@typescript-eslint/utils": ^6.5.0
-    typescript: ^5.2.2
+    "@typescript-eslint/utils": ^6.6.0
   peerDependencies:
     eslint: ">=8.0.0"
     vitest: "*"
   peerDependenciesMeta:
     "@typescript-eslint/eslint-plugin":
       optional: true
-  checksum: 8c3302cce54361b2530785202bb3814992db7f9895bc3e350e38a17ba6823802199e066c472393fcd545884fb0037a7f38fe27d12339c0f20dcd949ff791df71
+  checksum: 807b503a716cd51daf4ac197c34adbdad5109436238eae824bf19fb12ed6416f8e3e93845f56f4a5159873aabe5ea0339fd680fb8bdbb8e0788438370426bb4b
   languageName: node
   linkType: hard
 
@@ -4606,7 +4605,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.2.2, typescript@npm:^5.2.2":
+"typescript@npm:5.2.2":
   version: 5.2.2
   resolution: "typescript@npm:5.2.2"
   bin:
@@ -4616,7 +4615,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@5.2.2#~builtin<compat/typescript>, typescript@patch:typescript@^5.2.2#~builtin<compat/typescript>":
+"typescript@patch:typescript@5.2.2#~builtin<compat/typescript>":
   version: 5.2.2
   resolution: "typescript@patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"
   bin:
