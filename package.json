@@ -33,7 +33,7 @@
   },
   "packageManager": "yarn@3.6.4",
   "devDependencies": {
-    "@jujulego/jill": "2.3.2",
+    "@jujulego/jill": "2.3.3",
     "@microsoft/eslint-formatter-sarif": "3.0.0",
     "@rollup/plugin-swc": "0.2.1",
     "@swc/cli": "0.1.62",
