@@ -31,7 +31,7 @@
     "test": "vitest run",
     "test:types": "vitest typecheck"
   },
-  "packageManager": "yarn@3.6.4",
+  "packageManager": "yarn@4.0.0",
   "devDependencies": {
     "@jujulego/jill": "2.3.3",
     "@jujulego/vite-plugin-swc": "1.1.0",
