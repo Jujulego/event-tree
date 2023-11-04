@@ -13,19 +13,19 @@ import {
 import { splitKey } from '../utils/key.js';
 
 // Types
-/** @internal */
 type NextCb<R> = (src: Multiplexer<EventMap, EventMap>, key: Key) => R;
-
-/** @internal */
 type EndCb<R> = (src: Source) => R;
 
-/** @internal */
 export type SourcesMap<T extends SourceTree> = Map<keyof T & KeyPart, T[keyof T & KeyPart]>;
-
-/** @internal */
 export type GetSourceFn<T extends SourceTree> = <K extends keyof T & KeyPart>(key: K) => T[K];
 
-/** @internal */
+/**
+ * Common base of multiplexer sources. It handles all event routing logic.
+ * @internal This is an internal api, it might change at any time.
+ *
+ * @param sources Map object storing sources
+ * @param getSource Callback used when accessing to a precise source.
+ */
 export function _multiplexer$<T extends SourceTree>(sources: SourcesMap<T>, getSource: GetSourceFn<T>): Multiplexer<EmitEventMap<T>, ListenEventMap<T>> {
   function routeEvent<R>(key: Key, next: NextCb<R>, end: EndCb<R>): R {
     const [part, subkey] = splitKey(key);
